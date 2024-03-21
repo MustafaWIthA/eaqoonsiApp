@@ -1,0 +1,285 @@
+{
+  "appName": "eAqoonsi",
+  "@appName": {
+    "description": "eAqoonsi"
+  },
+  "appDescription": "eAqoonsi waxaa loogu talagalay dadka degan Soomaaliya, waana aqoonsi dhijitaal ah oo la xaqiijin karo, sharci ah oo leh miisaan sharci oo la mid ah aqoonsiga qoran",
+  "@appDescription": {
+    "description": "Add a new item"
+  },
+  "@@locale": "so",
+  "greeting": "Salaan Caalamkum!",
+  "@greeting": {
+    "description": "Soo dhaweynta barnaamijka cusub ee dhalashada"
+  },
+
+  "nextButton": "Soco",
+  "@nextButton": {
+    "description": "Qoraalka badhanka socda"
+  },
+  "backButton": "Gadaal",
+  "@backButton": {
+    "description": "Qoraalka badhanka dib u eeg"
+  },
+  "getStartedButton": "Bilaw",
+  "@getStartedButton": {
+    "description": "Qoraalka badhanka bilaabo"
+  },
+  "skipButton": "Dhaaf",
+  "@skipButton": {
+    "description": "Qoraalka badhanka ka bax"
+  },
+  "empoweringTitle": "Waxaa loogu talagalay dadka degan Soomaaliya",
+  "@empoweringTitle": {
+    "description": "Waxaa loogu talagalay dadka degan Soomaaliya"
+  },
+
+  "empoweringSubtitle": "Aqoonsi casri ah, amnigiisu suganyahay, si sahlan loo isticmaali karo si aad adeegyada asaasiga ah u heshon",
+  "@empoweringSubtitle": {
+    "description": "Aqoonsi casri ah, amnigiisu suganyahay, si sahlan loo isticmaali karo si aad adeegyada asaasiga ah u heshon"
+  },
+
+  "welcomeSpalshTitle": "Kusoo dhawow e-Aqoonsi, furaha Soomaaliyada casriga ah.",
+  "@welcomeSpalshTitle": {
+    "description": "Kusoo dhawow e-Aqoonsi, furaha Soomaaliyada casriga ah."
+  },
+
+  "welcomeSpalshSubtitle": "Ku gal aqoonsigaaga gaarka ah si aad u hesho caddeynta aqoonsi ee elektaroonigga ah.",
+  "@welcomeSpalshSubtitle": {
+    "description": "Waxaad ka heli kartaa aqoonsi casri ah, amnigiisu suganyahay, si sahlan loo isticmaali karo si aad adeegyada asaasiga ah u heshon"
+  },
+
+  "emailLabel": "Iimeel",
+  "@emailLabel": {
+    "description": "Label for the email input field"
+  },
+  "hintText": "Fadlan geli Iimeel-kaaga",
+  "@hintText": {
+    "description": "Hint text for the email input field"
+  },
+
+  "loginTitle": "Gal",
+"@loginTitle":{
+      "description": "Gal adoo isticmaalya xogtaada"
+},
+  "errorTitle": "Riix",
+  "@errorTitle": {
+    "description": "Riix"
+  },
+  "errorMessage": "Wax baa khaldamay",
+  "@errorMessage": {
+    "description": "Wax baa khaldamay"
+  },
+
+  "usernameLabel": "Username",
+  "@usernameLabel": {
+    "description": "Label for the username input field"
+  },
+  "usernameEmptyError": "Please enter your username",
+  "@usernameEmptyError": {
+    "description": "Error message when the username is empty"
+  },
+  "usernameHintText": "Fadlan geli ID-Gaaga",
+  "@usernameHintText": {
+    "description": "Hint text for the username input field"
+  },
+  "usernameLengthError": "Waa inuu ugu yaraan 11 xaraf  yahay",
+  "@usernameLengthError": {
+    "description": "Error message when the username is too short"
+  },
+  "passwordLabel": "Furaha sirta ah",
+  "@passwordLabel": {
+    "description": "Label for the password input field"
+  },
+  "passwordEmptyError": "Fadlan geli furahaaga",
+  "@passwordEmptyError": {
+    "description": "Error message when the password is empty"
+  },
+  "passwordLengthError": "Furahagu waa inuu ugu yaraan 6 xaraf gaara",
+  "@passwordLengthError": {
+    "description": "Error message when the password is too short"
+  },
+  "loginButton": "Login",
+  "@loginButton": {
+    "description": "Text for the login button"
+  },
+  "signUpTitle": "Isdiiwaangeli",
+  "@signUpTitle": {
+    "description": "Isdiiwaangeli"
+  },
+  "registerButton": "Diiwangali",
+  "@registerButton": {
+    "description": "Is Diiwangali"
+  },
+
+  "verifyButton": "Xaqiiji",
+  "@verifyButton": {
+    "description": "Xaqiiji"
+  },
+
+  "checkButton": "Hubi",
+  "@checkButton": {
+    "description": "Hubi"
+  },
+
+  "usernameLabel": "Magaca isticmaalaha",
+  "@usernameLabel": {
+    "description": "Calaamadda goobta gelida magaca isticmaalaha"
+  },
+  "usernameEmptyError": "Fadlan geli magacaaga isticmaalaha",
+  "@usernameEmptyError": {
+    "description": "Farriinta khaladka marka magaca isticmaaluhu madhan yahay"
+  },
+  "usernameLengthError": "Magaca isticmaalaha waa inuu ugu yaraan 4 xaraf dheer yahay",
+  "@usernameLengthError": {
+    "description": "Farriinta khaladka marka magaca isticmaaluhu aad u gaaban yahay"
+  },
+  "passwordLabel": "Furaha",
+  "@passwordLabel": {
+    "description": "Calaamadda goobta gelida furaha"
+  },
+  "passwordEmptyError": "Fadlan geli furahaga",
+  "@passwordEmptyError": {
+    "description": "Farriinta khaladka marka furahagu madhan yahay"
+  },
+  "passwordLengthError": "Furahagu waa inuu ugu yaraan 6 xaraf dheer yahay",
+  "@passwordLengthError": {
+    "description": "Farriinta khaladka marka furahagu aad u gaaban yahay"
+  },
+  "loginButton": "Gal",
+  "@loginButton": {
+    "description": "Qoraalka badhanka galida"
+  },
+  "homeTitle": "Guri",
+  "@homeTitle": {
+    "description": "Guri"
+  },
+  "logoutConfirmationTitle": "Ma Hubtaa",
+  "@logoutConfirmationTitle": {
+    "description": "Ma Hubtaa"
+  },
+  "logoutConfirmationMessage": "Ma hubtaa inaad ka baxdo?",
+  "@logoutConfirmationMessage": {
+    "description": "Ma hubtaa inaad ka baxdo?"
+  },
+  "cancelButton": "Jooji",
+  "@cancelButton": {
+    "description": "Jooji"
+  },
+
+  "logoutButton": "Ka bax",
+  "@logoutButton": {
+    "description": "Ka bax"
+  },
+  "welcomeMessage": "Soo dhawoow",
+  "@welcomeMessage": {
+    "description": "Soo dhawoow"
+  },
+  "welcomelogininstruction": "Fadlan geli ID gaaga iyo furahaaga",
+  "@welcomelogininstruction": {
+    "description": "Fadlan geli magaca isticmaalaha iyo furahaaga"
+  },
+
+  "donthaveanaccount": "Ma lihi akoon? ",
+  "@donthaveanaccount": {
+    "description": "Ma lihi akoon"
+  },
+
+  "haveanaccount": "Leeyahay akoon? ",
+  "@haveanaccount": {
+    "description": "Leeyahay akoon"
+  },
+
+  "wrongcredentials": "Xogtaada waa mid aan sax ahayn",
+  "@wrongcredentials": {
+    "description": "Xogtaada waa mid aan sax ahayn"
+  },
+
+  "fullNameValidation": "Magaca waa inuu yahay sida ku qoran ID-Gaaga",
+  "@fullNameValidation": {
+    "description": "Magaca waa inuu yahay sida ku qoran ID-Gaaga"
+  },
+
+  "fullNameLabel": "Magaca oo dhan",
+  "@fullNameLabel": {
+    "description": "Magaca oo dhan"
+  },
+
+  "fullNameEmptyError": "Fadlan geli magaca oo dhan",
+  "@fullNameEmptyError": {
+    "description": "Fadlan geli magaca oo dhan"
+  },
+
+  "fullNamehintText": "Fadlan geli magaca oo dhan",
+  "@fullNamehintText": {
+    "description": "Fadlan geli magaca oo dhan"
+  },
+
+  "passwordlabelText": "Furaha",
+  "@passwordlabelText": {
+    "description": "Calaamadda goobta gelida furaha"
+  },
+ 
+
+  "passwordValidation": "Furahagu waa inuu ugu yaraan 6 xaraf dheer yahay",
+  "@passwordValidation": {
+    "description": "Furahagu waa inuu ugu yaraan 6 xaraf dheer yahay"
+  },
+
+  "passwordhintText": "Fadlan geli furahaga",
+  "@passwordhintText": {
+    "description": "Fadlan geli furahaga"
+  },
+
+
+  "verifyNationalIDNumber": "Fadlan geli Aqoonsigaaga",
+  "@verifyNationalIDNumber": {
+    "description": "Fadlan geli raqamkaaga"
+  },
+
+  "verifyNationalIDNumberLabel": "Aqoonsi",
+  "@verifyNationalIDNumberLabel": {
+    "description": "Fadlan geli Anqoonsigaaga"
+  },
+  "verifyNationalIDNumberHintText": "Fadlan geli Aqoonsigaaga",
+  "@verifyNationalIDNumberHintText": {
+    "description": "Fadlan geli Aqoonsigaaga"
+  },
+
+
+  "notfoundNationalIDNumber": "Aqoonsigaas lama heli karo",
+  "@notfoundNationalIDNumber": {
+    "description": "Aqoonsigaaga ma ay jiraan"
+  },
+
+  "invalidNationalIDNumber": "Aqoonsigaan ma saxna!",
+  "@invalidNationalIDNumber": {
+    "description": "Aqoonsigaas waa mid aan sax ahayn"
+  },
+
+  "takePhoto": "Qaado sawirka",
+  "@takePhoto": {
+    "description": "Qaado sawirka"
+  },
+
+
+  "retakePhoto": "kunaqo",
+  "@retakePhoto": {
+    "description": "Qaado sawirka"
+  },
+
+  "sendPhoto": "Dir",
+  "@sendPhoto": {
+    "description": "Dir sawirka"
+  }
+
+
+
+
+
+
+
+
+
+
+}
