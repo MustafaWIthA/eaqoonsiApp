@@ -276,25 +276,24 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                                                       .fromSTEB(0, 0, 0, 16),
                                               child: EaqoonsiButtonWidget(
                                                 onPressed: () async {
-                                                  // if (_formKey.currentState!
-                                                  //     .validate()) {
-                                                  Navigator.of(context)
-                                                      .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const CameraScreen()),
-                                                  );
-                                                  // await ref
-                                                  //     .read(
-                                                  //         registrationNotifierProvider
-                                                  //             .notifier)
-                                                  //     .register(
-                                                  //       fullName.text,
-                                                  //       email.text,
-                                                  //       password.text,
-                                                  //       pin.text,
-                                                  //     );
-                                                  // }
+                                                  if (_formKey.currentState!
+                                                      .validate()) {
+                                                    Navigator.of(context)
+                                                        .pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CameraScreen(
+                                                                fullName:
+                                                                    fullName
+                                                                        .text,
+                                                                email:
+                                                                    email.text,
+                                                                password:
+                                                                    password
+                                                                        .text,
+                                                              )),
+                                                    );
+                                                  }
                                                 },
                                                 text: localizations
                                                     .registerButton,
