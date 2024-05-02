@@ -31,7 +31,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen<AuthState>(authStateProvider, (previous, next) {
       if (next.isAuthenticated) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => ProfileScreen()),
+          MaterialPageRoute(builder: (context) => const ProfileScreen()),
         );
       } else if (next.errorMessage != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -86,7 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           localizations.appName,
                           style: EAqoonsiTheme.of(context).titleLarge.override(
                                 fontFamily: 'Plus Jakarta Sans',
-                                color: EAqoonsiTheme.of(context).primaryText,
+                                color: EAqoonsiTheme.of(context).alternate,
                                 fontSize: 32,
                                 letterSpacing: 0,
                                 fontWeight: FontWeight.w900,
@@ -104,7 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             maxWidth: 570,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: EAqoonsiTheme.of(context).alternate,
                             boxShadow: const [
                               BoxShadow(
                                 blurRadius: 4,
@@ -128,8 +128,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   Text(
                                     localizations.welcomeMessage,
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Color(0xFF4B39EF),
+                                    style: TextStyle(
+                                      color: EAqoonsiTheme.of(context)
+                                          .primaryText, //const Color(0xFF101213
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),

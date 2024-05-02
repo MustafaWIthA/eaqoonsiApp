@@ -1,3 +1,4 @@
+import 'package:eaqoonsi/help/help_screen.dart';
 import 'package:eaqoonsi/language/language_notifier.dart';
 import 'package:eaqoonsi/login/auth_notifier.dart';
 import 'package:eaqoonsi/login/splash_screen.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'profile/profile_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'verification/verification_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -21,6 +24,12 @@ class MyApp extends ConsumerWidget {
     final currentLocale = ref.watch(languageNotifier);
 
     return MaterialApp(
+      routes: {
+        '/profile': (context) => const ProfileScreen(),
+        '/registration': (context) => const RegistrationScreen(),
+        '/verification': (context) => const VerificationScreen(),
+        '/helpScreen': (context) => const HelpScreen(),
+      },
       debugShowCheckedModeBanner: false,
       title: "eAqoonsi",
       locale: currentLocale,
@@ -33,11 +42,11 @@ class MyApp extends ConsumerWidget {
         DefaultMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: RegistrationScreen(),
+      // home: RegistrationScreen(),
 
-      // home: authState.isAuthenticated
-      //     ? const ProfileScreen()
-      //     : const SplashScreen(),
+      home: authState.isAuthenticated
+          ? const ProfileScreen()
+          : const SplashScreen(),
     );
   }
 }

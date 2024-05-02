@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final dioProvider = Provider<Dio>((ref) => Dio());
+
 final storageProvider =
     Provider<FlutterSecureStorage>((ref) => const FlutterSecureStorage());
 final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
@@ -11,8 +12,8 @@ final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
 
 //CREATE TGE LINK HERE
 //android emulator
-const String baseUrl = 'http://10.0.2.2:9000/api';
-const String keySigin = 'http://10.0.2.2:9000/api/v1/auth/login';
+const String baseUrl = 'http://10.0.2.2:9191/api';
+const String keySigin = 'http://10.0.2.2:9191/api/v1/auth/login';
 //ios emulator
 // const String baseUrl = 'http://localhost:9000/api';
 
@@ -97,6 +98,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> logout() async {
+    await _storage.deleteAll();
+    //set language to default
     await _storage.delete(key: 'access_token');
     await _storage.delete(key: 'refresh_token');
     state = AuthState();

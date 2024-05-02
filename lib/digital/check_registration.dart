@@ -1,5 +1,6 @@
 import 'package:eaqoonsi/login/login_screen.dart';
 import 'package:eaqoonsi/otp/verify_otp.dart';
+import 'package:eaqoonsi/registration/registration_notifier.dart';
 import 'package:eaqoonsi/widget/animation.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
     final localizations = AppLocalizations.of(context)!;
 
     final idNumber = nationalIDNumberController.text;
-    final url = Uri.parse('http://10.0.2.2:9192/mobile/card/search/$idNumber');
+    final url = Uri.parse('http://10.0.2.2:9192/digital/card/search/$idNumber');
     print(idNumber);
 
     try {
@@ -118,6 +119,7 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['statusCode'] == 200) {
+          ref.read(registrationNotifierProvider.notifier).setUserName(idNumber);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const VerifyOTPWidget(),

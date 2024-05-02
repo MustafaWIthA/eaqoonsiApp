@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:eaqoonsi/widget/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
@@ -55,26 +59,65 @@ class ProfileScreen extends ConsumerWidget {
     }
 
     return Scaffold(
+      backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text('Profile', style: EAqoonsiTheme.of(context).titleLarge),
+        iconTheme: IconThemeData(color: EAqoonsiTheme.of(context).alternate),
+        backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
+        title: profileAsyncValue.when(
+          data: (profile) {
+            return Text(
+              '${localizations.greeting}, ${profile['fullName']}',
+              style: EAqoonsiTheme.of(context).titleSmall.override(
+                    fontFamily: 'Plus Jakarta Sans',
+                    color: EAqoonsiTheme.of(context).alternate,
+                    fontSize: 16,
+                    letterSpacing: 0,
+                    fontWeight: FontWeight.w500,
+                  ),
+            );
+          },
+          loading: () => const Text('Loading...'),
+          error: (error, stack) {
+            return const Text('Error');
+          },
+        ),
         actions: [
           InkWell(
             onTap: () {
-              // Add your onTap functionality here
+              // tap profile
             },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Color.fromARGB(255, 76, 61, 61),
-                child: Icon(Icons.person, size: 20, color: Colors.white),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: profileAsyncValue.when(
+                data: (profile) {
+                  String base64Image = profile['photo'];
+                  Uint8List imageBytes = base64Decode(base64Image);
+                  return CircleAvatar(
+                    radius: 30,
+                    backgroundColor: EAqoonsiTheme.of(context).primary,
+                    backgroundImage:
+                        imageBytes.isNotEmpty ? MemoryImage(imageBytes) : null,
+                    child: imageBytes.isEmpty
+                        ? const Icon(
+                            Icons.person,
+                            size: 30,
+                            color: Colors.white,
+                          )
+                        : null,
+                  );
+                },
+                loading: () => const CircularProgressIndicator(),
+                error: (error, stack) {
+                  return const Icon(Icons.error);
+                },
               ),
             ),
           ),
         ],
       ),
       drawer: Drawer(
+        //change the color of the icon
+
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -100,6 +143,8 @@ class ProfileScreen extends ConsumerWidget {
       ),
       body: profileAsyncValue.when(
         data: (profile) {
+          String base64Image = profile['photo'];
+          Uint8List imageBytes = base64Decode(base64Image);
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -114,6 +159,58 @@ class ProfileScreen extends ConsumerWidget {
                         letterSpacing: 0,
                         fontWeight: FontWeight.w500,
                       ),
+                ),
+                //create white box like the loginscreen
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 130,
+                  decoration: BoxDecoration(
+                    color: EAqoonsiTheme.of(context).alternate,
+                    boxShadow: const [
+                      BoxShadow(
+                        blurRadius: 4,
+                        color: Color(0x33000000),
+                        offset: Offset(
+                          0,
+                          2,
+                        ),
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  alignment: const AlignmentDirectional(0, -1),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Email: ${profile['email']}',
+                          style: EAqoonsiTheme.of(context).bodyText1.override(
+                                fontFamily: 'Plus Jakarta Sans',
+                                color: EAqoonsiTheme.of(context).primary,
+                                fontSize: 16,
+                                letterSpacing: 0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                        //display user profile image use circle avatar profile photo
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: EAqoonsiTheme.of(context).primary,
+                          backgroundImage: imageBytes.isNotEmpty
+                              ? MemoryImage(imageBytes)
+                              : null,
+                          child: imageBytes.isEmpty
+                              ? const Icon(
+                                  Icons.person,
+                                  size: 30,
+                                  color: Colors.white,
+                                )
+                              : null,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -131,6 +228,7 @@ class ProfileScreen extends ConsumerWidget {
           return Center(child: Text('Error: $error'));
         },
       ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

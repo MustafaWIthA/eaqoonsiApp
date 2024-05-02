@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:eaqoonsi/login/auth_notifier.dart';
+import 'package:eaqoonsi/profile/profile_screen.dart';
 import 'package:eaqoonsi/registration/registration_notifier.dart';
 import 'package:eaqoonsi/widget/e_aqoonsi_button_widgets.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
@@ -139,12 +141,27 @@ class ImagePreviewScreen extends ConsumerWidget {
   final String password;
 
   const ImagePreviewScreen(this.fullName, this.email, this.password,
-      {required this.imagePath, Key? key})
-      : super(key: key);
+      {required this.imagePath, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
+    final registrationState = ref.watch(registrationNotifierProvider);
+
+    ref.listen<AuthState>(registrationNotifierProvider, (previous, next) {
+      if (next.isAuthenticated) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const ProfileScreen()),
+        );
+      } else if (registrationState.errorMessage != null) {
+        print(registrationState.errorMessage);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(registrationState.errorMessage!),
+          ),
+        );
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('Image Preview')),

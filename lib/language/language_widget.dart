@@ -50,7 +50,7 @@ class LanguageSelectionButtons extends ConsumerWidget {
                 : Colors.transparent,
             textStyle: TextStyle(
               color: currentLocale.languageCode == 'en'
-                  ? EAqoonsiTheme.of(context).primaryText
+                  ? EAqoonsiTheme.of(context).tertiary
                   : EAqoonsiTheme.of(context).secondaryText,
             ),
           ),

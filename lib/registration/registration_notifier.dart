@@ -18,11 +18,16 @@ class RegistrationNotifier extends StateNotifier<AuthState> {
   final Dio _dio;
   final FlutterSecureStorage _storage;
   File? _capturedImage;
+  String? _userName;
 
   RegistrationNotifier(this._dio, this._storage) : super(AuthState());
 
   void setCapturedImage(File image) {
     _capturedImage = image;
+  }
+
+  void setUserName(String userName) {
+    _userName = userName;
   }
 
   Future<void> register(
@@ -32,6 +37,11 @@ class RegistrationNotifier extends StateNotifier<AuthState> {
     if (_capturedImage == null) {
       state =
           state.copyWith(isLoading: false, errorMessage: 'No image selected');
+      return;
+    }
+
+    if (_userName == null) {
+      state = state.copyWith(isLoading: false, errorMessage: 'No username');
       return;
     }
 
@@ -50,7 +60,7 @@ class RegistrationNotifier extends StateNotifier<AuthState> {
       await tempImageFile.writeAsBytes(compressedImage);
 
       final formData = FormData.fromMap({
-        'username': '124889510167',
+        'username': _userName,
         'photo': await MultipartFile.fromFile(tempImageFile.path,
             filename: 'image.jpg'),
         'fullName': fullName,
@@ -70,6 +80,11 @@ class RegistrationNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(
           isAuthenticated: false,
           errorMessage: response.data['body']['statusCode'] as String,
+        );
+      } else if (response.data['statusCodeValue'] == 409) {
+        state = state.copyWith(
+          isAuthenticated: false,
+          errorMessage: "User already exists",
         );
       } else {
         state = state.copyWith(

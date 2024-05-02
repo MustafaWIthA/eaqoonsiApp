@@ -53,6 +53,8 @@ abstract class EAqoonsiTheme {
   late Color warning;
   late Color error;
   late Color info;
+  late Color darkText;
+  late Color darkBackground;
 
   @Deprecated('Use displaySmallFamily instead')
   String get title1Family => displaySmallFamily;
@@ -125,13 +127,13 @@ class LightModeTheme extends EAqoonsiTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color.fromARGB(255, 62, 50, 231);
+  late Color primary = const Color(0xFF096cc6);
   late Color secondary = const Color(0xFF36B4FF);
   late Color tertiary = const Color(0xFFFFA130);
-  late Color alternate = const Color(0xFFE0E3E7);
-  late Color primaryText = const Color.fromARGB(255, 255, 255, 255);
+  late Color alternate = const Color.fromARGB(255, 255, 255, 255);
+  late Color primaryText = const Color(0xFF096cc6);
   late Color secondaryText = const Color(0xFF57636C);
-  late Color primaryBackground = const Color.fromARGB(255, 128, 27, 187);
+  late Color primaryBackground = const Color(0xFF096cc6);
   late Color secondaryBackground = const Color(0xFFFFFFFF);
   late Color accent1 = const Color(0x4C19DB8A);
   late Color accent2 = const Color(0x4D36B4FF);
@@ -141,6 +143,8 @@ class LightModeTheme extends EAqoonsiTheme {
   late Color warning = const Color(0xFFCC8E30);
   late Color error = const Color(0xFFFF5963);
   late Color info = const Color(0xFFFFFFFF);
+  late Color darkText = const Color(0xFF000000);
+  late Color darkBackground = const Color(0xFF000000);
 }
 
 abstract class Typography {
