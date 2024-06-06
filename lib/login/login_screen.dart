@@ -1,3 +1,4 @@
+import 'package:eaqoonsi/constants.dart';
 import 'package:eaqoonsi/digital/check_registration.dart';
 import 'package:eaqoonsi/language/language_widget.dart';
 import 'package:eaqoonsi/login/auth_notifier.dart';
@@ -82,15 +83,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         alignment: const AlignmentDirectional(0, 0),
-                        child: Text(
-                          localizations.appName,
-                          style: EAqoonsiTheme.of(context).titleLarge.override(
-                                fontFamily: 'Plus Jakarta Sans',
-                                color: EAqoonsiTheme.of(context).alternate,
-                                fontSize: 32,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.w900,
-                              ),
+                        child: Image.asset(
+                          frontlogoWhite,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),

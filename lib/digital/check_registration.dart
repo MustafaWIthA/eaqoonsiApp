@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:eaqoonsi/login/login_screen.dart';
 import 'package:eaqoonsi/otp/verify_otp.dart';
 import 'package:eaqoonsi/registration/registration_notifier.dart';
@@ -5,12 +6,13 @@ import 'package:eaqoonsi/widget/animation.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import '../widget/e_aqoonsi_button_widgets.dart';
 import '../widget/text_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+//create otpId: 6fde4948-7906-4744-8366-0a6b8ec42c35 for provider to hold the value
+final otpIdProvider = StateProvider<String?>((ref) => null);
 
 class CheckNationalIDNumber extends ConsumerStatefulWidget {
   const CheckNationalIDNumber({super.key});
@@ -66,20 +68,41 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
     final localizations = AppLocalizations.of(context)!;
 
     final idNumber = nationalIDNumberController.text;
-    final url = Uri.parse('http://10.0.2.2:9192/digital/card/search/$idNumber');
+    // final url = Uri.parse('http://10.0.2.2:9192/digital/card/search/$idNumber');
     print(idNumber);
 
     try {
-      final response = await http.get(url);
-      print(response.statusCode);
+      final dio = Dio();
+      final response = await dio.get(
+        "http://10.0.2.2:9192/digital/card/search/$idNumber",
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      print("election system");
+      print(response.data['data']['phone']);
+      print(response.data);
+      print("haghagha hagah");
 
-      if (response.statusCode == 200) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const VerifyOTPWidget(),
-          ),
-        );
-      } else if (response.statusCode == 400) {
+      if (response.data['statusCode'] == 200) {
+        ref.read(otpIdProvider.notifier).state = response.data['otpId'];
+        final otpId = response.data['otPid'];
+        final phoneNumber = response.data['data']['phone'];
+        print(otpId);
+        ref.read(registrationNotifierProvider.notifier).setUserName(idNumber);
+        print("idnumber $idNumber");
+
+        if (otpId != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  VerifyOTPWidget(otpId: otpId, phoneNumber: phoneNumber),
+            ),
+          );
+        }
+      } else if (response.data['statusCode'] == 400) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Center(
@@ -96,7 +119,7 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
             duration: const Duration(seconds: 3),
           ),
         );
-      } else if (response.statusCode == 404) {
+      } else if (response.data['statusCode'] == 404) {
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -115,17 +138,19 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
           ),
         );
       }
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['statusCode'] == 200) {
+      print(response.statusCode);
+      if (response.data['statusCode'] == 200) {
+        if (response.data['statusCode'] == 200) {
           ref.read(registrationNotifierProvider.notifier).setUserName(idNumber);
+          print("idnumber $idNumber");
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const VerifyOTPWidget(),
+              builder: (context) => VerifyOTPWidget(
+                  otpId: response.data['otPid'],
+                  phoneNumber: response.data['data']['phone']),
             ),
           );
-        } else if (data['statusCode'] == 404) {
+        } else if (response.data['statusCode'] == 404) {
           // Show error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -145,12 +170,14 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(data['message'])),
+            SnackBar(content: Text(response.data['message'])),
           );
         }
       }
     } catch (e) {
       // Show error message
+      print(e);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An error occurred: $e')),
       );

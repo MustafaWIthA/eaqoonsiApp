@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 const String appName = 'I Aqoonsi';
 
 const String logoBlue = 'assets/images/nirablue.png';
+const String frontlogoBlue = 'assets/images/frontlogoblue.png';
+const String frontlogoWhite = 'assets/images/frontlogowhite.png';
 const String logoWhite = 'assets/images/nirawhite.png';
 const String placeholderImage = 'assets/images/logoplaceholder.png';
 const String forgroundImage = 'assets/images/frontground.jpg';

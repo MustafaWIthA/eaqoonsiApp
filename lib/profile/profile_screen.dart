@@ -10,6 +10,13 @@ import 'package:eaqoonsi/login/auth_notifier.dart';
 import 'package:eaqoonsi/login/login_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+//DEFIN THE UTL HERE
+const kProfileUrl = 'http://10.0.2.2:9191/api/v1/profile';
+//DEFIN THE PROVIDER HERE
+final dioProvider = Provider<Dio>((ref) {
+  return Dio();
+});
+
 final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   final dio = ref.read(dioProvider);
   final storage = ref.read(storageProvider);
@@ -17,7 +24,7 @@ final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
 
   try {
     final response = await dio.get(
-      'http://10.0.2.2:9191/api/v1/profile',
+      kProfileUrl,
       options: Options(
         headers: {
           'Authorization': 'Bearer $token',
@@ -212,6 +219,7 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+                //show pdf from here
               ],
             ),
           );

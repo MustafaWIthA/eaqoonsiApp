@@ -42,7 +42,7 @@ class MyApp extends ConsumerWidget {
         DefaultMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      // home: RegistrationScreen(),
+      // home: Verify(),
 
       home: authState.isAuthenticated
           ? const ProfileScreen()

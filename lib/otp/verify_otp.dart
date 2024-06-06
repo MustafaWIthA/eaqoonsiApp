@@ -1,20 +1,26 @@
+import 'package:dio/dio.dart';
 import 'package:eaqoonsi/registration/registration_screen.dart';
 import 'package:eaqoonsi/widget/animation.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
 import '../widget/e_aqoonsi_button_widgets.dart';
 import '../widget/text_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VerifyOTPWidget extends StatefulWidget {
+  final String phoneNumber;
+  final String otpId;
+  final String? nationalIDNumberController;
+
   const VerifyOTPWidget({
+    required this.phoneNumber,
+    required this.otpId,
     super.key,
     this.nationalIDNumberController,
   });
-
-  final String? nationalIDNumberController;
 
   @override
   State<VerifyOTPWidget> createState() => _VerifyOTPWidgetState();
@@ -25,8 +31,72 @@ class _VerifyOTPWidgetState extends State<VerifyOTPWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final animationsMap = <String, AnimationInfo>{};
-  final pinCodeController = TextEditingController();
-  //pinCodeControllerValidator
+  final otpCodeController = TextEditingController();
+  //otpCodeControllerValidator
+
+  //validate the otp code localhost:9193/api/v1/otp/validate
+  Future<void> validateOTP() async {
+    //validate the pin code
+    print(otpCodeController.text);
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        'http://10.0.2.2:9193/api/v1/otp/validate',
+        data: {
+          'otpId': widget.otpId,
+          'token': otpCodeController.text,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      print(otpCodeController.text);
+      //if the pin code is correct
+
+      print(response.data['statusCodeValue']);
+      print("otp");
+
+      if (response.statusCode == 200) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const RegistrationScreen(),
+          ),
+        );
+      } else if (response.statusCode == 404) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Center(
+              child: Text(
+                "Invalid OTP Code",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+
+      //validate with the backend
+      //if the backend is correct
+      //navigate to the next screen
+    } on DioException catch (e) {
+      // Handle DioError
+      if (e.response?.statusCode == 404) {
+        // Handle 404 error specifically
+        print('OTP not found or expired');
+      } else {
+        // Handle other errors
+        print('Request failed with status: ${e.response?.statusCode}');
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -87,46 +157,19 @@ class _VerifyOTPWidgetState extends State<VerifyOTPWidget>
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                width: double.infinity,
-                                height: 140.0,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(16.0),
-                                    bottomRight: Radius.circular(16.0),
-                                    topLeft: Radius.circular(0.0),
-                                    topRight: Radius.circular(0.0),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 70, 0, 32),
+                                child: Container(
+                                  width: 200,
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
-                                ),
-                                alignment:
-                                    const AlignmentDirectional(-1.0, 0.0),
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      16.0, 0.0, 16.0, 0.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0.0, 0.0, 12.0, 0.0),
-                                        child: Icon(
-                                          Icons.sms_outlined,
-                                          color: EAqoonsiTheme.of(context)
-                                              .secondary,
-                                          size: 44.0,
-                                        ),
-                                      ),
-                                      Text(
-                                        'eAqoonsi',
-                                        style: EAqoonsiTheme.of(context)
-                                            .displaySmall
-                                            .override(
-                                              fontFamily: 'Outfit',
-                                              letterSpacing: 0.0,
-                                            ),
-                                      ),
-                                    ],
+                                  alignment: const AlignmentDirectional(0, 0),
+                                  child: Image.asset(
+                                    frontlogoWhite,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -182,11 +225,12 @@ class _VerifyOTPWidgetState extends State<VerifyOTPWidget>
                                               textScaler: MediaQuery.of(context)
                                                   .textScaler,
                                               text: TextSpan(
-                                                children: const [
+                                                children: [
                                                   TextSpan(
+                                                    //display the phonenumber
                                                     text:
-                                                        'Enter the 6 digit code that you received at: ',
-                                                    style: TextStyle(),
+                                                        'Enter the 4 digit code that you received at: ${widget.phoneNumber}',
+                                                    style: const TextStyle(),
                                                   ),
                                                 ],
                                                 style: EAqoonsiTheme.of(context)
@@ -235,29 +279,27 @@ class _VerifyOTPWidgetState extends State<VerifyOTPWidget>
                                               topRight: Radius.circular(12.0),
                                             ),
                                             shape: PinCodeFieldShape.box,
-                                            activeColor:
-                                                EAqoonsiTheme.of(context)
-                                                    .primaryText,
-                                            inactiveColor: Colors.blueAccent,
-                                            selectedColor:
-                                                EAqoonsiTheme.of(context)
-                                                    .primary,
+                                            activeColor: Colors.amber.shade100,
+                                            inactiveColor:
+                                                Colors.redAccent.shade100,
+                                            selectedColor: Colors.pink.shade100,
                                             activeFillColor:
-                                                EAqoonsiTheme.of(context)
-                                                    .primaryBackground,
-                                            inactiveFillColor:
-                                                EAqoonsiTheme.of(context)
-                                                    .secondaryBackground,
+                                                Colors.amber.shade100,
+                                            //current selected pin color
                                             selectedFillColor:
                                                 EAqoonsiTheme.of(context)
-                                                    .primary,
+                                                    .secondaryBackground,
+                                            //inactive pin color still empty
+                                            inactiveFillColor:
+                                                EAqoonsiTheme.of(context)
+                                                    .primaryBackground,
                                           ),
-                                          controller: pinCodeController,
+                                          controller: otpCodeController,
                                           onChanged: (_) {},
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
                                           // validator:
-                                          //     .pinCodeControllerValidator
+                                          //     .otpCodeControllerValidator
                                           //     .asValidator(context),
                                         ),
                                         Align(
@@ -268,12 +310,19 @@ class _VerifyOTPWidgetState extends State<VerifyOTPWidget>
                                                 .fromSTEB(0, 0, 0, 16),
                                             child: EaqoonsiButtonWidget(
                                               onPressed: () async {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const RegistrationScreen(),
-                                                  ),
-                                                );
+                                                //validate the pin code
+                                                print(otpCodeController.text);
+                                                validateOTP();
+                                                //if the pin code is correct
+                                                //validate with the backend
+                                                //if the backend is correct
+                                                //navigate to the next screen
+                                                // Navigator.of(context).push(
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) =>
+                                                //         const RegistrationScreen(),
+                                                //   ),
+                                                // );
                                               },
                                               text: localizations.verifyButton,
                                               options: EaqoonsiButtonOptions(
@@ -341,7 +390,7 @@ class _VerifyOTPWidgetState extends State<VerifyOTPWidget>
 //                                               GoRouter.of(context)
 //                                                   .prepareAuthEvent();
 //                                               final smsCodeVal = _model
-//                                                   .pinCodeController!.text;
+//                                                   .otpCodeController!.text;
 //                                               if (smsCodeVal == null ||
 //                                                   smsCodeVal.isEmpty) {
 //                                                 ScaffoldMessenger.of(context)
