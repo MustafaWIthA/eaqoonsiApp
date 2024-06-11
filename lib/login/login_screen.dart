@@ -2,6 +2,7 @@ import 'package:eaqoonsi/constants.dart';
 import 'package:eaqoonsi/digital/check_registration.dart';
 import 'package:eaqoonsi/language/language_widget.dart';
 import 'package:eaqoonsi/login/auth_notifier.dart';
+import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:eaqoonsi/widget/e_aqoonsi_button_widgets.dart';
 import 'package:eaqoonsi/widget/eaqoonsi_text_from_field.dart';
 import 'package:flutter/material.dart';

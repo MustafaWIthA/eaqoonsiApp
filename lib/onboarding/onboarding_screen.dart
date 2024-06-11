@@ -1,6 +1,5 @@
 import 'package:eaqoonsi/digital/check_registration.dart';
 import 'package:eaqoonsi/language/language_widget.dart';
-import 'package:eaqoonsi/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:eaqoonsi/constants.dart';

@@ -1,47 +1,17 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:eaqoonsi/widget/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:dio/dio.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
-import 'package:eaqoonsi/login/auth_notifier.dart';
 import 'package:eaqoonsi/login/login_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-//DEFIN THE UTL HERE
-const kProfileUrl = 'http://10.0.2.2:9191/api/v1/profile';
-//DEFIN THE PROVIDER HERE
-final dioProvider = Provider<Dio>((ref) {
-  return Dio();
-});
+import '../providers/profile/profile_provider.dart';
 
-final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
-  final dio = ref.read(dioProvider);
-  final storage = ref.read(storageProvider);
-  final token = await storage.read(key: 'access_token');
-
-  try {
-    final response = await dio.get(
-      kProfileUrl,
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      ),
-    );
-
-    return response.data;
-  } on DioException catch (e) {
-    if (e.response?.statusCode == 401) {
-      ref.read(authStateProvider.notifier).logout();
-      throw Exception('Unauthorized');
-    } else {
-      throw Exception('Failed to load profile');
-    }
-  }
-});
+// DEFINE THE PROVIDER HERE
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -50,6 +20,10 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
     final profileAsyncValue = ref.watch(profileProvider);
+
+    Future<void> _refreshProfile() async {
+      await ref.refresh(profileProvider.future);
+    }
 
     void logout() {
       ref.read(authStateProvider.notifier).logout();
@@ -123,8 +97,6 @@ class ProfileScreen extends ConsumerWidget {
         ],
       ),
       drawer: Drawer(
-        //change the color of the icon
-
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -148,93 +120,89 @@ class ProfileScreen extends ConsumerWidget {
           ],
         ),
       ),
-      body: profileAsyncValue.when(
-        data: (profile) {
-          String base64Image = profile['photo'];
-          Uint8List imageBytes = base64Decode(base64Image);
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${localizations.greeting}, ${profile['fullName']}',
-                  style: EAqoonsiTheme.of(context).titleSmall.override(
-                        fontFamily: 'Plus Jakarta Sans',
-                        color: EAqoonsiTheme.of(context).primary,
-                        fontSize: 16,
-                        letterSpacing: 0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-                //create white box like the loginscreen
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 130,
-                  decoration: BoxDecoration(
-                    color: EAqoonsiTheme.of(context).alternate,
-                    boxShadow: const [
-                      BoxShadow(
-                        blurRadius: 4,
-                        color: Color(0x33000000),
-                        offset: Offset(
-                          0,
-                          2,
+      body: RefreshIndicator(
+        onRefresh: _refreshProfile,
+        child: profileAsyncValue.when(
+          data: (profile) {
+            String base64Image = profile['photo'];
+            Uint8List imageBytes = base64Decode(base64Image);
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView(
+                children: [
+                  Text(
+                    '${localizations.greeting}, ${profile['fullName']}',
+                    style: EAqoonsiTheme.of(context).titleSmall.override(
+                          fontFamily: 'Plus Jakarta Sans',
+                          color: EAqoonsiTheme.of(context).primary,
+                          fontSize: 16,
+                          letterSpacing: 0,
+                          fontWeight: FontWeight.w500,
                         ),
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(12),
                   ),
-                  alignment: const AlignmentDirectional(0, -1),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Email: ${profile['email']}',
-                          style: EAqoonsiTheme.of(context).bodyText1.override(
-                                fontFamily: 'Plus Jakarta Sans',
-                                color: EAqoonsiTheme.of(context).primary,
-                                fontSize: 16,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
-                        //display user profile image use circle avatar profile photo
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: EAqoonsiTheme.of(context).primary,
-                          backgroundImage: imageBytes.isNotEmpty
-                              ? MemoryImage(imageBytes)
-                              : null,
-                          child: imageBytes.isEmpty
-                              ? const Icon(
-                                  Icons.person,
-                                  size: 30,
-                                  color: Colors.white,
-                                )
-                              : null,
-                        ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 130,
+                    decoration: BoxDecoration(
+                      color: EAqoonsiTheme.of(context).alternate,
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 4,
+                          color: Color(0x33000000),
+                          offset: Offset(0, 2),
+                        )
                       ],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    alignment: const AlignmentDirectional(0, -1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Email: ${profile['email']}',
+                            style: EAqoonsiTheme.of(context).bodyText1.override(
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  color: EAqoonsiTheme.of(context).primary,
+                                  fontSize: 16,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor: EAqoonsiTheme.of(context).primary,
+                            backgroundImage: imageBytes.isNotEmpty
+                                ? MemoryImage(imageBytes)
+                                : null,
+                            child: imageBytes.isEmpty
+                                ? const Icon(
+                                    Icons.person,
+                                    size: 30,
+                                    color: Colors.white,
+                                  )
+                                : null,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                //show pdf from here
-              ],
-            ),
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) {
-          if (error.toString() == 'Exception: Unauthorized') {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-              );
-            });
-          }
-          return Center(child: Text('Error: $error'));
-        },
+                ],
+              ),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) {
+            if (error.toString() == 'Exception: Unauthorized') {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              });
+            }
+            return Center(child: Text('Error: $error'));
+          },
+        ),
       ),
       bottomNavigationBar: const BottomNavBar(),
     );

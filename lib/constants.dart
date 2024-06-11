@@ -48,6 +48,10 @@ const String apiBaseUrl = '$baseUrl/$virsionV1';
 //create userUrl with apiBaseUrl
 const String userUrl = '$apiBaseUrl/users';
 
+const String loginUrl = '$apiBaseUrl/auth/login';
+const String registerUrl = '$apiBaseUrl/auth/register';
+const String verifyUrl = '$apiBaseUrl/auth/verify';
+const kProfileUrl = 'http://10.0.2.2:9191/api/v1/profile';
 //onboarding screen
 
 const String first = "assets/images/first.png";

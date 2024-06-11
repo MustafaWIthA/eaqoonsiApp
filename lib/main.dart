@@ -1,7 +1,7 @@
 import 'package:eaqoonsi/help/help_screen.dart';
 import 'package:eaqoonsi/language/language_notifier.dart';
-import 'package:eaqoonsi/login/auth_notifier.dart';
 import 'package:eaqoonsi/login/splash_screen.dart';
+import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:eaqoonsi/registration/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

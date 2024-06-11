@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LanguageSelectionButtons extends ConsumerWidget {
-  const LanguageSelectionButtons({Key? key}) : super(key: key);
+  const LanguageSelectionButtons({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
