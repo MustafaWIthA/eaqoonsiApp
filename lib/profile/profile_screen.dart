@@ -1,17 +1,15 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:eaqoonsi/profile/digital_card.dart';
 import 'package:eaqoonsi/providers/storage_provider.dart';
-import 'package:eaqoonsi/widget/bottom_nav_bar.dart';
+import 'package:eaqoonsi/widget/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:eaqoonsi/widget/text_theme.dart';
+import 'package:eaqoonsi/widget/bottom_nav_bar.dart';
 import 'package:eaqoonsi/login/login_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../providers/profile/profile_provider.dart';
-
-// DEFINE THE PROVIDER HERE
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -124,11 +122,10 @@ class ProfileScreen extends ConsumerWidget {
         onRefresh: _refreshProfile,
         child: profileAsyncValue.when(
           data: (profile) {
-            String base64Image = profile['photo'];
-            Uint8List imageBytes = base64Decode(base64Image);
+            String base64Pdf = profile['cardResponseDTO']['mobileIDPdf'];
             return Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ListView(
+              child: Column(
                 children: [
                   Text(
                     '${localizations.greeting}, ${profile['fullName']}',
@@ -140,9 +137,10 @@ class ProfileScreen extends ConsumerWidget {
                           fontWeight: FontWeight.w500,
                         ),
                   ),
+                  const SizedBox(height: 10),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 130,
+                    height: 250,
                     decoration: BoxDecoration(
                       color: EAqoonsiTheme.of(context).alternate,
                       boxShadow: const [
@@ -156,37 +154,13 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     alignment: const AlignmentDirectional(0, -1),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Email: ${profile['email']}',
-                            style: EAqoonsiTheme.of(context).bodyText1.override(
-                                  fontFamily: 'Plus Jakarta Sans',
-                                  color: EAqoonsiTheme.of(context).primary,
-                                  fontSize: 16,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundColor: EAqoonsiTheme.of(context).primary,
-                            backgroundImage: imageBytes.isNotEmpty
-                                ? MemoryImage(imageBytes)
-                                : null,
-                            child: imageBytes.isEmpty
-                                ? const Icon(
-                                    Icons.person,
-                                    size: 30,
-                                    color: Colors.white,
-                                  )
-                                : null,
-                          ),
-                        ],
+                      padding: const EdgeInsets.all(2.0),
+                      child: Expanded(
+                        child: PDFViewWidget(
+                            base64Pdf: base64Pdf), // Display the PDF here
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             );

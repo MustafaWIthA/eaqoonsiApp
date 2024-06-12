@@ -1,4 +1,5 @@
 import 'package:eaqoonsi/digital/check_registration.dart';
+import 'package:eaqoonsi/language/language_notifier.dart';
 import 'package:eaqoonsi/language/language_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,6 +34,9 @@ class OnboardingScreen extends ConsumerWidget {
 
         await prefs.setBool('onboardingComplete', true);
         Navigator.pop(context);
+        ref
+            .read(languageNotifier.notifier)
+            .changeLocale(const Locale('en', ''));
 
         Navigator.push(
             context,
@@ -165,8 +169,8 @@ class OnboardingScreen extends ConsumerWidget {
                 Image.asset(image, fit: BoxFit.cover),
                 if (title == 'eAqoonsi')
                   Positioned(
-                    top: MediaQuery.of(context).size.height * 0.1,
-                    left: 1,
+                    top: MediaQuery.of(context).size.height * 0.5,
+                    left: MediaQuery.of(context).size.height * 0.18,
                     child: const LanguageSelectionButtons(),
                   ),
               ],

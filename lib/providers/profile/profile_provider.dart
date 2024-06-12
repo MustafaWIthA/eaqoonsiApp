@@ -19,6 +19,9 @@ final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
       ),
     );
 
+    //depug response
+    print(response.data['cardResponseDTO']);
+
     return response.data;
   } on DioException catch (e) {
     if (e.response?.statusCode == 401) {
