@@ -1,3 +1,4 @@
+import 'package:eaqoonsi/account/account_screen.dart';
 import 'package:eaqoonsi/help/help_screen.dart';
 import 'package:eaqoonsi/profile/profile_screen.dart';
 import 'package:eaqoonsi/verification/verification_screen.dart';
@@ -52,7 +53,7 @@ class BottomNavBar extends ConsumerWidget {
               routeName = const ProfileScreen();
               break;
             case 1:
-              routeName = const ProfileScreen();
+              routeName = const AccountScreen();
               break;
             case 2:
               routeName = const VerificationScreen();

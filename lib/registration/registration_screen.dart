@@ -1,4 +1,5 @@
 import 'package:eaqoonsi/camera/capture_image.dart';
+import 'package:eaqoonsi/constants.dart';
 import 'package:eaqoonsi/login/auth_notifier.dart';
 import 'package:eaqoonsi/profile/profile_screen.dart';
 import 'package:eaqoonsi/registration/registration_notifier.dart';
@@ -125,50 +126,19 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: 140.0,
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(16.0),
-                                      bottomRight: Radius.circular(16.0),
-                                      topLeft: Radius.circular(0.0),
-                                      topRight: Radius.circular(0.0),
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 70, 0, 32),
+                                  child: Container(
+                                    width: 200,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
-                                  ),
-                                  alignment:
-                                      const AlignmentDirectional(-1.0, 0.0),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 0.0, 16.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0.0, 0.0, 12.0, 0.0),
-                                          child: Icon(
-                                            Icons.credit_card_rounded,
-                                            color: EAqoonsiTheme.of(context)
-                                                .secondary,
-                                            size: 44.0,
-                                          ),
-                                        ),
-                                        Text(
-                                          localizations.appName,
-                                          style: EAqoonsiTheme.of(context)
-                                              .displaySmall
-                                              .override(
-                                                fontFamily: 'Outfit',
-                                                letterSpacing: 0.0,
-                                                color: EAqoonsiTheme.of(context)
-                                                    .primaryText,
-                                              ),
-                                        ),
-                                      ],
+                                    alignment: const AlignmentDirectional(0, 0),
+                                    child: Image.asset(
+                                      frontlogoWhite,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),

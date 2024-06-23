@@ -18,6 +18,7 @@ final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
         },
       ),
     );
+    print("i am here");
 
     //depug response
     print(response.data['cardResponseDTO']);

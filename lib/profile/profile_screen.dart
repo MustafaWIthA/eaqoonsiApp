@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:eaqoonsi/account/account_screen.dart';
 import 'package:eaqoonsi/profile/digital_card.dart';
 import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
@@ -19,7 +20,7 @@ class ProfileScreen extends ConsumerWidget {
     final localizations = AppLocalizations.of(context)!;
     final profileAsyncValue = ref.watch(profileProvider);
 
-    Future<void> _refreshProfile() async {
+    Future<void> refreshProfile() async {
       await ref.refresh(profileProvider.future);
     }
 
@@ -38,7 +39,7 @@ class ProfileScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: IconThemeData(color: EAqoonsiTheme.of(context).alternate),
         backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
@@ -63,7 +64,9 @@ class ProfileScreen extends ConsumerWidget {
         actions: [
           InkWell(
             onTap: () {
-              // tap profile
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AccountScreen()),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -119,7 +122,7 @@ class ProfileScreen extends ConsumerWidget {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: _refreshProfile,
+        onRefresh: refreshProfile,
         child: profileAsyncValue.when(
           data: (profile) {
             String base64Pdf = profile['cardResponseDTO']['mobileIDPdf'];
@@ -127,17 +130,17 @@ class ProfileScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Text(
-                    '${localizations.greeting}, ${profile['fullName']}',
-                    style: EAqoonsiTheme.of(context).titleSmall.override(
-                          fontFamily: 'Plus Jakarta Sans',
-                          color: EAqoonsiTheme.of(context).primary,
-                          fontSize: 16,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                  const SizedBox(height: 10),
+                  // Text(
+                  //   '${localizations.greeting}, ${profile['cardResponseDTO']['idNumber']}',
+                  //   style: EAqoonsiTheme.of(context).titleSmall.override(
+                  //         fontFamily: 'Plus Jakarta Sans',
+                  //         color: EAqoonsiTheme.of(context).primary,
+                  //         fontSize: 16,
+                  //         letterSpacing: 0,
+                  //         fontWeight: FontWeight.w500,
+                  //       ),
+                  // ),
+                  // const SizedBox(height: 10),
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 250,
@@ -160,7 +163,8 @@ class ProfileScreen extends ConsumerWidget {
                             base64Pdf: base64Pdf), // Display the PDF here
                       ),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
             );

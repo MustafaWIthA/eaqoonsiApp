@@ -1,6 +1,5 @@
 import 'package:eaqoonsi/constants.dart';
 import 'package:eaqoonsi/digital/check_registration.dart';
-import 'package:eaqoonsi/language/language_widget.dart';
 import 'package:eaqoonsi/login/auth_notifier.dart';
 import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:eaqoonsi/widget/e_aqoonsi_button_widgets.dart';
@@ -356,7 +355,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                     ),
-                    const LanguageSelectionButtons()
                   ],
                 ),
               ),

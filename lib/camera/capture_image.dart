@@ -164,7 +164,7 @@ class ImagePreviewScreen extends ConsumerWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Image Preview')),
+      appBar: AppBar(title: const Text('Image')),
       body: Column(
         children: [
           Expanded(
