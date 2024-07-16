@@ -7,7 +7,6 @@
   "@appDescription": {
     "description": "Add a new item"
   },
-  "@@locale": "so",
   "greeting": "Salaan Caalamkum!",
   "@greeting": {
     "description": "Soo dhaweynta barnaamijka cusub ee dhalashada"

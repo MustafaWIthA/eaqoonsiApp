@@ -75,7 +75,7 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
       ));
 
       final response = await dio.get(
-        "http://10.0.2.2:9192/digital/card/search/$idNumber",
+        "$kDigitalSearchUrl/$idNumber",
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
@@ -143,33 +143,35 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return GestureDetector(
-      child: Scaffold(
-        backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
-        body: SafeArea(
-          top: true,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _buildLogo(),
-                          _buildInputContainer(localizations),
-                        ],
-                      ),
-                    ).animateOnPageLoad(
-                        animationsMap['containerOnPageLoadAnimation']!),
+    return MaterialApp(
+      home: GestureDetector(
+        child: Scaffold(
+          backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
+          body: SafeArea(
+            top: true,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _buildLogo(),
+                            _buildInputContainer(localizations),
+                          ],
+                        ),
+                      ).animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation']!),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

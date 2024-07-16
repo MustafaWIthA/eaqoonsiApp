@@ -56,22 +56,19 @@ class OnboardingScreen extends ConsumerWidget {
           },
           children: <Widget>[
             makePage(
-              context: context, // Pass the context here
-
+              context: context,
               image: eaqoonsi,
               title: localizations.appName,
               content: localizations.appDescription,
             ),
             makePage(
-              context: context, // Pass the context here
-
+              context: context,
               image: second,
               title: localizations.empoweringTitle,
               content: localizations.empoweringSubtitle,
             ),
             makePage(
-              context: context, // Pass the context here
-
+              context: context,
               image: third,
               title: localizations.welcomeSpalshTitle,
               content: localizations.welcomeSpalshSubtitle,
@@ -94,6 +91,7 @@ class OnboardingScreen extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          Image.asset(eaqoonsi),
           TextButton(
             onPressed: () {
               pageController.animateToPage(2,

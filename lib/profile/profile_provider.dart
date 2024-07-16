@@ -1,8 +1,4 @@
-import 'package:dio/dio.dart';
-import 'package:eaqoonsi/constants.dart';
-import 'package:eaqoonsi/providers/dio_provider.dart';
-import 'package:eaqoonsi/providers/storage_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 
 final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   final dio = ref.read(dioProvider);

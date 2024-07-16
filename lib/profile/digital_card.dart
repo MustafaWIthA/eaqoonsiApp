@@ -12,7 +12,7 @@ class PDFViewWidget extends StatefulWidget {
   const PDFViewWidget({super.key, required this.base64Pdf});
 
   @override
-  _PDFViewWidgetState createState() => _PDFViewWidgetState();
+  State<PDFViewWidget> createState() => _PDFViewWidgetState();
 }
 
 class _PDFViewWidgetState extends State<PDFViewWidget> {
@@ -56,6 +56,7 @@ class _PDFViewWidgetState extends State<PDFViewWidget> {
               });
             },
             onError: (error) {
+              print("pdf now");
               print(error.toString());
             },
             onPageError: (page, error) {

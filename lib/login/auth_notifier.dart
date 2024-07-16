@@ -1,13 +1,4 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-//CREATE TGE LINK HERE
-//android emulator
-const String baseUrl = 'http://10.0.2.2:9191/api';
-const String keySigin = 'http://10.0.2.2:9191/api/v1/auth/login';
-//ios emulator
-// const String baseUrl = 'http://localhost:9000/api';
+import 'package:eaqoonsi/widget/app_export.dart';
 
 class AuthState {
   final bool isAuthenticated;

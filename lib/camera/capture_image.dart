@@ -1,14 +1,5 @@
-import 'dart:io';
-
-import 'package:camera/camera.dart';
-import 'package:eaqoonsi/login/auth_notifier.dart';
-import 'package:eaqoonsi/profile/profile_screen.dart';
-import 'package:eaqoonsi/registration/registration_notifier.dart';
-import 'package:eaqoonsi/widget/e_aqoonsi_button_widgets.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final cameraControllerProvider = FutureProvider<CameraController?>((ref) async {
   final cameras = await availableCameras();

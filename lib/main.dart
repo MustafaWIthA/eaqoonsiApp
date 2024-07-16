@@ -1,18 +1,7 @@
-import 'package:eaqoonsi/help/help_screen.dart';
-import 'package:eaqoonsi/language/language_notifier.dart';
-import 'package:eaqoonsi/login/splash_screen.dart';
-import 'package:eaqoonsi/providers/storage_provider.dart';
-import 'package:eaqoonsi/registration/registration_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'profile/profile_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'verification/verification_screen.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MaterialApp(home: MyApp())));
 }
 
 class MyApp extends ConsumerWidget {
@@ -24,6 +13,16 @@ class MyApp extends ConsumerWidget {
     final currentLocale = ref.watch(languageNotifier);
 
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        DefaultMaterialLocalizations.delegate,
+        SoMaterialLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
       routes: {
         '/profile': (context) => const ProfileScreen(),
         '/registration': (context) => const RegistrationScreen(),
@@ -33,15 +32,9 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: "eAqoonsi",
       locale: currentLocale,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        AppLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        DefaultMaterialLocalizations.delegate,
-      ],
+
       supportedLocales: AppLocalizations.supportedLocales,
+
       // home: Verify(),
 
       home: authState.isAuthenticated

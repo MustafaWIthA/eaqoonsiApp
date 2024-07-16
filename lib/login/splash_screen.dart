@@ -1,11 +1,4 @@
-import 'package:eaqoonsi/login/login_screen.dart';
-import 'package:eaqoonsi/onboarding/onboarding_screen.dart';
-import 'package:eaqoonsi/profile/profile_screen.dart';
-import 'package:eaqoonsi/providers/storage_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
