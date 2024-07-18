@@ -1,7 +1,12 @@
 import 'package:eaqoonsi/widget/app_export.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MaterialApp(home: MyApp())));
+  runApp(
+    //provider scope
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {
@@ -9,7 +14,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
     final currentLocale = ref.watch(languageNotifier);
 
     return MaterialApp(
@@ -21,25 +25,21 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
         DefaultMaterialLocalizations.delegate,
         SoMaterialLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
       ],
+      initialRoute: '/',
       routes: {
+        '/': (context) => const SplashScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/registration': (context) => const RegistrationScreen(),
         '/verification': (context) => const VerificationScreen(),
         '/helpScreen': (context) => const HelpScreen(),
+        '/account': (context) => const AccountScreen(),
+        '/help': (context) => const HelpScreen(),
       },
       debugShowCheckedModeBanner: false,
       title: "eAqoonsi",
       locale: currentLocale,
-
       supportedLocales: AppLocalizations.supportedLocales,
-
-      // home: Verify(),
-
-      home: authState.isAuthenticated
-          ? const ProfileScreen()
-          : const SplashScreen(),
     );
   }
 }

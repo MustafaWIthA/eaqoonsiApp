@@ -82,9 +82,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     await _storage.deleteAll();
+    print('Logging out...');
+    print(await _storage.read(key: 'access_token'));
+
     //set language to default
     await _storage.delete(key: 'access_token');
     await _storage.delete(key: 'refresh_token');
+    // ... logout process
+    print(await _storage.read(key: 'access_token'));
+    print('Logout complete. Auth state: ${state.isAuthenticated}');
+
     state = AuthState();
   }
 

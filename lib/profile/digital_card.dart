@@ -17,7 +17,7 @@ class PDFViewWidget extends StatefulWidget {
 
 class _PDFViewWidgetState extends State<PDFViewWidget> {
   late Uint8List pdfBytes;
-  late String filePath;
+  String filePath = '';
   int pages = 0;
   bool isReady = false;
   final Completer<PDFViewController> _controller =
@@ -26,8 +26,10 @@ class _PDFViewWidgetState extends State<PDFViewWidget> {
   @override
   void initState() {
     super.initState();
-    pdfBytes = base64Decode(widget.base64Pdf);
-    _preparePDF();
+    if (widget.base64Pdf.isNotEmpty) {
+      pdfBytes = base64Decode(widget.base64Pdf);
+      _preparePDF();
+    }
   }
 
   Future<void> _preparePDF() async {
@@ -41,6 +43,10 @@ class _PDFViewWidgetState extends State<PDFViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.base64Pdf.isEmpty) {
+      return const Center(child: Text('No Digital data available'));
+    }
+
     return filePath.isEmpty
         ? const Center(child: CircularProgressIndicator())
         : PDFView(
@@ -56,18 +62,14 @@ class _PDFViewWidgetState extends State<PDFViewWidget> {
               });
             },
             onError: (error) {
-              print("pdf now");
-              print(error.toString());
+              print("PDF error: ${error.toString()}");
             },
             onPageError: (page, error) {
-              print('$page: ${error.toString()}');
+              print('Page $page error: ${error.toString()}');
             },
             onViewCreated: (PDFViewController pdfViewController) {
               _controller.complete(pdfViewController);
             },
-            // onPageChanged: (int page, int total) {
-            //   print('page change: $page/$total');
-            // },
           );
   }
 }

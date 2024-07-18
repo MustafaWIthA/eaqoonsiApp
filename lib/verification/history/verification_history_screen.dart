@@ -25,12 +25,21 @@ class VerificationHistoryScreen extends ConsumerWidget {
   }
 
   Widget _buildHistoryList(List<VerificationHistoryModel> history) {
+    if (history.isEmpty) {
+      return const Center(
+        child: Text(
+          'You have no verifications yet.',
+          // style: AppStyle.txtBodyLarge,
+        ),
+      );
+    }
+
     return ListView.builder(
       itemCount: history.length,
       itemBuilder: (context, index) {
         final item = history[index];
         return Card(
-          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
             title: Text(
               'You have been Verified by: ${item.username}',
