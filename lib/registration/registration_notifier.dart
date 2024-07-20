@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
-import 'package:eaqoonsi/login/auth_notifier.dart';
+import 'package:eaqoonsi/public/login/auth_notifier.dart';
 import 'package:eaqoonsi/providers/dio_provider.dart';
 import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';

@@ -1,4 +1,4 @@
-import 'package:eaqoonsi/digital/check_registration.dart';
+import 'package:eaqoonsi/public/digital/check_registration.dart';
 import 'package:eaqoonsi/language/language_notifier.dart';
 import 'package:eaqoonsi/language/language_widget.dart';
 import 'package:flutter/material.dart';

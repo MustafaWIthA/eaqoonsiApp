@@ -1,4 +1,4 @@
-import 'package:eaqoonsi/login/auth_notifier.dart';
+import 'package:eaqoonsi/public/login/auth_notifier.dart';
 import 'package:eaqoonsi/providers/dio_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

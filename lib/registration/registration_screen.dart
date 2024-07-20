@@ -1,6 +1,6 @@
-import 'package:eaqoonsi/camera/capture_image.dart';
+import 'package:eaqoonsi/public/camera/capture_image.dart';
 import 'package:eaqoonsi/constants.dart';
-import 'package:eaqoonsi/login/auth_notifier.dart';
+import 'package:eaqoonsi/public/login/auth_notifier.dart';
 import 'package:eaqoonsi/profile/profile_screen.dart';
 import 'package:eaqoonsi/registration/registration_notifier.dart';
 import 'package:eaqoonsi/widget/animation.dart';

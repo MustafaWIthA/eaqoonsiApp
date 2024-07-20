@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:eaqoonsi/constants.dart';
-import 'package:eaqoonsi/login/login_screen.dart';
+import 'package:eaqoonsi/public/login/login_screen.dart';
 import 'package:eaqoonsi/otp/verify_otp.dart';
 import 'package:eaqoonsi/registration/registration_notifier.dart';
 import 'package:eaqoonsi/widget/animation.dart';
@@ -8,8 +8,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widget/e_aqoonsi_button_widgets.dart';
-import '../widget/text_theme.dart';
+import '../../widget/e_aqoonsi_button_widgets.dart';
+import '../../widget/text_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final otpIdProvider = StateProvider<String?>((ref) => null);
