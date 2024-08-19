@@ -9,6 +9,17 @@ class ProfileScreen extends ConsumerWidget {
     final localizations = AppLocalizations.of(context)!;
     final profileAsyncValue = ref.watch(profileProvider);
 
+    // final authState = ref.watch(authStateProvider);
+
+    // Listen for changes in auth state
+    ref.listen<AuthState>(authStateProvider, (previous, current) {
+      if (!current.isAuthenticated) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    });
+
     void logout() async {
       ref.read(authStateProvider.notifier).logout();
       Navigator.of(context).pushReplacement(

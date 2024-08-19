@@ -1,17 +1,17 @@
 import 'package:eaqoonsi/widget/app_export.dart';
 
 final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
-  final dio = ref.read(dioProvider);
-  print(kProfileUrl);
+  final dioClient = ref.read(dioProvider);
 
   try {
-    final response = await dio.get(
-      'https://e-aqoonsi.nira.gov.so/api/v1/profile',
-    );
-    print(response.data['userStatus']);
+    final response = await dioClient.get('/profile');
     return response.data;
-  } catch (e) {
-    throw Exception('Failed to load profile');
+  } on UnauthorizedException {
+    // Handle 401 Unauthorized error
+    ref.read(authStateProvider.notifier).logout();
+    throw Exception('Unauthorized access. Please log in again.');
+  } on ApiException catch (e) {
+    throw Exception(e.message ?? 'Failed to load profile');
   }
 });
 
@@ -38,7 +38,6 @@ class ProfileNotifier extends StateNotifier<AsyncValue<Map<String, dynamic>>> {
   }
 
   Future<void> refreshProfile() async {
-    // ignore: unused_result
     await _ref.refresh(profileProvider);
     await _fetchProfile();
   }

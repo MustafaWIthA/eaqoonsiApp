@@ -50,14 +50,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> logout() async {
-    try {
-      await _storage.delete(key: 'access_token');
-      await _storage.delete(key: 'refresh_token');
-      state = AuthState();
-    } catch (e) {
-      state = state.copyWith(errorMessage: 'Error during logout');
-    }
+    await _storage.delete(key: 'access_token');
+    await _storage.delete(key: 'refresh_token');
+    state = AuthState(isAuthenticated: false, accessToken: null);
   }
+
+  // Future<void> logout() async {
+  //   try {
+  //     await _storage.delete(key: 'access_token');
+  //     await _storage.delete(key: 'refresh_token');
+  //     state = AuthState();
+  //   } catch (e) {
+  //     state = state.copyWith(errorMessage: 'Error during logout');
+  //   }
+  // }
 
   Future<void> checkAuthStatus() async {
     final token = await _storage.read(key: 'access_token');

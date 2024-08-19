@@ -1,6 +1,5 @@
 import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
-import 'package:flutter/scheduler.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
