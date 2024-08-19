@@ -9,10 +9,10 @@ class PDFActionButtons extends ConsumerWidget {
   final VoidCallback? onYellowButtonPressed;
 
   const PDFActionButtons({
-    Key? key,
+    super.key,
     this.onBlueButtonPressed,
     this.onYellowButtonPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -95,7 +95,7 @@ class PDFActionButtons extends ConsumerWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Scan QR Code'),
-          content: Text("hio"),
+          content: const Text("hio"),
           actions: [
             TextButton(
               child: const Text('Close'),

@@ -1,4 +1,5 @@
 import 'package:eaqoonsi/widget/app_export.dart';
+// import 'package:jwt_decoder/jwt_decoder.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -21,26 +22,26 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     final isOnboardingComplete = prefs.getBool('onboardingComplete') ?? false;
     ref.read(onboardingCompleteProvider.notifier).state = isOnboardingComplete;
     final authState = ref.watch(authStateProvider);
-    final FlutterSecureStorage _storage = const FlutterSecureStorage();
+    const FlutterSecureStorage storage = FlutterSecureStorage();
 
-    final accessToken = await _storage.read(key: 'access_token');
+    final accessToken = await storage.read(key: 'access_token');
 
     await Future.delayed(const Duration(seconds: 2));
 
     setState(() => _isLoading = false);
 
     if (!isOnboardingComplete) {
-      // Navigate to onboarding screen
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const OnboardingScreen()),
       );
     } else if (authState.isAuthenticated || accessToken != null) {
-      // Navigate to profile screen
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => ProfileScreen()),
+        MaterialPageRoute(builder: (context) => const ProfileScreen()),
       );
     } else {
-      // Navigate to login screen
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()),
       );

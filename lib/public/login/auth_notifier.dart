@@ -38,13 +38,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       final response = await _dio.post(
-        keySigin,
+        'https://e-aqoonsi.nira.gov.so/api/v1/auth/login',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': 898989,
+          },
+        ),
         data: {
           'username': username,
           'password': password,
         },
       );
-      print(response);
+      // print(response);
 
       if (response.data['statusCodeValue'] == 200) {
         final accessToken = response.data['body']['accessToken'] as String;
@@ -69,6 +75,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
               errorMessage:
                   'Connection timeout. Please check your internet connection.');
         } else {
+          print(error);
           state = state.copyWith(
               errorMessage: 'An error occurred. Please try again.');
         }

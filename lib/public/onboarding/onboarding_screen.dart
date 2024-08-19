@@ -1,12 +1,4 @@
-import 'package:eaqoonsi/public/digital/check_registration.dart';
-import 'package:eaqoonsi/language/language_notifier.dart';
-import 'package:eaqoonsi/language/language_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:eaqoonsi/constants.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 
 final currentPageProvider = StateProvider<int>((ref) => 0);
 final onboardingCompleteProvider = StateProvider<bool>((ref) => false);
@@ -34,10 +26,6 @@ class OnboardingScreen extends ConsumerWidget {
 
         await prefs.setBool('onboardingComplete', true);
         Navigator.pop(context);
-        ref
-            .read(languageNotifier.notifier)
-            .changeLocale(const Locale('en', ''));
-
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -47,38 +35,36 @@ class OnboardingScreen extends ConsumerWidget {
       }
     }
 
-    return MaterialApp(
-      home: Scaffold(
-        body: PageView(
-          controller: pageController,
-          onPageChanged: (int page) {
-            ref.read(currentPageProvider.notifier).state = page;
-          },
-          children: <Widget>[
-            makePage(
-              context: context,
-              image: eaqoonsi,
-              title: localizations.appName,
-              content: localizations.appDescription,
-            ),
-            makePage(
-              context: context,
-              image: second,
-              title: localizations.empoweringTitle,
-              content: localizations.empoweringSubtitle,
-            ),
-            makePage(
-              context: context,
-              image: third,
-              title: localizations.welcomeSpalshTitle,
-              content: localizations.welcomeSpalshSubtitle,
-            ),
-          ],
-        ),
-        bottomSheet: currentPage != 2
-            ? buildNonLastPageBottomSheet(context, pageController, ref)
-            : buildLastPageBottomSheet(() => completeOnboarding(context, ref)),
+    return Scaffold(
+      body: PageView(
+        controller: pageController,
+        onPageChanged: (int page) {
+          ref.read(currentPageProvider.notifier).state = page;
+        },
+        children: <Widget>[
+          makePage(
+            context: context,
+            image: eaqoonsi,
+            title: localizations.appName,
+            content: localizations.appDescription,
+          ),
+          makePage(
+            context: context,
+            image: second,
+            title: localizations.empoweringTitle,
+            content: localizations.empoweringSubtitle,
+          ),
+          makePage(
+            context: context,
+            image: third,
+            title: localizations.welcomeSpalshTitle,
+            content: localizations.welcomeSpalshSubtitle,
+          ),
+        ],
       ),
+      bottomSheet: currentPage != 2
+          ? buildNonLastPageBottomSheet(context, pageController, ref)
+          : buildLastPageBottomSheet(() => completeOnboarding(context, ref)),
     );
   }
 
@@ -91,7 +77,6 @@ class OnboardingScreen extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Image.asset(eaqoonsi),
           TextButton(
             onPressed: () {
               pageController.animateToPage(2,

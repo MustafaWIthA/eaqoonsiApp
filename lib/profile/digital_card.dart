@@ -55,9 +55,9 @@ class _PDFViewWidgetState extends State<PDFViewWidget> {
             swipeHorizontal: true,
             autoSpacing: false,
             pageFling: false,
-            onRender: (_pages) {
+            onRender: (pages) {
               setState(() {
-                pages = _pages!;
+                pages = pages!;
                 isReady = true;
               });
             },

@@ -1,0 +1,243 @@
+{
+  "appName": "eAqoonsi",
+  "@appName": {
+    "description": "The name of the application"
+  },
+
+  "appDescription": "eAqoonsi is a mobile app for Somali residents that provides a verifiable, legal digital ID with similar legal weight to official National ID",
+  "@appDescription": {
+    "description": "Add Description"
+  },
+  "greeting": "Hi",
+  "@greeting": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "loginTitle": "Login",
+  "@loginTitle":{
+        "description": "login using your credentials"
+  },
+  "emailLabel": "Email",
+  "@emailLabel":{
+        "description": "Label for the email input field"
+  },
+  "hintText": "Enter your email",
+  "@hintText":{
+        "description": "Hint text for the email input field"
+  },
+
+  "nextButton": "Next",
+  "@nextButton": {
+    "description": "Text for the next button"
+  },
+  "backButton": "Back",
+  "@backButton": {
+    "description": "Text for the back button"
+  },
+
+  "getStartedButton": "Get Started",
+  "@getStartedButton": {
+    "description": "Text for the get started button"
+  },
+
+  "empoweringTitle": "Easy. Empowering. Secure",
+  "@empoweringTitle": {
+    "description": "Title for the onboarding page"
+  },
+  "empoweringSubtitle": "Login into online public services with a single ID...",
+  "@empoweringSubtitle": {
+    "description": "Subtitle for the onboarding page"
+  },
+
+  "welcomeSpalshTitle": "Welcome to eAqoonsi, Key to a Digital Somalia",
+  "@welcomeSpalshTitle": {
+    "description": "Title for the welcome splash page"
+  },
+  "welcomeSpalshSubtitle": "Login with your eAqoonsi and secure your digital identity...",
+  "@welcomeSpalshSubtitle": {
+    "description": "Subtitle for the welcome splash page"
+  },
+
+
+  "skipButton": "Skip",
+  "@skipButton": {
+    "description": "Text for the skip button"
+  },
+
+  "signUpTitle": "Sign Up",
+  "@signUpTitle": {
+    "description": "Title for the sign up page"
+  },
+
+    "registerButton": "Register",
+  "@registerButton": {
+    "description": "Text for the register button"
+  },
+  "errorTitle": "Error Title",
+  "@errorTitle": {
+    "description": "The title for an error message"
+  },
+  "errorMessage": "An error has occurred.",
+  "@errorMessage": {
+    "description": "The message displayed when an error occurs"
+  },
+  "usernameLabel": "National ID",
+  "@usernameLabel": {
+    "description": "Label for the username input field"
+  },
+  "usernameHintText": "Enter your national ID",
+  "@usernameHintText": {
+    "description": "Hint text for the username input field"
+  },
+  "usernameEmptyError": "Please enter your national ID",
+  "@usernameEmptyError": {
+    "description": "Error message when the username is empty"
+  },
+  "usernameLengthError": "National ID must be at least 11 characters long",
+  "@usernameLengthError": {
+    "description": "Error message when the username is too short"
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for the password input field"
+  },
+  "passwordEmptyError": "Please enter your password",
+  "@passwordEmptyError": {
+    "description": "Error message when the password is empty"
+  },
+  "passwordLengthError": "Password must be at least 6 characters long",
+  "@passwordLengthError": {
+    "description": "Error message when the password is too short"
+  },
+  "loginButton": "Login",
+  "@loginButton": {
+    "description": "Text for the login button"
+  },
+  "verifyButton": "Verify",
+  "@verifyButton": {
+    "description": "Text for the verify button"
+  },
+  "checkButton": "Check",
+  "@checkButton": {
+    "description": "Text for the check button"
+  },
+
+  "homeTitle": "Home",
+  "@homeTitle": {
+    "description": "Title for the home page"
+  },
+  "logoutConfirmationTitle": "Logout",
+  "@logoutConfirmationTitle": {
+    "description": "Title for the logout confirmation dialog"
+  },
+  "logoutConfirmationMessage": "Are you sure you want to logout?",
+  "@logoutConfirmationMessage": {
+    "description": "Message for the logout confirmation dialog"
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "description": "Text for the cancel button"
+  },
+  "logoutButton": "Logout",
+  "@logoutButton": {
+    "description": "Text for the logout button"
+  },
+  "welcomeMessage": "Welcome!",
+  "@welcomeMessage": {
+    "description": "Welcome message displayed on the home page"
+  },
+  "welcomelogininstruction": "Please login to continue",
+  "@welcomelogininstruction": {
+    "description": "Welcome message displayed on the home page"
+  },
+
+  "donthaveanaccount": "Don't have an account? ",
+  "@Donthaveanaccount": {
+    "description": "Don't have an account?"
+  },
+
+  "haveanaccount": "Have an account? ",
+  "@haveanaccount": {
+    "description": "Have an account?"
+  },
+
+  "wrongcredentials": "Wrong credentials",
+  "@wrongcredentials": {
+    "description": "Wrong credentials"
+  },
+
+"fullNameValidation": "Full name must be your full name as per your ID",
+"@fullNameValidation": {
+  "description": "Error message when the full name is empty"
+},
+
+"fullNameLabel": "Full Name",
+"@fullNameLabel": {
+  "description": "Label for the full name input field"
+},
+"fullNameEmptyError": "Please enter your full name",
+"@fullNameEmptyError": {
+  "description": "Error message when the full name is empty"
+},
+
+"fullNamehintText": "Enter your full name",
+"@fullNamehintText": {
+  "description": "Hint text for the full name input field"
+},
+
+"passwordlabelText": "Password",
+"@passwordlabelText": {
+  "description": "Label for the password input field"
+},
+
+"passwordhintText": "Enter your password",
+"@passwordhintText": {
+  "description": "Hint text for the password input field"
+},
+
+"verifyNationalIDNumber": "Verify National ID Number to continue",
+"@verifyNationalIDNumber": {
+  "description": "Title for the verify national id number page"
+},
+
+"verifyNationalIDNumberLabel": "National ID Number",
+"@verifyNationalIDNumberLabel": {
+  "description": "Label for the national id number input field"
+},
+
+"verifyNationalIDNumberHintText": "Enter your national ID number",
+"@verifyNationalIDNumberHintText": {
+  "description": "Hint text for the national id number input field"
+},
+
+
+"notfoundNationalIDNumber": "National ID Number not found",
+"@notfoundNationalIDNumber": {
+  "description": "Error message when the national id number is not found"
+},
+
+"invalidNationalIDNumber": "Invalid National ID Number",
+"@invalidNationalIDNumber": {
+  "description": "Error message when the national id number is invalid"
+},
+
+"takePhoto": "Take Photo",
+"@takePhoto": {
+  "description": "Text for the take photo button"
+},
+
+"retakePhoto": "Retake",
+"@retakePhoto": {
+  "description": "Text for the retake photo button"
+},
+
+"sendPhoto": "Submit",
+"@sendPhoto": {
+  "description": "Text for the send photo button"
+}
+
+
+
+
+
+
+}

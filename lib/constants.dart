@@ -28,39 +28,32 @@ const Color kBlueColor = Color(0xFF025196);
 const Color kWhiteColor = Color(0xFFFFFFFF);
 
 //this is the app version
-const String appVersion = '0.0.1';
+const String appVersion = '1.0.3';
 
 //this is the base url for the api 'its just mockup' for now development
 // const String apiBaseUrls = 'http://localhost:8088/api';
 
 // android emulator
-const String baseUrl = 'http://10.0.2.2:8080/api';
+const String baseUrl = 'https://e-aqoonsi.nira.gov.so/api';
 // const String baseUrl = 'http://172.16.94.16:8080/api';
 
-//this is the base url for the api 'its just mockup' for now production
-// const String apiBaseUrl = 'https://api.nira.gov.so/api/v1';
-
-// const String baseUrl = 'http://localhost:8080/api';
-// const String baseUrl = 'http://172.16.188.135:8080/api';
 const String virsionV1 = 'v1';
 const String apiBaseUrl = '$baseUrl/$virsionV1';
 
 //create userUrl with apiBaseUrl
 const String userUrl = '$apiBaseUrl/users';
 
-const String keySigin = 'http://10.0.2.2:9191/api/v1/auth/login';
+const String keySigin = 'https://e-aqoonsi.nira.gov.so/api/v1/auth/login';
 
 const String loginUrl = '$apiBaseUrl/auth/login';
 const String registerUrl = '$apiBaseUrl/auth/register';
 const String verifyUrl = '$apiBaseUrl/auth/verify';
-const kProfileUrl = 'http://10.0.2.2:9191/api/v1/profile';
+const kProfileUrl = '$apiBaseUrl/profile';
 const kVerifictionHistoryUrl =
-    'http://10.0.2.2:9194/api/v1/verification/history';
-const kDigitalSearchUrl = 'http://10.0.2.2:9192/digital/card/search';
+    'https://e-aqoonsi.nira.gov.so/api/v1/verification/history';
+const kDigitalSearchUrl = 'https://e-aqoonsi.nira.gov.so/digital/card/search';
 
-// const String baseUrl = 'http://10.0.2.2:9191/api';
-// const String keySigin = 'http://10.0.2.2:9191/api/v1/auth/login';
-//onboarding screen
+const kNotificationUrl = 'https://e-aqoonsi.nira.gov.so/api/v1/otp/validate';
 
 const String first = "assets/images/first.png";
 const String second = "assets/images/second.png";

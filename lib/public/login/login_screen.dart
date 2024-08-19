@@ -18,9 +18,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final currentLocale = ref.watch(languageNotifier);
 
-    print("currentLocale $currentLocale");
+    void submitForm() async {
+      if (_formKey.currentState!.validate()) {
+        await ref.read(authStateProvider.notifier).login(
+              nationalIDTextController.text,
+              passwordTextController.text,
+            );
+      }
+    }
 
     ref.listen<AuthState>(authStateProvider, (previous, next) {
       if (next.isAuthenticated) {
@@ -66,7 +72,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const LanguageSelectionButtons(),
                     Padding(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0, 70, 0, 32),
@@ -141,78 +146,89 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                             0, 0, 0, 16),
                                     child: SizedBox(
                                       width: double.infinity,
-                                      child: TextFormField(
-                                        controller: nationalIDTextController,
-                                        focusNode: nationalIDFocusNode,
-                                        textInputAction: TextInputAction.send,
-                                        obscureText: false,
-                                        maxLength: 11,
-                                        decoration: InputDecoration(
-                                          labelText: localizations
-                                              .verifyNationalIDNumberLabel,
-                                          labelStyle: const TextStyle(
-                                            color: Color(0xFF57636C),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          hintText: localizations
-                                              .verifyNationalIDNumberHintText,
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                              color: Color(0xFFF1F4F8),
-                                              width: 2,
+                                      child: Directionality(
+                                        textDirection: TextDirection.ltr,
+                                        child: Material(
+                                          child: TextFormField(
+                                            controller:
+                                                nationalIDTextController,
+                                            focusNode: nationalIDFocusNode,
+                                            textInputAction:
+                                                TextInputAction.send,
+                                            obscureText: false,
+                                            maxLength: 11,
+                                            decoration: InputDecoration(
+                                              labelText: localizations
+                                                  .verifyNationalIDNumberLabel,
+                                              labelStyle: const TextStyle(
+                                                color: Color(0xFF57636C),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              hintText: localizations
+                                                  .verifyNationalIDNumberHintText,
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  color: Color(0xFFF1F4F8),
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  color: Color(0xFF4B39EF),
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  color: Color(0xFFE0E3E7),
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  color: Color(0xFFE0E3E7),
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              filled: true,
+                                              fillColor:
+                                                  const Color(0xFFF1F4F8),
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
+                                            style: EAqoonsiTheme.of(context)
+                                                .bodyLarge
+                                                .override(
+                                                  fontFamily:
+                                                      'Plus Jakarta Sans',
+                                                  color:
+                                                      const Color(0xFF101213),
+                                                  fontSize: 16.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                            keyboardType: TextInputType.number,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return localizations
+                                                    .usernameEmptyError;
+                                              } else if (value.length < 11) {
+                                                return localizations
+                                                    .usernameLengthError;
+                                              }
+                                              return null;
+                                            },
                                           ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                              color: Color(0xFF4B39EF),
-                                              width: 2,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                              color: Color(0xFFE0E3E7),
-                                              width: 2,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          focusedErrorBorder:
-                                              OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                              color: Color(0xFFE0E3E7),
-                                              width: 2,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          filled: true,
-                                          fillColor: const Color(0xFFF1F4F8),
                                         ),
-                                        style: EAqoonsiTheme.of(context)
-                                            .bodyLarge
-                                            .override(
-                                              fontFamily: 'Plus Jakarta Sans',
-                                              color: const Color(0xFF101213),
-                                              fontSize: 16.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                        keyboardType: TextInputType.number,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return localizations
-                                                .usernameEmptyError;
-                                          } else if (value.length < 11) {
-                                            return localizations
-                                                .usernameLengthError;
-                                          }
-                                          return null;
-                                        },
                                       ),
                                     ),
                                   ),
@@ -253,16 +269,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                               0, 0, 0, 16),
                                       child: EaqoonsiButtonWidget(
                                         onPressed: () async {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            await ref
-                                                .read(
-                                                    authStateProvider.notifier)
-                                                .login(
-                                                  nationalIDTextController.text,
-                                                  passwordTextController.text,
-                                                );
-                                          }
+                                          submitForm();
                                         },
                                         text: localizations.loginButton,
                                         options: EaqoonsiButtonOptions(

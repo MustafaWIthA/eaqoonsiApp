@@ -4,16 +4,19 @@ final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   final dio = ref.read(dioProvider);
   final storage = ref.read(storageProvider);
   final token = await storage.read(key: 'access_token');
+  print(kProfileUrl);
 
   try {
     final response = await dio.get(
-      kProfileUrl,
+      'https://e-aqoonsi.nira.gov.so/api/v1/profile',
       options: Options(
         headers: {
           'Authorization': 'Bearer $token',
+          'X-API-Key': 898989,
         },
       ),
     );
+    print(response.data['userStatus']);
     return response.data;
   } catch (e) {
     throw Exception('Failed to load profile');
@@ -43,6 +46,7 @@ class ProfileNotifier extends StateNotifier<AsyncValue<Map<String, dynamic>>> {
   }
 
   Future<void> refreshProfile() async {
+    // ignore: unused_result
     await _ref.refresh(profileProvider);
     await _fetchProfile();
   }

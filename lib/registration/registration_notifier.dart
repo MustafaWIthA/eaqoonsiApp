@@ -9,7 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
-const String keyRegsiter = 'http://10.0.2.2:9191/api/v1/auth/registration';
+const String keyRegsiter =
+    'https://e-aqoonsi.nira.gov.so/api/v1/auth/registration';
 
 final registrationNotifierProvider =
     StateNotifierProvider<RegistrationNotifier, AuthState>((ref) {
@@ -70,7 +71,16 @@ class RegistrationNotifier extends StateNotifier<AuthState> {
         'password': password,
       });
 
-      final response = await _dio.post(keyRegsiter, data: formData);
+      final response = await _dio.post(
+        keyRegsiter,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': 898989,
+          },
+        ),
+        data: formData,
+      );
 
       if (response.data['statusCodeValue'] == 200) {
         final accessToken = response.data['body']['accessToken'] as String;

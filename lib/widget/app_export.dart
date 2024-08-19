@@ -6,17 +6,20 @@ export 'package:flutter_riverpod/flutter_riverpod.dart';
 export 'package:flutter_secure_storage/flutter_secure_storage.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:dio/dio.dart';
-
+export 'package:eaqoonsi/widget/animation.dart';
 export 'package:eaqoonsi/providers/dio_provider.dart';
-
+export 'package:flutter_animate/flutter_animate.dart';
 // Project screens
 export 'package:eaqoonsi/public/login/login_screen.dart';
 export 'package:eaqoonsi/public/onboarding/onboarding_screen.dart';
 export 'package:eaqoonsi/profile/profile_screen.dart';
 export 'package:eaqoonsi/verification/verification_screen.dart';
+export 'package:pin_code_fields/pin_code_fields.dart';
+export 'package:eaqoonsi/otp/verify_otp.dart';
 
 // Project providers
 export 'package:eaqoonsi/providers/storage_provider.dart';
+export 'package:eaqoonsi/utilities/api_exceptions.dart';
 
 export 'package:eaqoonsi/help/help_screen.dart';
 export 'package:eaqoonsi/language/language_notifier.dart';

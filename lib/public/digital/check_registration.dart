@@ -1,16 +1,5 @@
-import 'package:dio/dio.dart';
-import 'package:eaqoonsi/constants.dart';
-import 'package:eaqoonsi/public/login/login_screen.dart';
-import 'package:eaqoonsi/otp/verify_otp.dart';
-import 'package:eaqoonsi/registration/registration_notifier.dart';
-import 'package:eaqoonsi/widget/animation.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../widget/e_aqoonsi_button_widgets.dart';
-import '../../widget/text_theme.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
+import 'package:eaqoonsi/widget/text_theme.dart';
 
 final otpIdProvider = StateProvider<String?>((ref) => null);
 
@@ -51,15 +40,15 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 400.ms,
-          begin: Offset(0, 0.524),
-          end: Offset(0, 0),
+          begin: const Offset(0, 0.524),
+          end: const Offset(0, 0),
         ),
         MoveEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 400.ms,
-          begin: Offset(70, 0),
-          end: Offset(0, 0),
+          begin: const Offset(70, 0),
+          end: const Offset(0, 0),
         ),
       ],
     );
@@ -73,6 +62,7 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
       final dio = Dio(BaseOptions(
         validateStatus: (status) => status! < 500,
       ));
+      print(kDigitalSearchUrl);
 
       final response = await dio.get(
         "$kDigitalSearchUrl/$idNumber",
@@ -117,7 +107,7 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) =>
-              VerifyOTPWidget(otpId: otpId, phoneNumber: phoneNumber),
+              VerifyOTPScreen(otpId: otpId, phoneNumber: phoneNumber),
         ),
       );
     }
@@ -143,35 +133,33 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return MaterialApp(
-      home: GestureDetector(
-        child: Scaffold(
-          backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
-          body: SafeArea(
-            top: true,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildLogo(),
-                            _buildInputContainer(localizations),
-                          ],
-                        ),
-                      ).animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation']!),
-                    ),
+    return GestureDetector(
+      child: Scaffold(
+        backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
+        body: SafeArea(
+          top: true,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildLogo(),
+                          _buildInputContainer(localizations),
+                        ],
+                      ),
+                    ).animateOnPageLoad(
+                        animationsMap['containerOnPageLoadAnimation']!),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
