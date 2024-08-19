@@ -1,6 +1,5 @@
-import 'package:eaqoonsi/verification/user_verfication_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:eaqoonsi/verification/qr_code_provider.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class ShowQrCode extends ConsumerWidget {
@@ -8,18 +7,30 @@ class ShowQrCode extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final encryptedDataAsync = ref.watch(userVerificationDataProvider);
+    final qrCodeDataAsync = ref.watch(qrCodeProvider);
 
-    return encryptedDataAsync.when(
-      data: (encryptedData) => Center(
-        child: PrettyQrView.data(
+    return Center(
+      child: qrCodeDataAsync.when(
+        data: (encryptedData) => PrettyQrView.data(
           data: encryptedData,
-          // size: 200,
+          // size: 250,
           // roundEdges: true,
         ),
+        loading: () => const CircularProgressIndicator(),
+        error: (error, stack) => Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Error: ${error.toString()}'),
+              ElevatedButton(
+                onPressed: () => ref.refresh(qrCodeProvider),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
     );
   }
 }

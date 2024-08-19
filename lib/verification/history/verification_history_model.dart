@@ -19,13 +19,4 @@ class VerificationHistoryModel {
       verificationType: json['verificationType'],
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'verifiedBy': verifiedBy,
-      'username': username,
-      'verifiedAt': verifiedAt.toIso8601String(),
-      'verificationType': verificationType,
-    };
-  }
 }

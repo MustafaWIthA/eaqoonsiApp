@@ -1,3 +1,4 @@
+import 'package:eaqoonsi/verification/verify/verify_model.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 
 final dioProvider = Provider<DioClient>((ref) => DioClient(ref));
@@ -56,7 +57,6 @@ class DioClient {
             _isRefreshing = false;
             print('Token refresh failed: $refreshError');
           }
-          // If we reach here, refresh has failed
           _ref.read(authStateProvider.notifier).logout();
         }
         return handler.next(e);
@@ -111,6 +111,22 @@ class DioClient {
     final currentTime = DateTime.now();
     final timeUntilExpiry = expirationTime.difference(currentTime);
     return timeUntilExpiry.inSeconds < 10;
+  }
+
+  Future<VerificationResponse> verifyUser(
+      String verifiedUser, int verificationType) async {
+    try {
+      final response = await _dio.post(
+        '/verification/verify',
+        data: {
+          'verifiedUser': verifiedUser,
+          'verificationType': verificationType,
+        },
+      );
+      return VerificationResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
   }
 
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {

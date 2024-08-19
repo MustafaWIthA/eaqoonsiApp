@@ -2,7 +2,7 @@ import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:intl/intl.dart';
 
 class VerificationHistoryScreen extends ConsumerWidget {
-  const VerificationHistoryScreen({Key? key}) : super(key: key);
+  const VerificationHistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,10 +15,17 @@ class VerificationHistoryScreen extends ConsumerWidget {
           data: (history) => _buildHistoryList(history),
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(
-              child: Text(
-            'Error: $error',
-            // style: AppStyle.txtBodyMedium,
-          )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Error: ${error.toString()}'),
+                ElevatedButton(
+                  onPressed: () => ref.refresh(verificationHistoryProvider),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -27,10 +34,7 @@ class VerificationHistoryScreen extends ConsumerWidget {
   Widget _buildHistoryList(List<VerificationHistoryModel> history) {
     if (history.isEmpty) {
       return const Center(
-        child: Text(
-          'You have no verifications yet.',
-          // style: AppStyle.txtBodyLarge,
-        ),
+        child: Text('No verification history available.'),
       );
     }
 
@@ -41,21 +45,14 @@ class VerificationHistoryScreen extends ConsumerWidget {
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
-            title: Text(
-              'You have been Verified by: ${item.username}',
-              // style: AppStyle.txtBodyLarge,
-            ),
+            title: Text('Verified by: ${item.verifiedBy}'),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text('Username: ${item.username}'),
                 Text(
-                  'Date: ${DateFormat('yyyy-MM-dd HH:mm').format(item.verifiedAt)}',
-                  // style: AppStyle.txtBodyMedium,
-                ),
-                Text(
-                  'Type: ${item.verificationType}',
-                  // style: AppStyle.txtBodySmall
-                ),
+                    'Date: ${DateFormat('yyyy-MM-dd HH:mm').format(item.verifiedAt)}'),
+                Text('Type: ${item.verificationType}'),
               ],
             ),
           ),
