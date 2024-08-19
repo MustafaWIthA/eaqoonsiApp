@@ -1,12 +1,6 @@
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:dio/dio.dart';
-import 'package:eaqoonsi/public/login/auth_notifier.dart';
-import 'package:eaqoonsi/providers/dio_provider.dart';
 import 'package:eaqoonsi/providers/storage_provider.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
 const String keyRegsiter =
@@ -14,7 +8,8 @@ const String keyRegsiter =
 
 final registrationNotifierProvider =
     StateNotifierProvider<RegistrationNotifier, AuthState>((ref) {
-  return RegistrationNotifier(ref.read(dioProvider), ref.read(storageProvider));
+  return RegistrationNotifier(ref.read(dioProvider as ProviderListenable<Dio>),
+      ref.read(storageProvider));
 });
 
 class RegistrationNotifier extends StateNotifier<AuthState> {

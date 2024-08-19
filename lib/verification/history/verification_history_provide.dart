@@ -1,3 +1,4 @@
+import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 
 final verificationHistoryProvider =
@@ -13,11 +14,6 @@ final verificationHistoryProvider =
 
     final response = await dio.get(
       kVerifictionHistoryUrl,
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      ),
     );
 
     print("Verification History Response: ${response.data}");
@@ -26,7 +22,7 @@ final verificationHistoryProvider =
     return data.map((item) => VerificationHistoryModel.fromJson(item)).toList();
   } on DioException catch (e) {
     if (e.response?.statusCode == 401) {
-      ref.read(authStateProvider.notifier).logout();
+      //  ref.read(authStateProvider.notifier).logout();
       throw Exception('Unauthorized');
     } else {
       throw Exception('Failed to load verification history');

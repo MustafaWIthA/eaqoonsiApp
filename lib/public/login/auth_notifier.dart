@@ -1,4 +1,71 @@
+import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
+
+final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  return AuthNotifier(ref.read(dioProvider), ref.read(storageProvider));
+});
+
+class AuthNotifier extends StateNotifier<AuthState> {
+  final DioClient _dioClient;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+
+  AuthNotifier(this._dioClient, FlutterSecureStorage read) : super(AuthState());
+  void clearError() {
+    state = state.copyWith(errorMessage: null);
+  }
+
+  Future<void> login(String username, String password) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    try {
+      final response = await _dioClient.post(
+        '/auth/login',
+        data: {
+          'username': username,
+          'password': password,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final body = response.data['body'];
+        final accessToken = body['accessToken'] as String;
+        final refreshToken = body['refreshToken'] as String;
+
+        await _storage.write(key: 'access_token', value: accessToken);
+        await _storage.write(key: 'refresh_token', value: refreshToken);
+
+        state = state.copyWith(isAuthenticated: true, accessToken: accessToken);
+      } else {
+        state = state.copyWith(errorMessage: 'Login failed. Please try again.');
+      }
+    } on UnauthorizedException {
+      state = state.copyWith(errorMessage: 'Invalid username or password.');
+    } on ApiException catch (e) {
+      state = state.copyWith(
+          errorMessage: e.message ?? 'An unexpected error occurred.');
+    } catch (e) {
+      state = state.copyWith(errorMessage: 'An unexpected error occurred.');
+    } finally {
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await _storage.delete(key: 'access_token');
+      await _storage.delete(key: 'refresh_token');
+      state = AuthState();
+    } catch (e) {
+      state = state.copyWith(errorMessage: 'Error during logout');
+    }
+  }
+
+  Future<void> checkAuthStatus() async {
+    final token = await _storage.read(key: 'access_token');
+    if (token != null) {
+      state = state.copyWith(isAuthenticated: true, accessToken: token);
+    }
+  }
+}
 
 class AuthState {
   final bool isAuthenticated;
@@ -25,125 +92,5 @@ class AuthState {
       errorMessage: errorMessage ?? this.errorMessage,
       isLoading: isLoading ?? this.isLoading,
     );
-  }
-}
-
-class AuthNotifier extends StateNotifier<AuthState> {
-  final Dio _dio;
-  final FlutterSecureStorage _storage;
-
-  AuthNotifier(this._dio, this._storage) : super(AuthState());
-
-  Future<void> login(String username, String password) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
-    try {
-      final response = await _dio.post(
-        'https://e-aqoonsi.nira.gov.so/api/v1/auth/login',
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-Key': 898989,
-          },
-        ),
-        data: {
-          'username': username,
-          'password': password,
-        },
-      );
-      // print(response);
-
-      if (response.data['statusCodeValue'] == 200) {
-        final accessToken = response.data['body']['accessToken'] as String;
-        final refreshToken = response.data['body']['refreshToken'] as String;
-
-        saveToken(accessToken);
-        saveRefreshToken(refreshToken);
-
-        state = state.copyWith(isAuthenticated: true, accessToken: accessToken);
-      } else if (response.data['statusCodeValue'] == 401) {
-        state = state.copyWith(errorMessage: 'Invalid username or password.');
-      } else {
-        final errorMessage =
-            response.data['error'] ?? 'Login failed. Please try again.';
-        state = state.copyWith(errorMessage: errorMessage);
-      }
-    } catch (error) {
-      if (error is DioException) {
-        if (error.type == DioExceptionType.connectionTimeout ||
-            error.type == DioExceptionType.receiveTimeout) {
-          state = state.copyWith(
-              errorMessage:
-                  'Connection timeout. Please check your internet connection.');
-        } else {
-          print(error);
-          state = state.copyWith(
-              errorMessage: 'An error occurred. Please try again.');
-        }
-      } else {
-        state = state.copyWith(errorMessage: 'An unexpected error occurred.');
-      }
-    } finally {
-      state = state.copyWith(isLoading: false);
-    }
-  }
-
-  Future<void> logout() async {
-    await _storage.deleteAll();
-    print('Logging out...');
-    print(await _storage.read(key: 'access_token'));
-
-    //set language to default
-    await _storage.delete(key: 'access_token');
-    await _storage.delete(key: 'refresh_token');
-    // ... logout process
-    print(await _storage.read(key: 'access_token'));
-    print('Logout complete. Auth state: ${state.isAuthenticated}');
-
-    state = AuthState();
-  }
-
-  Future<void> refreshToken() async {
-    final refreshToken = await _storage.read(key: 'refresh_token');
-
-    if (refreshToken != null) {
-      try {
-        final response = await _dio.post(
-          'baseURL/auth/refresh',
-          data: {
-            'refresh_token': refreshToken,
-          },
-        );
-
-        if (response.statusCode == 200) {
-          final accessToken = response.data['body']['access_token'] as String;
-          await _storage.write(key: 'access_token', value: accessToken);
-          state = state.copyWith(accessToken: accessToken);
-        } else {
-          await logout();
-          state = state.copyWith(
-              errorMessage: 'Session expired. Please login again.');
-        }
-      } catch (error) {
-        await logout();
-        state = state.copyWith(
-            errorMessage: 'An error occurred. Please login again.');
-      }
-    } else {
-      await logout();
-      state =
-          state.copyWith(errorMessage: 'Session expired. Please login again.');
-    }
-  }
-
-  //save token
-  Future<void> saveToken(String token) async {
-    await _storage.write(key: 'access_token', value: token);
-    state = state.copyWith(accessToken: token);
-  }
-
-  //save refresh token
-  Future<void> saveRefreshToken(String token) async {
-    await _storage.write(key: 'refresh_token', value: token);
-    state = state.copyWith(accessToken: token);
   }
 }

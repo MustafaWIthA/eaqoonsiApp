@@ -1,5 +1,6 @@
 import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
+import 'package:flutter/scheduler.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -10,11 +11,50 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final animationsMap = <String, AnimationInfo>{};
   final TextEditingController nationalIDTextController =
       TextEditingController();
   final FocusNode nationalIDFocusNode = FocusNode();
   final TextEditingController passwordTextController = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
+  String? localErrorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupAnimations();
+  }
+
+  void _setupAnimations() {
+    animationsMap['containerOnPageLoadAnimation'] = AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effectsBuilder: () => [
+        VisibilityEffect(duration: 1.ms),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: 0,
+          end: 1,
+        ),
+        TiltEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: const Offset(0, 0.524),
+          end: const Offset(0, 0),
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 400.ms,
+          begin: const Offset(70, 0),
+          end: const Offset(0, 0),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -45,6 +85,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
       }
     });
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Row(
@@ -100,10 +141,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               BoxShadow(
                                 blurRadius: 4,
                                 color: Color(0x33000000),
-                                offset: Offset(
-                                  0,
-                                  2,
-                                ),
+                                offset: Offset(0, 2),
                               )
                             ],
                             borderRadius: BorderRadius.circular(12),
@@ -120,8 +158,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     localizations.welcomeMessage,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: EAqoonsiTheme.of(context)
-                                          .primaryText, //const Color(0xFF101213
+                                      color:
+                                          EAqoonsiTheme.of(context).primaryText,
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -150,6 +188,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                         textDirection: TextDirection.ltr,
                                         child: Material(
                                           child: TextFormField(
+                                            keyboardType: TextInputType.number,
                                             controller:
                                                 nationalIDTextController,
                                             focusNode: nationalIDFocusNode,
@@ -215,7 +254,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                                   letterSpacing: 0.0,
                                                   fontWeight: FontWeight.w500,
                                                 ),
-                                            keyboardType: TextInputType.number,
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty) {
@@ -232,7 +270,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       ),
                                     ),
                                   ),
-                                  //password field
                                   Padding(
                                     padding:
                                         const EdgeInsetsDirectional.fromSTEB(
@@ -240,13 +277,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: EaqoonsiTextFormField(
+                                        controller: passwordTextController,
+                                        focusNode: passwordFocusNode,
                                         labelText: localizations.passwordLabel,
                                         hintText:
                                             localizations.passwordhintText,
-                                        focusNode: passwordFocusNode,
-                                        controller: passwordTextController,
                                         obscureText: true,
-                                        keyboardType: TextInputType.text,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
                                             return localizations
@@ -260,7 +296,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       ),
                                     ),
                                   ),
-                                  //login button
                                   Align(
                                     alignment: const AlignmentDirectional(0, 0),
                                     child: Padding(
@@ -268,9 +303,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0, 0, 0, 16),
                                       child: EaqoonsiButtonWidget(
-                                        onPressed: () async {
-                                          submitForm();
-                                        },
+                                        onPressed: submitForm,
                                         text: localizations.loginButton,
                                         options: EaqoonsiButtonOptions(
                                           width: 230,
@@ -303,7 +336,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       ),
                                     ),
                                   ),
-
                                   Padding(
                                     padding:
                                         const EdgeInsetsDirectional.fromSTEB(
@@ -319,24 +351,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                             style: const TextStyle(),
                                           ),
                                           WidgetSpan(
-                                              child: GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const CheckNationalIDNumber(),
-                                                ),
-                                              );
-                                            },
-                                            child: Text(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const CheckNationalIDNumber(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text(
                                                 localizations.signUpTitle,
                                                 style: const TextStyle(
                                                   color: Color(0xFF4B39EF),
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w500,
-                                                )),
-                                          )),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                         style: const TextStyle(
                                           color: Color(0xFF57636C),
@@ -355,7 +389,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ],
                 ),
-              ),
+              ).animateOnPageLoad(
+                  animationsMap['containerOnPageLoadAnimation']!),
             ),
           ),
         ],
