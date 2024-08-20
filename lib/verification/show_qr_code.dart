@@ -11,23 +11,32 @@ class ShowQrCode extends ConsumerWidget {
 
     return Center(
       child: qrCodeDataAsync.when(
-        data: (encryptedData) => PrettyQrView.data(
-          data: encryptedData,
-          // size: 250,
-          // roundEdges: true,
+        data: (encryptedData) => Padding(
+          padding: const EdgeInsets.only(right: 10.0, left: 10),
+          child: PrettyQrView.data(
+            decoration: const PrettyQrDecoration(
+              image: PrettyQrDecorationImage(image: AssetImage(logoBlue)),
+            ),
+            data: encryptedData,
+            // size: 250,
+            // roundEdges: true,
+          ),
         ),
         loading: () => const CircularProgressIndicator(),
         error: (error, stack) => Padding(
           padding: const EdgeInsets.all(18.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Error: ${error.toString()}'),
-              ElevatedButton(
-                onPressed: () => ref.refresh(qrCodeProvider),
-                child: const Text('Retry'),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.only(left: 80.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Error: ${error.toString()}'),
+                ElevatedButton(
+                  onPressed: () => ref.refresh(qrCodeProvider),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

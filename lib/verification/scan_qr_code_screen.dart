@@ -1,3 +1,4 @@
+import 'package:eaqoonsi/verification/verification_show_result.dart';
 import 'package:eaqoonsi/verification/verify/verify_model.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
@@ -13,20 +14,30 @@ class QRCodeScannerScreen extends ConsumerStatefulWidget {
 class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
   bool _isVerifying = false;
   bool _qrDetected = false;
+  late MobileScannerController _scannerController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scannerController = MobileScannerController();
+  }
+
+  @override
+  void dispose() {
+    _scannerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Scan QR Code'),
-        backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
-      ),
       body: Stack(
         children: [
           Column(
             children: [
               Expanded(
                 child: MobileScanner(
+                  controller: _scannerController,
                   onDetect: (capture) {
                     final List<Barcode> barcodes = capture.barcodes;
                     for (final barcode in barcodes) {
@@ -57,7 +68,7 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircularProgressIndicator(
-                        color: EAqoonsiTheme.of(context).primaryColor),
+                        color: EAqoonsiTheme.of(context).primary),
                     const SizedBox(height: 16),
                     Text(
                       'Verifying...',
@@ -102,7 +113,7 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
         verificationData['verificationType'],
       );
       if (mounted) {
-        _showVerificationResult(context, response);
+        _navigateToVerificationResult(context, response);
       }
     } catch (e) {
       if (mounted) {
@@ -122,47 +133,18 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
     }
   }
 
-  void _showVerificationResult(
+  void _navigateToVerificationResult(
       BuildContext context, VerificationResponse response) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: EAqoonsiTheme.of(context).primaryBackground,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Verification Result',
-                style: EAqoonsiTheme.of(context).titleMedium,
-              ),
-              const SizedBox(height: 16),
-              Text('ID Number: ${response.idNumber}',
-                  style: EAqoonsiTheme.of(context).bodyMedium),
-              Text('Full Name: ${response.fullName}',
-                  style: EAqoonsiTheme.of(context).bodyMedium),
-              const SizedBox(height: 16),
-              Center(child: Image.memory(base64Decode(response.photograph))),
-              const SizedBox(height: 16),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  child: const Text('Close'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    ).then((_) => _resetState());
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (context) => VerificationResultScreen(response: response),
+      ),
+    )
+        .then((_) {
+      // Resume scanning when returning from the result screen
+      _scannerController.start();
+    });
   }
 
   void _showErrorSnackBar(String message) {

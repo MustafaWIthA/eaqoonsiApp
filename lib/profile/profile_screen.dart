@@ -31,7 +31,7 @@ class ProfileScreen extends ConsumerWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: IconThemeData(color: EAqoonsiTheme.of(context).alternate),
-        backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
+        backgroundColor: kBlueColor,
         title: profileAsyncValue.when(
           data: (profile) {
             return Text(

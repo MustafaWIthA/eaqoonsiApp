@@ -18,19 +18,24 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Verification'),
-          bottom: const TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.camera_alt), text: 'Scan'),
+          backgroundColor: kBlueColor,
+          elevation: 20,
+          bottom: TabBar(
+            labelColor: kWhiteColor,
+            unselectedLabelColor: kWhiteColor.withOpacity(0.7),
+            indicatorColor: kYellowColor,
+            indicatorWeight: 2,
+            tabs: const [
               Tab(icon: Icon(Icons.qr_code), text: 'My QR'),
+              Tab(icon: Icon(Icons.camera_alt), text: 'Scan'),
               Tab(icon: Icon(Icons.history), text: 'History'),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-            QRCodeScannerScreen(),
             ShowQrCode(),
+            QRCodeScannerScreen(),
             VerificationHistoryScreen(),
           ],
         ),
