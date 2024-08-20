@@ -1,4 +1,5 @@
 import 'package:dio/io.dart';
+import 'package:eaqoonsi/public/camera/fece_liveness.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 
 void main() {
@@ -30,7 +31,7 @@ class MyApp extends ConsumerWidget {
       ],
       initialRoute: '/',
       routes: {
-        '/': (context) => const SplashScreen(),
+        '/': (context) => const FaceLivenessWidget(),
         '/profile': (context) => const ProfileScreen(),
         '/registration': (context) => const RegistrationScreen(),
         '/verification': (context) => const VerificationScreen(),
