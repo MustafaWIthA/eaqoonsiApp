@@ -8,6 +8,10 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'package:dio/dio.dart';
 export 'package:eaqoonsi/widget/animation.dart';
 export 'package:flutter_animate/flutter_animate.dart';
+export 'package:connectivity_plus/connectivity_plus.dart';
+export 'package:jwt_decoder/jwt_decoder.dart';
+export 'package:flutter/services.dart';
+
 // Project screens
 export 'package:eaqoonsi/public/login/login_screen.dart';
 export 'package:eaqoonsi/public/onboarding/onboarding_screen.dart';
