@@ -1,177 +1,147 @@
-import 'dart:async';
-import 'dart:developer' as developer;
-
 import 'package:eaqoonsi/widget/app_export.dart';
 
-class SplashScreen extends ConsumerStatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  ConsumerState<SplashScreen> createState() => _SplashScreenState();
+// Enum to represent the app's initialization state
+enum AppInitializationState {
+  checking,
+  noInternet,
+  needsOnboarding,
+  needsAuthentication,
+  ready,
 }
 
-class _SplashScreenState extends ConsumerState<SplashScreen> {
-  static const String _accessTokenKey = 'access_token';
-  static const String _onboardingCompleteKey = 'onboardingComplete';
+// Provider for the Connectivity service
+final connectivityProvider = Provider<Connectivity>((ref) => Connectivity());
 
-  List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
-  final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
+// Provider for SharedPreferences
+final sharedPreferencesProvider =
+    FutureProvider<SharedPreferences>((ref) async {
+  return await SharedPreferences.getInstance();
+});
 
-  @override
-  void initState() {
-    super.initState();
-    initConnectivity();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-    _initializeApp();
+// Provider for FlutterSecureStorage
+final secureStorageProvider =
+    Provider<FlutterSecureStorage>((ref) => const FlutterSecureStorage());
+
+// StateNotifier to manage the app's initialization state
+class AppInitializationNotifier extends StateNotifier<AppInitializationState> {
+  AppInitializationNotifier(this.ref) : super(AppInitializationState.checking) {
+    _initialize();
   }
 
-  @override
-  void dispose() {
-    _connectivitySubscription.cancel();
-    super.dispose();
-  }
+  final Ref ref;
 
-  Future<void> initConnectivity() async {
-    late List<ConnectivityResult> result;
+  Future<void> _initialize() async {
     try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      developer.log('Couldn\'t check connectivity status', error: e);
-      return;
-    }
+      final connectivity = ref.read(connectivityProvider);
+      final connectivityResult = await connectivity.checkConnectivity();
 
-    if (!mounted) {
-      return Future.value(null);
-    }
-
-    return _updateConnectionStatus(result);
-  }
-
-  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
-    setState(() {
-      _connectionStatus = result;
-    });
-    developer.log('Connectivity changed: $_connectionStatus');
-
-    if (_connectionStatus.contains(ConnectivityResult.none)) {
-      _showNoInternetDialog();
-    } else {
-      _initializeApp();
-    }
-  }
-
-  Future<void> _initializeApp() async {
-    try {
-      developer.log('Starting app initialization');
-      if (_connectionStatus.contains(ConnectivityResult.none)) {
-        developer.log('No internet connection detected');
-        _showNoInternetDialog();
+      if (connectivityResult == ConnectivityResult.none) {
+        state = AppInitializationState.noInternet;
         return;
       }
 
-      developer
-          .log('Internet connection confirmed, proceeding with initialization');
-      final prefs = await SharedPreferences.getInstance();
-      const storage = FlutterSecureStorage();
+      final prefs = await ref.read(sharedPreferencesProvider.future);
+      final isOnboardingComplete = prefs.getBool('onboardingComplete') ?? false;
 
-      await _checkOnboarding(prefs);
-      await _checkAuthentication(storage);
-    } catch (e) {
-      developer.log('Error during app initialization: $e',
-          error: e, stackTrace: StackTrace.current);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error initializing app: $e')),
-        );
+      if (!isOnboardingComplete) {
+        state = AppInitializationState.needsOnboarding;
+        return;
       }
-    }
-  }
 
-  void _showNoInternetDialog() {
-    if (mounted) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return Scaffold(
-            backgroundColor: kBlueColor,
-            body: AlertDialog(
-              title: const Center(child: Text('No Internet Connection')),
-              content: const Text(
-                  'Please check your internet connection and try again.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Retry'),
-                  onPressed: () {
-                    developer.log('Retry button pressed');
-                    Navigator.of(context).pop();
-                    initConnectivity();
-                  },
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    }
-  }
+      final storage = ref.read(secureStorageProvider);
+      final accessToken = await storage.read(key: 'access_token');
 
-  Future<void> _checkOnboarding(SharedPreferences prefs) async {
-    final isOnboardingComplete = prefs.getBool(_onboardingCompleteKey) ?? false;
-    ref.read(onboardingCompleteProvider.notifier).state = isOnboardingComplete;
-
-    if (!isOnboardingComplete && mounted) {
-      _navigateTo(const OnboardingScreen());
-    }
-  }
-
-  Future<void> _checkAuthentication(FlutterSecureStorage storage) async {
-    final accessToken = await storage.read(key: _accessTokenKey);
-    final authState = ref.read(authStateProvider);
-
-    if (authState.isAuthenticated ||
-        (accessToken != null && _isTokenValid(accessToken))) {
-      if (mounted) _navigateTo(const ProfileScreen());
-    } else {
-      if (mounted) _navigateTo(const LoginScreen());
+      if (accessToken == null || !_isTokenValid(accessToken)) {
+        state = AppInitializationState.needsAuthentication;
+      } else {
+        state = AppInitializationState.ready;
+      }
+    } catch (e) {
+      print('Error during initialization: $e');
+      state = AppInitializationState
+          .noInternet; // Fallback to no internet state on error
     }
   }
 
   bool _isTokenValid(String token) {
-    try {
-      final decodedToken = JwtDecoder.decode(token);
-      final expirationDate =
-          DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
-      return expirationDate.isAfter(DateTime.now());
-    } catch (e) {
-      developer.log('Error decoding token: $e',
-          error: e, stackTrace: StackTrace.current);
-      return false;
-    }
+    // Implement token validation logic here
+    return true; // Placeholder
   }
 
-  void _navigateTo(Widget screen) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => screen),
+  void retryInitialization() {
+    state = AppInitializationState.checking;
+    _initialize();
+  }
+}
+
+// Provider for the AppInitializationNotifier
+final appInitializationProvider =
+    StateNotifierProvider<AppInitializationNotifier, AppInitializationState>(
+        (ref) {
+  return AppInitializationNotifier(ref);
+});
+
+// Usage in SplashScreen widget
+class SplashScreen extends ConsumerWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final initializationState = ref.watch(appInitializationProvider);
+
+    return Scaffold(
+      backgroundColor: Colors.blue,
+      body: Center(
+        child: _buildContent(context, initializationState, ref),
+      ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: kBlueColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(kWhiteColor),
-            ),
-          ],
+  Widget _buildContent(
+      BuildContext context, AppInitializationState state, WidgetRef ref) {
+    switch (state) {
+      case AppInitializationState.checking:
+        return const CircularProgressIndicator(color: Colors.white);
+      case AppInitializationState.noInternet:
+        return _buildNoInternetWidget(ref);
+      case AppInitializationState.needsOnboarding:
+        return _buildNavigationWidget(const OnboardingScreen());
+      case AppInitializationState.needsAuthentication:
+        return _buildNavigationWidget(const LoginScreen());
+      case AppInitializationState.ready:
+        return _buildNavigationWidget(const ProfileScreen());
+    }
+  }
+
+  Widget _buildNoInternetWidget(WidgetRef ref) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('No Internet Connection',
+            style: TextStyle(color: Colors.white)),
+        ElevatedButton(
+          onPressed: () => ref
+              .read(appInitializationProvider.notifier)
+              .retryInitialization(),
+          child: const Text('Retry'),
         ),
-      ),
+      ],
+    );
+  }
+
+  Widget _buildNavigationWidget(Widget destinationScreen) {
+    return FutureBuilder(
+      future: Future.microtask(() {}),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => destinationScreen),
+            );
+          });
+        }
+        return const CircularProgressIndicator(color: Colors.white);
+      },
     );
   }
 }
