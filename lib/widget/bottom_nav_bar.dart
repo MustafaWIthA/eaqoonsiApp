@@ -1,6 +1,8 @@
 import 'package:eaqoonsi/account/account_screen.dart';
-import 'package:eaqoonsi/help/help_screen.dart';
 import 'package:eaqoonsi/profile/profile_screen.dart';
+import 'package:eaqoonsi/verification/history/verification_history_screen.dart';
+import 'package:eaqoonsi/verification/scan_qr_code_screen.dart';
+import 'package:eaqoonsi/verification/show_qr_code.dart';
 import 'package:eaqoonsi/verification/verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,12 +28,16 @@ class BottomNavBar extends ConsumerWidget {
           label: 'Account',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.verified),
-          label: 'Verification',
+          icon: Icon(Icons.camera),
+          label: 'Scan',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.qr_code),
+          label: 'Show QR',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.help),
-          label: 'Help',
+          label: 'History',
         ),
       ],
       type: BottomNavigationBarType.fixed,
@@ -55,12 +61,20 @@ class BottomNavBar extends ConsumerWidget {
             case 1:
               routeName = const AccountScreen();
               break;
+            // case 2:
+            //   routeName = const VerificationScreen();
+            //   break;
             case 2:
-              routeName = const VerificationScreen();
+              routeName = const QRCodeScannerScreen();
               break;
             case 3:
-              routeName = const HelpScreen();
+              routeName = const ShowQrCode();
               break;
+
+            case 4:
+              routeName = const VerificationHistoryScreen();
+              break;
+
             default:
               routeName = const ProfileScreen();
           }

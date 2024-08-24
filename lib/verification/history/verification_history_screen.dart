@@ -1,4 +1,5 @@
 import 'package:eaqoonsi/widget/app_export.dart';
+import 'package:eaqoonsi/widget/text_theme.dart';
 import 'package:intl/intl.dart';
 
 class VerificationHistoryScreen extends ConsumerWidget {
@@ -9,6 +10,20 @@ class VerificationHistoryScreen extends ConsumerWidget {
     final historyAsyncValue = ref.watch(verificationHistoryProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: EAqoonsiTheme.of(context).alternate),
+        backgroundColor: kBlueColor,
+        title: Text(
+          'Verification History',
+          style: EAqoonsiTheme.of(context).titleSmall.override(
+                fontFamily: 'Plus Jakarta Sans',
+                color: EAqoonsiTheme.of(context).alternate,
+                fontSize: 16,
+                letterSpacing: 0,
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () => ref.refresh(verificationHistoryProvider.future),
         child: historyAsyncValue.when(
@@ -28,6 +43,7 @@ class VerificationHistoryScreen extends ConsumerWidget {
           ),
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 

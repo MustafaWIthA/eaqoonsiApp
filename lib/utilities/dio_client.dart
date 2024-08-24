@@ -12,7 +12,8 @@ class DioClient {
   DioClient(this._ref) {
     _dio = Dio(BaseOptions(
       baseUrl: 'https://e-aqoonsi.nira.gov.so/api/v1',
-      connectTimeout: const Duration(seconds: 5),
+      // baseUrl: 'http://10.17.5.11:9000/api/v1',
+      connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 3),
       headers: {
         'Content-Type': 'application/json',

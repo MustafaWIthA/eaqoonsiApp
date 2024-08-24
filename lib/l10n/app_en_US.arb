@@ -233,11 +233,11 @@
 "sendPhoto": "Submit",
 "@sendPhoto": {
   "description": "Text for the send photo button"
+},
+
+  "passwordValidation": "Password must be at least 6 characters long",
+"@passwordValidation": {
+  "description": "Error message when the password is too short"
 }
-
-
-
-
-
 
 }

@@ -1,7 +1,7 @@
 name: eaqoonsi
 description: "A new eaqoonsi project."
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' 
 
 version: 1.0.0+1
 
@@ -38,6 +38,8 @@ dependencies:
   pretty_qr_code: ^3.3.0
   mobile_scanner: ^5.1.1
   jwt_decoder: ^2.0.1
+  connectivity_plus: ^6.0.5
+  
   # flutter_face_api: ^6.2.3
   # flutter_face_core_basic: ^6.2.1
 

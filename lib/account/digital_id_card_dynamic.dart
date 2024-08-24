@@ -8,7 +8,7 @@ class DigitalIDCard extends StatefulWidget {
   const DigitalIDCard({super.key, required this.profileData});
 
   @override
-  _DigitalIDCardState createState() => _DigitalIDCardState();
+  State<DigitalIDCard> createState() => _DigitalIDCardState();
 }
 
 class _DigitalIDCardState extends State<DigitalIDCard>

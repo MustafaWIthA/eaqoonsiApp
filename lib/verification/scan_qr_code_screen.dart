@@ -8,7 +8,8 @@ class QRCodeScannerScreen extends ConsumerStatefulWidget {
   const QRCodeScannerScreen({super.key});
 
   @override
-  _QRCodeScannerScreenState createState() => _QRCodeScannerScreenState();
+  ConsumerState<QRCodeScannerScreen> createState() =>
+      _QRCodeScannerScreenState();
 }
 
 class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
@@ -31,6 +32,20 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: EAqoonsiTheme.of(context).alternate),
+        backgroundColor: kBlueColor,
+        title: Text(
+          'Scan eAqoonsi Digital',
+          style: EAqoonsiTheme.of(context).titleSmall.override(
+                fontFamily: 'Plus Jakarta Sans',
+                color: EAqoonsiTheme.of(context).alternate,
+                fontSize: 16,
+                letterSpacing: 0,
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+      ),
       body: Stack(
         children: [
           Column(
@@ -82,6 +97,7 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
             ),
         ],
       ),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 
