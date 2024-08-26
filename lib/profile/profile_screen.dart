@@ -156,19 +156,56 @@ class ProfileContent extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       children: [
         if (cardResponseDTO != null && cardResponseDTO['mobileIDPdf'] != null)
-          Container(
-            height: 250,
-            decoration: BoxDecoration(
-              color: EAqoonsiTheme.of(context).alternate,
-              boxShadow: const [
-                BoxShadow(
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                    appBar: AppBar(
+                      title: const Text(
+                        'Digital ID',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      backgroundColor: kBlueColor,
+                    ),
+                    body: PDFViewWidget(
+                        base64Pdf: cardResponseDTO['mobileIDPdf']),
+                    bottomNavigationBar: const BottomNavBar(),
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              height: 250,
+              decoration: BoxDecoration(
+                color: EAqoonsiTheme.of(context).alternate,
+                boxShadow: const [
+                  BoxShadow(
                     blurRadius: 4,
                     color: Color(0x33000000),
-                    offset: Offset(0, 2))
-              ],
-              borderRadius: BorderRadius.circular(12),
+                    offset: Offset(0, 2),
+                  )
+                ],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  PDFViewWidget(base64Pdf: cardResponseDTO['mobileIDPdf']),
+                  Center(
+                    child: Icon(
+                      Icons.fullscreen,
+                      size: 48,
+                      color: Colors.white.withOpacity(0.0),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: PDFViewWidget(base64Pdf: cardResponseDTO['mobileIDPdf']),
           )
         else
           Container(

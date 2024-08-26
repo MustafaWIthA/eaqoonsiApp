@@ -13,11 +13,20 @@ class DigitalIDCard extends StatefulWidget {
 
 class _DigitalIDCardState extends State<DigitalIDCard>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  AnimationController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+  }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -28,7 +37,7 @@ class _DigitalIDCardState extends State<DigitalIDCard>
       return const Center(
         child: Text(
           'Digital ID not available',
-          //big text
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       );
     }
@@ -172,13 +181,23 @@ class _DigitalIDCardState extends State<DigitalIDCard>
           _buildInfoRow(Icons.flag, 'Nationality', cardData['nationality']),
           _buildInfoRow(
               Icons.calendar_today, 'Issue Date', cardData['issueDate']),
-          _buildInfoRow(Icons.event, 'Expiry Date', cardData['expiryDate']),
-          _buildInfoRow(
-              Icons.location_city, 'Place of Birth', cardData['placeOfBirth']),
+          _buildInfoRow(Icons.event, 'Expiry Date',
+              _calculateExpiryDate(cardData['issueDate'])),
           _buildInfoRow(Icons.home, 'Address', cardData['permanentAddress']),
         ],
       ),
     );
+  }
+
+  String _calculateExpiryDate(String issueDate) {
+    List<String> dateParts = issueDate.split('-');
+    int day = int.parse(dateParts[0]);
+    int month = int.parse(dateParts[1]);
+    int year = int.parse(dateParts[2]);
+    DateTime parsedDate = DateTime(year, month, day);
+    DateTime expiryDate =
+        DateTime(parsedDate.year + 10, parsedDate.month, parsedDate.day);
+    return '${expiryDate.day.toString().padLeft(2, '0')}-${expiryDate.month.toString().padLeft(2, '0')}-${expiryDate.year}';
   }
 
   Widget _buildInfoRow(IconData icon, String label, String value) {

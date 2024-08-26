@@ -31,6 +31,7 @@ class CameraScreen extends ConsumerWidget {
     final cameraControllerFuture = ref.watch(cameraControllerProvider.future);
 
     return Scaffold(
+      backgroundColor: kBlueColor,
       body: SafeArea(
         child: Stack(
           children: [
@@ -42,7 +43,17 @@ class CameraScreen extends ConsumerWidget {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   }
                   if (snapshot.hasData && snapshot.data != null) {
-                    return CameraPreview(snapshot.data!);
+                    return Center(
+                      child: Container(
+                        width: 300,
+                        height: 300,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: kYellowColor, width: 4),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: CameraPreview(snapshot.data!),
+                      ),
+                    );
                   } else {
                     return const Center(child: Text('Camera not available'));
                   }
@@ -50,16 +61,6 @@ class CameraScreen extends ConsumerWidget {
                   return const Center(child: CircularProgressIndicator());
                 }
               },
-            ),
-            Center(
-              child: Container(
-                width: 250,
-                height: 250,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
-                ),
-              ),
             ),
             Positioned(
               bottom: 16,
@@ -138,6 +139,7 @@ class ImagePreviewScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
     final registrationState = ref.watch(registrationNotifierProvider);
+    final dioClient = ref.watch(dioProvider);
 
     ref.listen<AuthState>(registrationNotifierProvider, (previous, next) {
       if (next.isAuthenticated) {
@@ -145,7 +147,6 @@ class ImagePreviewScreen extends ConsumerWidget {
           MaterialPageRoute(builder: (context) => const ProfileScreen()),
         );
       } else if (registrationState.errorMessage != null) {
-        print(registrationState.errorMessage);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(registrationState.errorMessage!),
@@ -198,17 +199,33 @@ class ImagePreviewScreen extends ConsumerWidget {
                 ),
                 EaqoonsiButtonWidget(
                   onPressed: () async {
-                    ref
-                        .read(registrationNotifierProvider.notifier)
-                        .setCapturedImage(File(imagePath));
-                    await ref
-                        .read(registrationNotifierProvider.notifier)
-                        .register(
-                          fullName,
-                          email,
-                          password,
-                          '12345',
-                        );
+                    try {
+                      final formData = FormData.fromMap({
+                        'username': fullName,
+                        'photo': await MultipartFile.fromFile(imagePath,
+                            filename: 'image.jpg'),
+                        'fullName': fullName,
+                        'email': email,
+                        'password': password,
+                      });
+
+                      final response = await dioClient.post(
+                        '/auth/registration',
+                        data: formData,
+                      );
+
+                      if (response.statusCode == 200) {
+                        ref
+                            .read(authStateProvider.notifier)
+                            .login(email, password);
+                      } else {
+                        throw Exception('Registration failed');
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error: $e')),
+                      );
+                    }
                   },
                   text: localizations.sendPhoto,
                   options: EaqoonsiButtonOptions(
@@ -236,6 +253,53 @@ class ImagePreviewScreen extends ConsumerWidget {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CongratulationBottomSheet extends StatelessWidget {
+  const CongratulationBottomSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        color: kBlueColor,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.check_circle,
+            color: kWhiteColor,
+            size: 48,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Congratulations!',
+            style: EAqoonsiTheme.of(context).titleLarge.override(
+                  fontFamily: 'Plus Jakarta Sans',
+                  color: kWhiteColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Your Registration has been successful.',
+            style: EAqoonsiTheme.of(context).bodyMedium.override(
+                  fontFamily: 'Plus Jakarta Sans',
+                  color: kWhiteColor,
+                  fontSize: 16,
+                ),
           ),
         ],
       ),
