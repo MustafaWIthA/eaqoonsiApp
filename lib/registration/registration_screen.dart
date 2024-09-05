@@ -1,16 +1,6 @@
 import 'package:eaqoonsi/public/camera/capture_image.dart';
-import 'package:eaqoonsi/constants.dart';
-import 'package:eaqoonsi/public/login/auth_notifier.dart';
-import 'package:eaqoonsi/profile/profile_screen.dart';
-import 'package:eaqoonsi/registration/registration_notifier.dart';
-import 'package:eaqoonsi/widget/animation.dart';
-import 'package:eaqoonsi/widget/e_aqoonsi_button_widgets.dart';
-import 'package:eaqoonsi/widget/eaqoonsi_text_from_field.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widget/text_theme.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 
 class RegistrationScreen extends ConsumerStatefulWidget {
   const RegistrationScreen({super.key});
@@ -87,22 +77,6 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final registrationState = ref.watch(registrationNotifierProvider);
-
-    ref.listen<AuthState>(registrationNotifierProvider, (previous, next) {
-      if (next.isAuthenticated) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const ProfileScreen()),
-        );
-      } else if (registrationState.errorMessage != null) {
-        print(registrationState.errorMessage);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(registrationState.errorMessage!),
-          ),
-        );
-      }
-    });
 
     return GestureDetector(
       child: Scaffold(
@@ -125,22 +99,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 70, 0, 32),
-                                child: Container(
-                                  width: 200,
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  alignment: const AlignmentDirectional(0, 0),
-                                  child: Image.asset(
-                                    frontlogoWhite,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
+                              buildLogo(),
                               Container(
                                 width: double.infinity,
                                 constraints: const BoxConstraints(
@@ -166,6 +125,20 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                                     padding: const EdgeInsets.all(32),
                                     child: Column(
                                       children: [
+                                        const Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 12, 0, 24),
+                                          child: Text(
+                                            "Fill the form below to get started",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Color(0xFF57636C),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
                                         Padding(
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(0, 0, 0, 16),
@@ -299,11 +272,11 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
+                              ).animateOnPageLoad(animationsMap[
+                                  'containerOnPageLoadAnimation']!),
                             ],
                           ),
-                        ).animateOnPageLoad(
-                            animationsMap['containerOnPageLoadAnimation']!),
+                        ),
                       ),
                     ],
                   ),

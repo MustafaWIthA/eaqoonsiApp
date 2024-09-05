@@ -35,19 +35,17 @@ class FeedbackFormNotifier extends StateNotifier<FeedbackFormState> {
   }
 
   Future<void> submitFeedback() async {
-    // TODO: API CALL
-    print('Submitting feedback: ${state.category} - ${state.description}');
     // Reset the form after submission
     state = FeedbackFormState();
   }
 }
 
 class HelpScreen extends ConsumerWidget {
-  const HelpScreen({Key? key}) : super(key: key);
+  const HelpScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final feedbackForm = ref.watch(feedbackFormProvider);
+    // final feedbackForm = ref.watch(feedbackFormProvider);
 
     return Scaffold(
       appBar: AppBar(

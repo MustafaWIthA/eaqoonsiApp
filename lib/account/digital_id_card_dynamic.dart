@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:eaqoonsi/constants.dart';
 
@@ -34,19 +35,41 @@ class _DigitalIDCardState extends State<DigitalIDCard>
   Widget build(BuildContext context) {
     if (widget.profileData['userStatus'] != 'ACTIVE' ||
         widget.profileData['cardResponseDTO'] == null) {
-      return const Center(
-        child: Text(
-          'Digital ID not available',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      return Container(
+        decoration: BoxDecoration(
+          color: kBlueColor,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        height: MediaQuery.of(context).size.height,
+        child: const Center(
+          child: Text(
+            'Digital ID Card is in progress',
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
       );
+
+      // const Center(
+      //   child: Text(
+      //     'Digital ID not available',
+      //     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      //   ),
+      // );
     }
     final cardData = widget.profileData['cardResponseDTO'];
 
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
@@ -68,7 +91,7 @@ class _DigitalIDCardState extends State<DigitalIDCard>
 
   Widget _buildHeader(Map<String, dynamic> cardData) {
     return ClipRRect(
-      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+      // borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
       child: Container(
         height: 300,
         decoration: BoxDecoration(
@@ -144,7 +167,8 @@ class _DigitalIDCardState extends State<DigitalIDCard>
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text(
+                    child: AutoSizeText(
+                      maxLines: 1,
                       cardData['fullName'],
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),

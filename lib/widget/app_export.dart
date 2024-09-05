@@ -11,6 +11,9 @@ export 'package:flutter_animate/flutter_animate.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:jwt_decoder/jwt_decoder.dart';
 export 'package:flutter/services.dart';
+export 'package:flutter_image_compress/flutter_image_compress.dart';
+export 'package:path_provider/path_provider.dart';
+export 'package:auto_size_text/auto_size_text.dart';
 
 // Project screens
 export 'package:eaqoonsi/public/login/login_screen.dart';
@@ -24,7 +27,7 @@ export 'package:eaqoonsi/otp/verify_otp.dart';
 export 'package:eaqoonsi/utilities/api_exceptions.dart';
 export 'package:eaqoonsi/utilities/dio_client.dart';
 export 'package:eaqoonsi/public/login/auth_notifier.dart';
-
+export 'package:eaqoonsi/public/login/auth_state.dart';
 export 'package:eaqoonsi/help/help_screen.dart';
 export 'package:eaqoonsi/language/language_notifier.dart';
 export 'package:eaqoonsi/public/login/splash_screen.dart';
@@ -58,3 +61,8 @@ export 'package:eaqoonsi/public/digital/check_registration.dart';
 export 'package:eaqoonsi/language/language_widget.dart';
 export 'package:eaqoonsi/widget/eaqoonsi_text_from_field.dart';
 export 'package:eaqoonsi/constants.dart';
+
+//widgets
+
+export 'package:eaqoonsi/widget/logo_widget.dart';
+export 'package:eaqoonsi/widget/national_id_input.dart';

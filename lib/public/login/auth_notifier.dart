@@ -2,14 +2,18 @@ import 'package:eaqoonsi/providers/storage_provider.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 
 final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier(ref.read(dioProvider), ref.read(storageProvider));
+  return AuthNotifier(ref.read(dioProvider), ref.read(storageProvider), ref);
 });
 
 class AuthNotifier extends StateNotifier<AuthState> {
+  final Ref ref;
+
   final DioClient _dioClient;
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
-  AuthNotifier(this._dioClient, FlutterSecureStorage read) : super(AuthState());
+  AuthNotifier(this._dioClient, FlutterSecureStorage read, this.ref)
+      : super(AuthState());
+
   void clearError() {
     state = state.copyWith(errorMessage: null);
   }
@@ -50,53 +54,24 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> logout() async {
-    await _storage.delete(key: 'access_token');
-    await _storage.delete(key: 'refresh_token');
-    state = AuthState(isAuthenticated: false, accessToken: null);
-  }
+    try {
+      var providers = ref.container.getAllProviderElements();
+      for (var element in providers) {
+        element.invalidateSelf();
+      }
+      await _storage.delete(key: 'access_token');
+      await _storage.delete(key: 'refresh_token');
 
-  // Future<void> logout() async {
-  //   try {
-  //     await _storage.delete(key: 'access_token');
-  //     await _storage.delete(key: 'refresh_token');
-  //     state = AuthState();
-  //   } catch (e) {
-  //     state = state.copyWith(errorMessage: 'Error during logout');
-  //   }
-  // }
+      state = AuthState();
+    } catch (e) {
+      state = state.copyWith(errorMessage: 'Error during logout');
+    }
+  }
 
   Future<void> checkAuthStatus() async {
     final token = await _storage.read(key: 'access_token');
     if (token != null) {
       state = state.copyWith(isAuthenticated: true, accessToken: token);
     }
-  }
-}
-
-class AuthState {
-  final bool isAuthenticated;
-  final String? accessToken;
-  final String? errorMessage;
-  final bool isLoading;
-
-  AuthState({
-    this.isAuthenticated = false,
-    this.accessToken,
-    this.errorMessage,
-    this.isLoading = false,
-  });
-
-  AuthState copyWith({
-    bool? isAuthenticated,
-    String? accessToken,
-    String? errorMessage,
-    bool? isLoading,
-  }) {
-    return AuthState(
-      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
-      accessToken: accessToken ?? this.accessToken,
-      errorMessage: errorMessage ?? this.errorMessage,
-      isLoading: isLoading ?? this.isLoading,
-    );
   }
 }

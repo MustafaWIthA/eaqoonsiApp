@@ -9,6 +9,7 @@ final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   } on UnauthorizedException {
     // Handle 401 Unauthorized error
     ref.read(authStateProvider.notifier).logout();
+
     throw Exception('Unauthorized access. Please log in again.');
   } on ApiException catch (e) {
     throw Exception(e.message ?? 'Failed to load profile');

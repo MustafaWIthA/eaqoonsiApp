@@ -16,12 +16,14 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () => ref.refresh(profileProvider.future),
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: profileAsyncValue.when(
-            data: (profileData) => DigitalIDCard(profileData: profileData),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) => Center(child: Text('Error: $error')),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: profileAsyncValue.when(
+              data: (profileData) => DigitalIDCard(profileData: profileData),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Center(child: Text('Error: $error')),
+            ),
           ),
         ),
       ),

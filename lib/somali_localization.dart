@@ -508,4 +508,10 @@ class SoMaterialLocalizations extends GlobalMaterialLocalizations {
 
   @override
   String get shareButtonLabel => 'Wadaag';
+
+  @override
+  String get clearButtonTooltip => 'Tirtir';
+
+  @override
+  String get selectedDateLabel => 'dooro taariikhda';
 }

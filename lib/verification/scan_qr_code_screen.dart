@@ -111,6 +111,8 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
     final encryptionService = ref.read(encryptionServiceProvider);
     try {
       final decryptedData = encryptionService.decryptData(rawValue);
+      print('Decrypted data: $decryptedData'); // For debugging
+
       final verificationData = jsonDecode(decryptedData);
       _initiateVerification(context, ref, verificationData);
     } catch (e) {

@@ -30,3 +30,7 @@ class TimeoutException extends ApiException {
 class RequestCancelledException extends ApiException {
   RequestCancelledException([super.message]);
 }
+
+class NetworkException extends ApiException {
+  NetworkException([super.message]);
+}

@@ -34,15 +34,20 @@ class ProfileScreen extends ConsumerWidget {
         backgroundColor: kBlueColor,
         title: profileAsyncValue.when(
           data: (profile) {
-            return Text(
+            return AutoSizeText(
               '${localizations.greeting}, ${profile['fullName']}',
               style: EAqoonsiTheme.of(context).titleSmall.override(
                     fontFamily: 'Plus Jakarta Sans',
                     color: EAqoonsiTheme.of(context).alternate,
-                    fontSize: 16,
+                    fontSize: 16, // This is the default font size
                     letterSpacing: 0,
                     fontWeight: FontWeight.w500,
                   ),
+              maxLines: 1,
+              minFontSize: 12,
+              maxFontSize: 16,
+              stepGranularity: 1,
+              overflow: TextOverflow.ellipsis,
             );
           },
           loading: () => const Text('Loading...'),

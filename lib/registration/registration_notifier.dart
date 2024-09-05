@@ -1,4 +1,5 @@
 import 'package:eaqoonsi/providers/storage_provider.dart';
+import 'package:eaqoonsi/registration/dio_providers.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,7 +9,7 @@ const String keyRegsiter =
 
 final registrationNotifierProvider =
     StateNotifierProvider<RegistrationNotifier, AuthState>((ref) {
-  return RegistrationNotifier(ref.read(dioProvider as ProviderListenable<Dio>),
+  return RegistrationNotifier(ref.read(dioProviders as ProviderListenable<Dio>),
       ref.read(storageProvider));
 });
 
