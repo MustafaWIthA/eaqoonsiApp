@@ -2,7 +2,7 @@ import 'package:eaqoonsi/widget/app_export.dart';
 
 Widget buildLogo() {
   return Padding(
-    padding: const EdgeInsetsDirectional.fromSTEB(0, 70, 0, 32),
+    padding: const EdgeInsetsDirectional.fromSTEB(0, 70, 0, 10),
     child: Container(
       width: 200,
       height: 70,

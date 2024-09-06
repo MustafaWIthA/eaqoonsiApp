@@ -14,6 +14,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     final profileAsyncValue = ref.watch(profileProvider);
 
     return Scaffold(
+      backgroundColor: kBlueColor,
       body: RefreshIndicator(
         onRefresh: () => ref.refresh(profileProvider.future),
         child: SafeArea(

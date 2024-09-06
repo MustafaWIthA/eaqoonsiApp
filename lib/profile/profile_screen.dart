@@ -1,15 +1,28 @@
 import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
 
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final localizations = AppLocalizations.of(context)!;
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  @override
+  Widget build(BuildContext context) {
     final profileAsyncValue = ref.watch(profileProvider);
 
     // final authState = ref.watch(authStateProvider);
+    //check if the profileAsyncValue
+    if (profileAsyncValue is AsyncData && profileAsyncValue.value == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(authStateProvider.notifier).logout();
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      });
+    }
 
     // Listen for changes in auth state
     ref.listen<AuthState>(authStateProvider, (previous, current) {
@@ -29,67 +42,13 @@ class ProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: EAqoonsiTheme.of(context).alternate),
-        backgroundColor: kBlueColor,
-        title: profileAsyncValue.when(
-          data: (profile) {
-            return AutoSizeText(
-              '${localizations.greeting}, ${profile['fullName']}',
-              style: EAqoonsiTheme.of(context).titleSmall.override(
-                    fontFamily: 'Plus Jakarta Sans',
-                    color: EAqoonsiTheme.of(context).alternate,
-                    fontSize: 16, // This is the default font size
-                    letterSpacing: 0,
-                    fontWeight: FontWeight.w500,
-                  ),
-              maxLines: 1,
-              minFontSize: 12,
-              maxFontSize: 16,
-              stepGranularity: 1,
-              overflow: TextOverflow.ellipsis,
-            );
-          },
-          loading: () => const Text('Loading...'),
-          error: (error, stack) {
-            return const Text('Error');
-          },
-        ),
-        actions: [
-          InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AccountScreen()),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: profileAsyncValue.when(
-                data: (profile) {
-                  String base64Image = profile['photo'];
-                  Uint8List imageBytes = base64Decode(base64Image);
-                  return CircleAvatar(
-                    radius: 30,
-                    backgroundColor: EAqoonsiTheme.of(context).primary,
-                    backgroundImage:
-                        imageBytes.isNotEmpty ? MemoryImage(imageBytes) : null,
-                    child: imageBytes.isEmpty
-                        ? const Icon(
-                            Icons.person,
-                            size: 30,
-                            color: Colors.white,
-                          )
-                        : null,
-                  );
-                },
-                loading: () => const CircularProgressIndicator(),
-                error: (error, stack) {
-                  return const Icon(Icons.error);
-                },
-              ),
-            ),
-          ),
-        ],
+      appBar: AccountAppBar(
+        profileAsyncValue: profileAsyncValue,
+        onAvatarTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const AccountScreen()),
+          );
+        },
       ),
       drawer: Drawer(
         child: ListView(
@@ -106,6 +65,16 @@ class ProfileScreen extends ConsumerWidget {
                   fontSize: 24,
                 ),
               ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsScreen()),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.logout),
@@ -156,61 +125,23 @@ class ProfileContent extends StatelessWidget {
             'eAqoonsi ensures secure online registration using facial recognition, basic information, and OTP verification. Access your account safely with username and password, and utilize QR codes for easy verification.',
       },
     ];
-
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: [
+        const AutoSizeText(
+          'Digital ID Card',
+          maxFontSize: 24,
+          minFontSize: 16,
+          style: TextStyle(
+            color: kBlueColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
         if (cardResponseDTO != null && cardResponseDTO['mobileIDPdf'] != null)
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => Scaffold(
-                    appBar: AppBar(
-                      title: const Text(
-                        'Digital ID',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      backgroundColor: kBlueColor,
-                    ),
-                    body: PDFViewWidget(
-                        base64Pdf: cardResponseDTO['mobileIDPdf']),
-                    bottomNavigationBar: const BottomNavBar(),
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              height: 250,
-              decoration: BoxDecoration(
-                color: EAqoonsiTheme.of(context).alternate,
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 4,
-                    color: Color(0x33000000),
-                    offset: Offset(0, 2),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  PDFViewWidget(base64Pdf: cardResponseDTO['mobileIDPdf']),
-                  Center(
-                    child: Icon(
-                      Icons.fullscreen,
-                      size: 48,
-                      color: Colors.white.withOpacity(0.0),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          ClickablePDFPreview(
+            base64Pdf: cardResponseDTO['mobileIDPdf'],
+            height: 250,
           )
         else
           Container(
@@ -228,15 +159,15 @@ class ProfileContent extends StatelessWidget {
               style: EAqoonsiTheme.of(context).bodyMedium,
             ),
           ),
-        const SizedBox(height: 10),
-        Text(
-          'Personal Details',
-          style: EAqoonsiTheme.of(context).titleMedium,
-        ),
-        const SizedBox(height: 10),
-        Text(
-          'Latest Information',
-          style: EAqoonsiTheme.of(context).titleMedium,
+        const SizedBox(height: 30),
+        const AutoSizeText(
+          'Useful Information',
+          maxFontSize: 24,
+          minFontSize: 16,
+          style: TextStyle(
+            color: kBlueColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 10),
         SizedBox(

@@ -1,4 +1,3 @@
-import 'package:eaqoonsi/public/camera/capture_image.dart';
 import '../widget/text_theme.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 
@@ -83,7 +82,6 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
         key: scaffoldKey,
         backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
         body: SafeArea(
-          top: true,
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -100,6 +98,8 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               buildLogo(),
+                              const StepIndicator(
+                                  currentStep: 1, totalSteps: 3),
                               Container(
                                 width: double.infinity,
                                 constraints: const BoxConstraints(

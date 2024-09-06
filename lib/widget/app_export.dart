@@ -22,6 +22,11 @@ export 'package:eaqoonsi/profile/profile_screen.dart';
 export 'package:eaqoonsi/verification/verification_screen.dart';
 export 'package:pin_code_fields/pin_code_fields.dart';
 export 'package:eaqoonsi/otp/verify_otp.dart';
+export 'package:eaqoonsi/widget/step_indicator.dart';
+export 'package:eaqoonsi/public/camera/capture_image.dart';
+export 'package:eaqoonsi/profile/settings/settings_screen.dart';
+export 'package:eaqoonsi/widget/account_app_bar.dart';
+export 'package:eaqoonsi/card/full_screen_pdf.dart';
 
 // Project providers
 export 'package:eaqoonsi/utilities/api_exceptions.dart';
@@ -46,7 +51,7 @@ export 'dart:convert';
 export 'dart:typed_data';
 
 export 'package:eaqoonsi/account/account_screen.dart';
-export 'package:eaqoonsi/profile/digital_card.dart';
+export 'package:eaqoonsi/card/digital_card.dart';
 export 'package:eaqoonsi/widget/bottom_nav_bar.dart';
 
 export 'package:google_fonts/google_fonts.dart';
