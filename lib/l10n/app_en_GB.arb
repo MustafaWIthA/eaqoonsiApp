@@ -270,6 +270,20 @@
   "sendPhoto": "Dir",
   "@sendPhoto": {
     "description": "Dir sawirka"
+  },
+
+  "forgetPassword": "Waa maxay furahaaga?",
+  "@forgetPassword": {
+    "description": "Waa maxay furahaaga?"
+  },
+  "resetPassword": "Xaqiiji furahaaga",
+  "@resetPassword": {
+    "description": "Dib ugu soo cel"
+  },
+  "enterNationalIDForPasswordReset": "Fadlan geli Aqoonsigaaga si aad ugu dib ugu soo ceshato furahaaga",
+  "@enterNationalIDForPasswordReset": {
+    "description": "Fadlan geli Aqoonsigaaga si aad ugu dib ugu soo ceshato furahaaga"
   }
+
 
 }

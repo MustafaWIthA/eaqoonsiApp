@@ -179,6 +179,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ),
                               ),
                             ),
+                            //add forget password on the left side
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 5.0, top: 3.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ForgetPassword(),
+                                        ),
+                                      );
+                                    },
+                                    child: AutoSizeText(
+                                      "Forget Password",
+                                      style: TextStyle(
+                                        color: EAqoonsiTheme.of(context)
+                                            .primaryText,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             Align(
                               alignment: const AlignmentDirectional(0, 0),
                               child: Padding(

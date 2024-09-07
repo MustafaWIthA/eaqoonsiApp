@@ -27,6 +27,7 @@ export 'package:eaqoonsi/public/camera/capture_image.dart';
 export 'package:eaqoonsi/profile/settings/settings_screen.dart';
 export 'package:eaqoonsi/widget/account_app_bar.dart';
 export 'package:eaqoonsi/card/full_screen_pdf.dart';
+export 'package:eaqoonsi/public/password/password_screen.dart';
 
 // Project providers
 export 'package:eaqoonsi/utilities/api_exceptions.dart';

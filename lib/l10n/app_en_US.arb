@@ -238,6 +238,19 @@
   "passwordValidation": "Password must be at least 6 characters long",
 "@passwordValidation": {
   "description": "Error message when the password is too short"
+},
+
+"forgetPassword": "Forget Password",
+"@forgetPassword": {
+  "description": "Forget Password"
+},
+"resetPassword": "Reset Password",
+"@resetPassword": {
+  "description": "Reset Password"
+},
+"enterNationalIDForPasswordReset": "Enter your National ID to reset your password",
+"@enterNationalIDForPasswordReset": {
+  "description": "Enter your National ID to reset your password"
 }
 
 }
