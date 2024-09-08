@@ -3,6 +3,7 @@ import 'package:eaqoonsi/profile/profile_screen.dart';
 import 'package:eaqoonsi/verification/history/verification_history_screen.dart';
 import 'package:eaqoonsi/verification/scan_qr_code_screen.dart';
 import 'package:eaqoonsi/verification/show_qr_code.dart';
+import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
@@ -17,6 +18,7 @@ class BottomNavBar extends ConsumerWidget {
     final selectedIndex = ref.watch(selectedIndexProvider);
 
     return BottomNavigationBar(
+      backgroundColor: EAqoonsiTheme.of(context).primaryText,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -35,18 +37,24 @@ class BottomNavBar extends ConsumerWidget {
           label: 'Show QR',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.help),
+          icon: Icon(Icons.history),
           label: 'History',
         ),
       ],
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: EAqoonsiTheme.of(context).primary,
-      unselectedItemColor: EAqoonsiTheme.of(context).darkBackground,
+      selectedItemColor: kWhiteColor,
+      unselectedItemColor: EAqoonsiTheme.of(context).alternate,
       unselectedLabelStyle: EAqoonsiTheme.of(context).titleSmall.override(
             fontFamily: 'Plus Jakarta Sans',
             color: EAqoonsiTheme.of(context).primaryText,
             letterSpacing: 0,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w400,
+          ),
+      selectedLabelStyle: EAqoonsiTheme.of(context).titleSmall.override(
+            fontFamily: 'Plus Jakarta Sans',
+            color: kWhiteColor,
+            letterSpacing: 0,
+            fontWeight: FontWeight.w900,
           ),
       currentIndex: selectedIndex,
       onTap: (index) {

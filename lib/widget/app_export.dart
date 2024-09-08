@@ -28,6 +28,7 @@ export 'package:eaqoonsi/profile/settings/settings_screen.dart';
 export 'package:eaqoonsi/widget/account_app_bar.dart';
 export 'package:eaqoonsi/card/full_screen_pdf.dart';
 export 'package:eaqoonsi/public/password/password_screen.dart';
+export 'package:eaqoonsi/profile/change/change_password_screen.dart';
 
 // Project providers
 export 'package:eaqoonsi/utilities/api_exceptions.dart';
@@ -41,6 +42,7 @@ export 'package:eaqoonsi/registration/registration_screen.dart';
 export 'package:eaqoonsi/somali_localization.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
 export 'package:flutter_gen/gen_l10n/app_localizations.dart';
+export 'package:eaqoonsi/profile/change/password_provider.dart';
 
 export 'package:eaqoonsi/profile/profile_provider.dart';
 export 'package:eaqoonsi/utilities/encryption_service_provider.dart';
@@ -70,5 +72,5 @@ export 'package:eaqoonsi/constants.dart';
 
 //widgets
 
-export 'package:eaqoonsi/widget/logo_widget.dart';
+export 'package:eaqoonsi/widget/utility_widget.dart';
 export 'package:eaqoonsi/widget/national_id_input.dart';

@@ -54,11 +54,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: const Text(
+            const DrawerHeader(
+              decoration: BoxDecoration(color: kBlueColor),
+              child: Text(
                 'Menu',
                 style: TextStyle(
                   color: Colors.white,
@@ -73,6 +71,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                       builder: (context) => const SettingsScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.lock),
+              title: const Text('Change Password'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const ChangePasswordScreen()),
                 );
               },
             ),
