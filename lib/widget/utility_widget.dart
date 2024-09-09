@@ -37,8 +37,12 @@ void showErrorSnackBar(String message, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Center(
-        child: Text(
+        child: AutoSizeText(
           message,
+          textAlign: TextAlign.center, // Center the text
+          maxFontSize: 20,
+          minFontSize: 14,
+          maxLines: 2,
           style: const TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
         ),
@@ -53,8 +57,12 @@ void showSuccessSnackBar(String message, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Center(
-        child: Text(
+        child: AutoSizeText(
           message,
+          maxFontSize: 20,
+          textAlign: TextAlign.center, // Center the text
+          minFontSize: 14,
+          maxLines: 2,
           style: const TextStyle(
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
         ),

@@ -192,7 +192,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const ForgetPassword(),
+                                              const ForgotPassword(),
                                         ),
                                       );
                                     },

@@ -10,7 +10,8 @@ class DioClient {
 
   DioClient(this._ref) {
     _dio = Dio(BaseOptions(
-      baseUrl: 'https://e-aqoonsi.nira.gov.so/api/v1',
+      // baseUrl: 'https://e-aqoonsi.nira.gov.so/api/v1',
+      baseUrl: 'http://localhost:9191/api/v1',
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 3),
       headers: {
@@ -103,5 +104,38 @@ class DioClient {
       default:
         return ApiException(message);
     }
+  }
+}
+
+class ApiResponse<T> {
+  final T? data;
+  final String statusCode;
+  final int statusCodeValue;
+  final String? message;
+
+  ApiResponse({
+    this.data,
+    required this.statusCode,
+    required this.statusCodeValue,
+    this.message,
+  });
+
+  factory ApiResponse.fromJson(Map<String, dynamic> json) {
+    return ApiResponse(
+      data: json['body'],
+      statusCode: json['statusCode'],
+      statusCodeValue: json['statusCodeValue'],
+      message: json['message'],
+    );
+  }
+
+  factory ApiResponse.error(DioException error) {
+    return ApiResponse(
+      statusCode: error.response?.statusCode.toString() ?? 'ERROR',
+      statusCodeValue: error.response?.statusCode ?? 0,
+      message: error.response?.data?['body']?['message'] ??
+          error.message ??
+          'An error occurred',
+    );
   }
 }

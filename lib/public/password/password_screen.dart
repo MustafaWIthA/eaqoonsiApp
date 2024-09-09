@@ -1,15 +1,16 @@
+import 'package:eaqoonsi/public/password/password_reset_provider.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:eaqoonsi/widget/submit_widget.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
 
-class ForgetPassword extends ConsumerStatefulWidget {
-  const ForgetPassword({super.key});
+class ForgotPassword extends ConsumerStatefulWidget {
+  const ForgotPassword({super.key});
 
   @override
-  ConsumerState<ForgetPassword> createState() => _ForgetPasswordState();
+  ConsumerState<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _ForgetPasswordState extends ConsumerState<ForgetPassword>
+class _ForgotPasswordState extends ConsumerState<ForgotPassword>
     with TickerProviderStateMixin {
   final animationsMap = <String, AnimationInfo>{};
   final nationalIDNumberController = TextEditingController();
@@ -52,49 +53,19 @@ class _ForgetPasswordState extends ConsumerState<ForgetPassword>
     );
   }
 
-  Future<void> resetPassword() async {
+  Future<void> _resetPassword() async {
     final localizations = AppLocalizations.of(context)!;
-    final idNumber = nationalIDNumberController.text;
-
-    try {
-      // Implement the API call to reset password here
-      // For demonstration, we'll just show a success message
-      // _showSuccessSnackBar(localizations.passwordResetRequestSent);
-    } catch (e) {
-      _showErrorSnackBar('An error occurred: $e');
+    if (_formKey.currentState!.validate()) {
+      setState(() {});
+      try {
+        final dioClient = ref.read(dioProvider);
+        await resetPassword(dioClient, nationalIDNumberController.text);
+        showSuccessSnackBar(
+            'Password Reset has been sent to your email', context);
+      } catch (e) {
+        showErrorSnackBar('An error occurred: $e', context);
+      }
     }
-  }
-
-  void _showSuccessSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Center(
-          child: Text(
-            message,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-        ),
-        backgroundColor: Colors.green,
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
-
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Center(
-          child: Text(
-            message,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-        ),
-        backgroundColor: Colors.red,
-        duration: const Duration(seconds: 3),
-      ),
-    );
   }
 
   @override
@@ -185,11 +156,14 @@ class _ForgetPasswordState extends ConsumerState<ForgetPassword>
     );
   }
 
-  void submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      await resetPassword();
-    }
-  }
+  // void submitForm() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     await resetPassword(
+  //       ref.read(dioProvider),
+  //       nationalIDNumberController.text,
+  //     );
+  //   }
+  // }
 
   Widget _buildSubmitButton(AppLocalizations localizations) {
     return Align(
@@ -197,7 +171,7 @@ class _ForgetPasswordState extends ConsumerState<ForgetPassword>
       child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
           child: SubmitButtonWidget(
-              onPressed: submitForm, buttonText: localizations.loginButton)),
+              onPressed: _resetPassword, buttonText: "Reset Password")),
     );
   }
 
