@@ -1,4 +1,5 @@
 import 'package:eaqoonsi/widget/app_export.dart';
+import 'package:eaqoonsi/widget/submit_widget.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -13,8 +14,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final profileAsyncValue = ref.watch(profileProvider);
 
-    // final authState = ref.watch(authStateProvider);
-    //check if the profileAsyncValue
     if (profileAsyncValue is AsyncData && profileAsyncValue.value == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(authStateProvider.notifier).logout();
@@ -24,7 +23,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       });
     }
 
-    // Listen for changes in auth state
     ref.listen<AuthState>(authStateProvider, (previous, current) {
       if (!current.isAuthenticated) {
         Navigator.of(context).pushReplacement(
@@ -45,6 +43,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       appBar: AccountAppBar(
         profileAsyncValue: profileAsyncValue,
         onAvatarTap: () {
+          ref.read(selectedIndexProvider.notifier).state = 1;
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => const AccountScreen()),
           );
@@ -64,20 +63,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ),
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const SettingsScreen()),
-                );
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.settings),
+            //   title: const Text('Settings'),
+            //   onTap: () {
+            //     ref.read(selectedIndexProvider.notifier).state = 1;
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //           builder: (context) => const SettingsScreen()),
+            //     );
+            //   },
+            // ),
             ListTile(
               leading: const Icon(Icons.lock),
               title: const Text('Change Password'),
               onTap: () {
+                ref.read(selectedIndexProvider.notifier).state = 1;
                 Navigator.of(context).push(
                   MaterialPageRoute(
                       builder: (context) => const ChangePasswordScreen()),
@@ -167,6 +168,56 @@ class ProfileContent extends StatelessWidget {
               style: EAqoonsiTheme.of(context).bodyMedium,
             ),
           ),
+        Container(
+          decoration: BoxDecoration(
+            color: EAqoonsiTheme.of(context).primaryBackground,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 4,
+                color: Colors.black.withOpacity(0.1),
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SubmitButtonWidget(
+                  backgroundColor: EAqoonsiTheme.of(context).primaryText,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ShowQrCode(),
+                      ),
+                    );
+                  },
+                  buttonText: 'Show QR Code',
+                  width: MediaQuery.of(context).size.width * 0.4,
+                ),
+                SubmitButtonWidget(
+                  isEnabled: cardResponseDTO != null &&
+                      cardResponseDTO['mobileIDPdf'] != null,
+                  backgroundColor: kYellowColor,
+                  textColor: kBlueColor,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => LandscapePDFViewer(
+                                base64Pdf: cardResponseDTO['mobileIDPdf'],
+                              )),
+                    );
+                  },
+                  buttonText: 'View Card',
+                  width: MediaQuery.of(context).size.width * 0.4,
+                ),
+              ],
+            ),
+          ),
+        ),
         const SizedBox(height: 30),
         const AutoSizeText(
           'Useful Information',

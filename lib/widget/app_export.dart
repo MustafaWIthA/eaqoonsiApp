@@ -29,6 +29,10 @@ export 'package:eaqoonsi/widget/account_app_bar.dart';
 export 'package:eaqoonsi/card/full_screen_pdf.dart';
 export 'package:eaqoonsi/public/password/password_screen.dart';
 export 'package:eaqoonsi/profile/change/change_password_screen.dart';
+export 'package:eaqoonsi/verification/history/verification_history_screen.dart';
+export 'package:eaqoonsi/verification/scan_qr_code_screen.dart';
+export 'package:eaqoonsi/verification/show_qr_code.dart';
+export 'package:eaqoonsi/account/digital_id_card_dynamic.dart';
 
 // Project providers
 export 'package:eaqoonsi/utilities/api_exceptions.dart';

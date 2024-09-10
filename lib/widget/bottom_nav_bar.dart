@@ -1,11 +1,4 @@
-import 'package:eaqoonsi/account/account_screen.dart';
-import 'package:eaqoonsi/profile/profile_screen.dart';
-import 'package:eaqoonsi/verification/history/verification_history_screen.dart';
-import 'package:eaqoonsi/verification/scan_qr_code_screen.dart';
-import 'package:eaqoonsi/verification/show_qr_code.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
 
 final selectedIndexProvider = StateProvider<int>((ref) => 0);
@@ -18,7 +11,7 @@ class BottomNavBar extends ConsumerWidget {
     final selectedIndex = ref.watch(selectedIndexProvider);
 
     return BottomNavigationBar(
-      backgroundColor: EAqoonsiTheme.of(context).primaryText,
+      backgroundColor: const Color.fromARGB(255, 241, 242, 242),
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -33,26 +26,22 @@ class BottomNavBar extends ConsumerWidget {
           label: 'Scan',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.qr_code),
-          label: 'Show QR',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.history),
           label: 'History',
         ),
       ],
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: kWhiteColor,
-      unselectedItemColor: EAqoonsiTheme.of(context).alternate,
+      selectedItemColor: kBlueColor,
+      unselectedItemColor: EAqoonsiTheme.of(context).secondaryText,
       unselectedLabelStyle: EAqoonsiTheme.of(context).titleSmall.override(
             fontFamily: 'Plus Jakarta Sans',
-            color: EAqoonsiTheme.of(context).primaryText,
+            color: EAqoonsiTheme.of(context).secondaryText,
             letterSpacing: 0,
             fontWeight: FontWeight.w400,
           ),
       selectedLabelStyle: EAqoonsiTheme.of(context).titleSmall.override(
             fontFamily: 'Plus Jakarta Sans',
-            color: kWhiteColor,
+            color: kBlueColor,
             letterSpacing: 0,
             fontWeight: FontWeight.w900,
           ),
@@ -74,18 +63,19 @@ class BottomNavBar extends ConsumerWidget {
             case 2:
               routeName = const QRCodeScannerScreen();
               break;
-            case 3:
-              routeName = const ShowQrCode();
-              break;
+            // case 3:
+            //   routeName = const ShowQrCode();
+            //   break;
 
-            case 4:
+            case 3:
               routeName = const VerificationHistoryScreen();
               break;
 
             default:
               routeName = const ProfileScreen();
           }
-          Navigator.pushReplacement(
+
+          Navigator.push(
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation1, animation2) => routeName,

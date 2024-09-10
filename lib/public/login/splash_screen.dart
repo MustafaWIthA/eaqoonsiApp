@@ -1,6 +1,5 @@
 import 'package:eaqoonsi/widget/app_export.dart';
 
-// Enum to represent the app's initialization state
 enum AppInitializationState {
   checking,
   noInternet,
@@ -9,20 +8,16 @@ enum AppInitializationState {
   ready,
 }
 
-// Provider for the Connectivity service
 final connectivityProvider = Provider<Connectivity>((ref) => Connectivity());
 
-// Provider for SharedPreferences
 final sharedPreferencesProvider =
     FutureProvider<SharedPreferences>((ref) async {
   return await SharedPreferences.getInstance();
 });
 
-// Provider for FlutterSecureStorage
 final secureStorageProvider =
     Provider<FlutterSecureStorage>((ref) => const FlutterSecureStorage());
 
-// StateNotifier to manage the app's initialization state
 class AppInitializationNotifier extends StateNotifier<AppInitializationState> {
   AppInitializationNotifier(this.ref) : super(AppInitializationState.checking) {
     _initialize();
@@ -58,13 +53,11 @@ class AppInitializationNotifier extends StateNotifier<AppInitializationState> {
       }
     } catch (e) {
       print('Error during initialization: $e');
-      state = AppInitializationState
-          .noInternet; // Fallback to no internet state on error
+      state = AppInitializationState.noInternet;
     }
   }
 
   bool _isTokenValid(String token) {
-    // Implement token validation logic here
     return true; // Placeholder
   }
 
@@ -74,16 +67,14 @@ class AppInitializationNotifier extends StateNotifier<AppInitializationState> {
   }
 }
 
-// Provider for the AppInitializationNotifier
 final appInitializationProvider =
     StateNotifierProvider<AppInitializationNotifier, AppInitializationState>(
         (ref) {
   return AppInitializationNotifier(ref);
 });
 
-// Usage in SplashScreen widget
 class SplashScreen extends ConsumerWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

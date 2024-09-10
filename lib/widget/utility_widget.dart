@@ -18,6 +18,28 @@ Widget buildLogo() {
   );
 }
 
+Widget buildBlueLogo() {
+  return Padding(
+    padding: const EdgeInsetsDirectional.fromSTEB(0, 70, 0, 10),
+    child: Container(
+      width: 200,
+      height: 70,
+      decoration: BoxDecoration(
+        color: Colors.blue, // Blue background to contrast with the white logo
+        borderRadius: BorderRadius.circular(16),
+      ),
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Image.asset(
+          frontlogoWhite,
+          fit: BoxFit.fill, // Adjust the logo to fit properly
+        ),
+      ),
+    ),
+  );
+}
+
 Widget buildChangePasswordIcon() {
   return Padding(
     padding: const EdgeInsetsDirectional.fromSTEB(0, 70, 0, 10),

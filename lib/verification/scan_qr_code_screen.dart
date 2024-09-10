@@ -36,7 +36,7 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
         iconTheme: IconThemeData(color: EAqoonsiTheme.of(context).alternate),
         backgroundColor: kBlueColor,
         title: Text(
-          'Scan eAqoonsi Digital',
+          'Scan eAqoonsi Digital QR Code',
           style: EAqoonsiTheme.of(context).titleSmall.override(
                 fontFamily: 'Plus Jakarta Sans',
                 color: EAqoonsiTheme.of(context).alternate,
@@ -108,16 +108,14 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
       _isVerifying = true;
     });
 
-    final encryptionService = ref.read(encryptionServiceProvider);
     try {
+      final encryptionService = ref.read(encryptionServiceProvider);
       final decryptedData = encryptionService.decryptData(rawValue);
-      print('Decrypted data: $decryptedData'); // For debugging
 
       final verificationData = jsonDecode(decryptedData);
       _initiateVerification(context, ref, verificationData);
     } catch (e) {
-      print('Decryption error: $e'); // For debugging
-      _showErrorSnackBar('Invalid QR Code: Unable to process the data');
+      showErrorSnackBar('Invalid QR Code: Unable to process the data', context);
       _resetState();
     }
   }
@@ -135,7 +133,7 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
       }
     } catch (e) {
       if (mounted) {
-        _showErrorSnackBar('Verification failed: ${e.toString()}');
+        showErrorSnackBar('Verification failed: ${e.toString()}', context);
       }
     } finally {
       _resetState();
@@ -160,17 +158,7 @@ class _QRCodeScannerScreenState extends ConsumerState<QRCodeScannerScreen> {
       ),
     )
         .then((_) {
-      // Resume scanning when returning from the result screen
       _scannerController.start();
     });
-  }
-
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
 }

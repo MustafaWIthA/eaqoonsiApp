@@ -101,10 +101,15 @@ class _PDFViewWidgetState extends State<PDFViewWidget> {
 
   @override
   void dispose() {
-    _pdfFuture.then((filePath) {
-      File(filePath).delete().catchError((error) {
+    _pdfFuture.then((filePath) async {
+      try {
+        final file = File(filePath);
+        if (await file.exists()) {
+          await file.delete();
+        }
+      } catch (error) {
         print('Error deleting temporary PDF file: $error');
-      });
+      }
     });
     super.dispose();
   }
@@ -135,7 +140,6 @@ class LandscapePDFViewer extends StatelessWidget {
                     MediaQuery.of(context).size.height),
             child: PDFViewWidget(
               base64Pdf: base64Pdf,
-              swipeHorizontal: false,
             ),
           ),
         ),

@@ -26,7 +26,7 @@ class OnboardingScreen extends ConsumerWidget {
 
         await prefs.setBool('onboardingComplete', true);
         Navigator.pop(context);
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => const CheckNationalIDNumber()));
@@ -63,12 +63,12 @@ class OnboardingScreen extends ConsumerWidget {
         ],
       ),
       bottomSheet: currentPage != 2
-          ? buildNonLastPageBottomSheet(context, pageController, ref)
-          : buildLastPageBottomSheet(() => completeOnboarding(context, ref)),
+          ? otherPagesBottomSheet(context, pageController, ref)
+          : lastPageBottomSheet(() => completeOnboarding(context, ref)),
     );
   }
 
-  Widget buildNonLastPageBottomSheet(
+  Widget otherPagesBottomSheet(
       BuildContext context, PageController pageController, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
     return Container(
@@ -87,8 +87,7 @@ class OnboardingScreen extends ConsumerWidget {
                 style: const TextStyle(color: Colors.blue)),
           ),
           Row(
-            children:
-                List.generate(3, (index) => buildDot(index, context, ref)),
+            children: List.generate(3, (index) => dots(index, context, ref)),
           ),
           TextButton(
             onPressed: () {
@@ -104,10 +103,9 @@ class OnboardingScreen extends ConsumerWidget {
     );
   }
 
-  Widget buildLastPageBottomSheet(Future<void> Function() completeOnboarding) {
+  Widget lastPageBottomSheet(Future<void> Function() completeOnboarding) {
     return TextButton(
       onPressed: () async {
-        //set onboarding complete to true
         await completeOnboarding();
       },
       style: TextButton.styleFrom(
@@ -120,7 +118,7 @@ class OnboardingScreen extends ConsumerWidget {
     );
   }
 
-  Widget buildDot(int index, BuildContext context, WidgetRef ref) {
+  Widget dots(int index, BuildContext context, WidgetRef ref) {
     final currentPage = ref.watch(currentPageProvider);
     return Container(
       height: 10,

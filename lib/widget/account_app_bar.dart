@@ -3,6 +3,7 @@ import 'package:eaqoonsi/widget/text_theme.dart';
 
 class AccountAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final AsyncValue<Map<String, dynamic>> profileAsyncValue;
+
   final VoidCallback onAvatarTap;
 
   const AccountAppBar({
@@ -14,26 +15,57 @@ class AccountAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
-
     return AppBar(
-      iconTheme: IconThemeData(color: EAqoonsiTheme.of(context).alternate),
-      backgroundColor: kBlueColor,
+      iconTheme: const IconThemeData(color: Colors.white),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(appparbackground),
+            fit: BoxFit.fill,
+          ),
+        ),
+      ),
       title: profileAsyncValue.when(
         data: (profile) {
-          return AutoSizeText(
-            '${localizations.greeting}, ${profile['fullName']}',
-            style: EAqoonsiTheme.of(context).titleSmall.override(
-                  fontFamily: 'Plus Jakarta Sans',
-                  color: EAqoonsiTheme.of(context).alternate,
-                  fontSize: 16,
-                  letterSpacing: 0,
-                  fontWeight: FontWeight.w500,
-                ),
-            maxLines: 2,
-            minFontSize: 12,
-            maxFontSize: 24,
-            stepGranularity: 1,
-            overflow: TextOverflow.ellipsis,
+          return Column(
+            children: [
+              AutoSizeText(
+                textAlign: TextAlign.left,
+                localizations.greeting,
+                style: EAqoonsiTheme.of(context).titleSmall.override(
+                      fontFamily: 'Plus Jakarta Sans',
+                      color: EAqoonsiTheme.of(context).alternate,
+                      fontSize: 16,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                maxLines: 2,
+                minFontSize: 12,
+                maxFontSize: 24,
+                stepGranularity: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              AutoSizeText(
+                textAlign: TextAlign.left,
+                profile['status'] != 'ACTIVE'
+                    ? profile['fullName']
+                    : profile['cardResponseDTO']['fullName'],
+                style: EAqoonsiTheme.of(context).titleSmall.override(
+                      fontFamily: 'Plus Jakarta Sans',
+                      color: EAqoonsiTheme.of(context).alternate,
+                      fontSize: 24,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                maxLines: 1,
+                minFontSize: 16,
+                maxFontSize: 32,
+                stepGranularity: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           );
         },
         loading: () => const Text('Loading...'),
@@ -48,8 +80,19 @@ class AccountAppBar extends ConsumerWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.all(8.0),
             child: profileAsyncValue.when(
               data: (profile) {
-                String base64Image = profile['photo'];
-                Uint8List imageBytes = base64Decode(base64Image);
+                String base64Image;
+                Uint8List imageBytes;
+
+                if (profile['userStatus'] == 'ACTIVE' &&
+                    profile['cardResponseDTO'] != null) {
+                  base64Image = profile['cardResponseDTO']['photograph'] ??
+                      profile['photo'];
+                } else {
+                  base64Image = profile['photo'];
+                }
+
+                imageBytes = base64Decode(base64Image);
+
                 return CircleAvatar(
                   radius: 30,
                   backgroundColor: EAqoonsiTheme.of(context).primary,
@@ -76,5 +119,5 @@ class AccountAppBar extends ConsumerWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(100);
 }

@@ -1,4 +1,3 @@
-import 'package:eaqoonsi/account/digital_id_card_dynamic.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
@@ -14,7 +13,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     final profileAsyncValue = ref.watch(profileProvider);
 
     return Scaffold(
-      backgroundColor: kBlueColor,
+      // backgroundColor: kBlueColor,
       body: RefreshIndicator(
         onRefresh: () => ref.refresh(profileProvider.future),
         child: SafeArea(

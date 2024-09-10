@@ -9,6 +9,7 @@ class ShowQrCode extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final qrCodeDataAsync = ref.watch(qrCodeProvider);
+    print("qrCodeDataAsync: $qrCodeDataAsync");
 
     return Scaffold(
       appBar: AppBar(

@@ -8,6 +8,7 @@ class SubmitButtonWidget extends StatelessWidget {
   final double height;
   final Color? backgroundColor;
   final Color textColor;
+  final bool isEnabled;
 
   const SubmitButtonWidget({
     super.key,
@@ -17,24 +18,28 @@ class SubmitButtonWidget extends StatelessWidget {
     this.height = 52,
     this.backgroundColor,
     this.textColor = Colors.white,
+    this.isEnabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final Color effectiveBackgroundColor = isEnabled
+        ? backgroundColor ?? EAqoonsiTheme.of(context).primaryBackground
+        : Colors.grey; // Change to grey when disabled
+
     return Align(
       alignment: const AlignmentDirectional(0, 0),
       child: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
         child: EaqoonsiButtonWidget(
-          onPressed: onPressed,
+          onPressed: isEnabled ? onPressed : null, // Disable button press
           text: buttonText,
           options: EaqoonsiButtonOptions(
             width: width,
             height: height,
             padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
             iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-            color:
-                backgroundColor ?? EAqoonsiTheme.of(context).primaryBackground,
+            color: effectiveBackgroundColor, // Set background color
             textStyle: EAqoonsiTheme.of(context).titleSmall.override(
                   fontFamily: 'Plus Jakarta Sans',
                   color: textColor,
@@ -47,7 +52,7 @@ class SubmitButtonWidget extends StatelessWidget {
               color: Colors.transparent,
               width: 1,
             ),
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: BorderRadius.circular(10),
           ),
           showLoadingIndicator: true,
         ),
