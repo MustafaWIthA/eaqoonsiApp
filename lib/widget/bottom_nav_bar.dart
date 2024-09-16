@@ -8,27 +8,22 @@ class BottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context)!;
+
     final selectedIndex = ref.watch(selectedIndexProvider);
 
     return BottomNavigationBar(
       backgroundColor: const Color.fromARGB(255, 241, 242, 242),
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
+            icon: const Icon(Icons.home), label: localizations.home),
         BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle),
-          label: 'Account',
-        ),
+            icon: const Icon(Icons.account_circle),
+            label: localizations.account),
         BottomNavigationBarItem(
-          icon: Icon(Icons.camera),
-          label: 'Scan',
-        ),
+            icon: const Icon(Icons.camera), label: localizations.scan),
         BottomNavigationBarItem(
-          icon: Icon(Icons.history),
-          label: 'History',
-        ),
+            icon: const Icon(Icons.history), label: localizations.history),
       ],
       type: BottomNavigationBarType.fixed,
       selectedItemColor: kBlueColor,

@@ -65,7 +65,7 @@ class _VerifyOTPScreenState extends ConsumerState<VerifyOTPScreen>
     final localizations = AppLocalizations.of(context)!;
 
     if (otpCodeController.text.length != 4) {
-      _showErrorSnackBar("Please enter all 4 digits");
+      _showErrorSnackBar(localizations.invalidOTP);
       return;
     }
 

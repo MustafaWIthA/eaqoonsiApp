@@ -251,6 +251,76 @@
 "enterNationalIDForPasswordReset": "Enter your National ID to reset your password",
 "@enterNationalIDForPasswordReset": {
   "description": "Enter your National ID to reset your password"
-}
+},
+  "invalidOTP": "Invalid OTP",
+  "@invalidOTP": {
+    "description": "Invalid OTP"
+  },
+  "invalidLogin": "Username or password is incorrect",
+  "@invalidLogin": {
+    "description": "Username or password is incorrect"
+  },
+  "noInternetConnection": "No internet connection",
+  "@noInternetConnection": {
+    "description": "No internet connection"
+  },
+  "notFounderror": "We are sorry, something went wrong",
+  "@notFounderror": {
+    "description": "Not Found"
+  },
+  "unknownError": "'An unexpected error occurred. Please try again.'",
+  "@unknownError": {
+    "description": "An unexpected error occurred. Please try again."
+  },
+
+
+
+  "home": "Home",
+  "@home": {
+    "description": "Home"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout"
+  },
+  "account": "Account",
+  "@account": {
+    "description": "Account"
+  },
+  "scan": "Scan",
+  "@scan": {
+    "description": "Scan"
+  },
+  "history": "History",
+  "@history": {
+    "description": "History"
+  },
+
+  "changePassword": "Change Password",
+  "@changePassword":{
+    "description": "Change Password"
+  },
+  "currentPassword": "Current Password",
+  "@currentPassword": {
+    "description": "Current Password"
+  },
+  "newPassword": "New Password",
+  "@newPassword": {
+    "description": "New Password"
+  },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm Password"
+  }
+
+
 
 }

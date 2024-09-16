@@ -58,13 +58,15 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       bottomNavigationBar: const BottomNavBar(),
       appBar: AppBar(
         backgroundColor: EAqoonsiTheme.of(context).primaryBackground,
-        title: const Text(
-          'Change Password',
-          style: TextStyle(
+        title: Text(
+          localizations.changePassword,
+          style: const TextStyle(
             color: kWhiteColor,
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -113,13 +115,17 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              'Change Password',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: EAqoonsiTheme.of(context).primaryText,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                              child: Text(
+                                localizations.changePassword,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: EAqoonsiTheme.of(context).primaryText,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             const SizedBox(
@@ -133,7 +139,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                                 child: EaqoonsiTextFormField(
                                   focusNode: currentPasswordFocusNode,
                                   controller: _currentPasswordController,
-                                  labelText: 'Current Password',
+                                  labelText: localizations.currentPassword,
                                   hintText: 'Enter your current password',
                                   obscureText: true,
                                   validator: (value) {
@@ -153,7 +159,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                                 child: EaqoonsiTextFormField(
                                   focusNode: newPasswordFocusNode,
                                   controller: _newPasswordController,
-                                  labelText: 'New Password',
+                                  labelText: localizations.newPassword,
                                   hintText: 'Enter your new password',
                                   obscureText: true,
                                   validator: (value) {
@@ -175,7 +181,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                                 child: EaqoonsiTextFormField(
                                   focusNode: confirmPasswordFocusNode,
                                   controller: _confirmPasswordController,
-                                  labelText: 'Confirm New Password',
+                                  labelText: localizations.confirmPassword,
                                   hintText: 'Confirm your new password',
                                   obscureText: true,
                                   validator: (value) {
@@ -198,7 +204,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                                 child: SubmitButtonWidget(
                                   onPressed:
                                       _isLoading ? null : _changePassword,
-                                  buttonText: 'Change Password',
+                                  buttonText: localizations.changePassword,
                                 ),
                               ),
                             ),

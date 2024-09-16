@@ -37,10 +37,10 @@ class LoginNotifier extends StateNotifier<AsyncValue> {
           await _storage.write(key: 'refresh_token', value: refreshToken);
           state = const AsyncValue.data(null);
         } else {
-          throw UnauthorizedException('Invalid username or password.');
+          throw UnauthorizedException();
         }
       } else if (response.statusCode == 401) {
-        throw UnauthorizedException('Invalid username or password.');
+        throw UnauthorizedException();
       } else {
         throw ApiException('Login failed. Please try again.');
       }

@@ -66,15 +66,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         error: (error, _) {
           String errorMessage;
           if (error is UnauthorizedException) {
-            errorMessage = error.message!;
+            errorMessage = localizations.invalidLogin;
           } else if (error is NetworkException) {
-            errorMessage = error.message!;
+            errorMessage = localizations.noInternetConnection;
           } else if (error is NotFoundException) {
-            errorMessage = 'Service unavailable. Please try again later.';
+            errorMessage = localizations.notFounderror;
           } else if (error is ApiException) {
             errorMessage = error.message!;
           } else {
-            errorMessage = 'An unexpected error occurred. Please try again.';
+            errorMessage = localizations.unknownError;
           }
           showErrorSnackBar(errorMessage, context);
         },

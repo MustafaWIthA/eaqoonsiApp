@@ -283,7 +283,78 @@
   "enterNationalIDForPasswordReset": "Fadlan geli Aqoonsigaaga si aad ugu dib ugu soo ceshato furahaaga",
   "@enterNationalIDForPasswordReset": {
     "description": "Fadlan geli Aqoonsigaaga si aad ugu dib ugu soo ceshato furahaaga"
+  },
+  "invalidOTP": "Xaqiiji OTp oo dhan",
+  "@invalidOTP": {
+    "description": "Xaqiiji OTP oo dhan"
+  },
+  "invalidLogin": "iska hubi Aqoonsigaag ama fure-Sireedkaaga",
+  "@invalidLogin": {
+    "description": "iska hubi ID-Gaaga ama furahaaga"
+  },
+  "noInternetConnection": "fadlan hubi internetkaaga",
+  "@noInternetConnection": {
+    "description": "fadlan hubi internetkaaga"
+  },
+  "notFounderror": "Waa ka xunahay ciladaadn",
+  "@notFounderror": {
+    "description": "Way ka xun tahay ciladaadn"
+  },
+  "unknownError": "Waa ka xunahay ciladaan is ku day mar kale",
+  "@unknownError": {
+    "description": "Waa ka xunahay ciladaan is ku day mar kale"
+  },"home": "Bogga Hore",
+  "@home": {
+    "description": "Bogga Hore"
+  },
+  "profile": "Faahfaahinta",
+  "@profile": {
+    "description": "Faahfaahinta"
+  },
+  "settings": "Dejinta",
+  "@settings": {
+    "description": "Dejinta"
+  },
+  "logout": "Ka Bax",
+  "@logout": {
+    "description": "Ka Bax"
+  },
+  "account": "Koontada",
+  "@account": {
+    "description": "Koontada"
+  },
+  "scan": "Sawir",
+  "@scan": {
+    "description": "Sawir"
+  },
+  "history": "Taariikhda",
+  "@history": {
+    "description": "Taariikhda"
+  },
+
+
+
+  "changePassword": "Bedel Fure-Sireedkaaga",
+  "@changePassword":{
+    "description": "Bedel Fure-Sireedkaaga"
+  },  "changePassword": "Bedel Fure-Sireedkaaga",
+  "@changePassword":{
+    "description": "Bedel Fure-Sireedkaaga"
+  },
+  "currentPassword": "Fure-Sireedkaaga",
+  "@currentPassword": {
+    "description": "Fure-Sireedkaaga"
+  },
+  "newPassword": "Fure-Sireedkaaga Cusub",
+  "@newPassword": {
+    "description": "New Password"
+  },
+  "confirmPassword": "Hubi Fure-Sireedkaaga",
+  "@confirmPassword": {
+    "description": "Confirm Password"
   }
+
+
 
 
 }

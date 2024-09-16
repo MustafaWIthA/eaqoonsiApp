@@ -50,50 +50,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           );
         },
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(color: kBlueColor),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            // ListTile(
-            //   leading: const Icon(Icons.settings),
-            //   title: const Text('Settings'),
-            //   onTap: () {
-            //     ref.read(selectedIndexProvider.notifier).state = 1;
-            //     Navigator.of(context).push(
-            //       MaterialPageRoute(
-            //           builder: (context) => const SettingsScreen()),
-            //     );
-            //   },
-            // ),
-            ListTile(
-              leading: const Icon(Icons.lock),
-              title: const Text('Change Password'),
-              onTap: () {
-                ref.read(selectedIndexProvider.notifier).state = 1;
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const ChangePasswordScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: logout,
-            ),
-          ],
-        ),
-      ),
+      drawer: appDrawer(context, logout),
       body: RefreshIndicator(
         onRefresh: () =>
             ref.read(profileNotifierProvider.notifier).refreshProfile(),
@@ -104,6 +61,46 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
       ),
       bottomNavigationBar: const BottomNavBar(),
+    );
+  }
+
+  Drawer appDrawer(BuildContext context, void Function() logout) {
+    final localizations = AppLocalizations.of(context)!;
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: const BoxDecoration(color: kBlueColor),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Add the logo widget
+                Image.asset(
+                  frontlogoWhite, // Path to your logo
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.lock),
+            title: Text(localizations.changePassword),
+            onTap: () {
+              ref.read(selectedIndexProvider.notifier).state = 1;
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => const ChangePasswordScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: Text(localizations.logout),
+          ),
+        ],
+      ),
     );
   }
 }
