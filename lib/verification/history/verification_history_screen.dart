@@ -8,6 +8,7 @@ class VerificationHistoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final historyAsyncValue = ref.watch(verificationHistoryProvider);
+    final connectivity = ref.watch(connectivityProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -24,24 +25,32 @@ class VerificationHistoryScreen extends ConsumerWidget {
               ),
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: () => ref.refresh(verificationHistoryProvider.future),
-        child: historyAsyncValue.when(
-          data: (history) => _buildHistoryList(history),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Error: ${error.toString()}'),
-                ElevatedButton(
-                  onPressed: () => ref.refresh(verificationHistoryProvider),
-                  child: const Text('Retry'),
-                ),
-              ],
+      body: StreamBuilder<List<ConnectivityResult>>(
+        stream: connectivity.onConnectivityChanged,
+        builder: (context, snapshot) {
+          if (snapshot.hasData &&
+              !snapshot.data!.contains(ConnectivityResult.mobile) &&
+              !snapshot.data!.contains(ConnectivityResult.wifi)) {
+            return _buildNoInternetWidget(context, ref);
+          }
+          return RefreshIndicator(
+            onRefresh: () async {
+              try {
+                await ref.refresh(verificationHistoryProvider.future);
+              } catch (e) {
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Failed to refresh: ${e.toString()}')),
+                );
+              }
+            },
+            child: historyAsyncValue.when(
+              data: (history) => _buildHistoryList(history),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => _buildErrorWidget(context, error, ref),
             ),
-          ),
-        ),
+          );
+        },
       ),
       bottomNavigationBar: const BottomNavBar(),
     );
@@ -74,6 +83,43 @@ class VerificationHistoryScreen extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildErrorWidget(BuildContext context, Object error, WidgetRef ref) {
+    String errorMessage = 'An error occurred';
+    if (error is NetworkException) {
+      errorMessage = 'No internet connection';
+    } else if (error is ApiException) {
+      errorMessage = error.toString();
+    }
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(errorMessage),
+          ElevatedButton(
+            onPressed: () => ref.refresh(verificationHistoryProvider),
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNoInternetWidget(BuildContext context, WidgetRef ref) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('No internet connection'),
+          ElevatedButton(
+            onPressed: () => ref.refresh(verificationHistoryProvider),
+            child: const Text('Retry when online'),
+          ),
+        ],
+      ),
     );
   }
 }

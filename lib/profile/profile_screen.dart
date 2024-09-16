@@ -32,6 +32,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     });
 
     void logout() async {
+      if (!mounted) return;
       ref.read(authStateProvider.notifier).logout();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()),

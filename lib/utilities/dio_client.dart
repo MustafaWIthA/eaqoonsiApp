@@ -86,10 +86,14 @@ class DioClient {
   }
 
   Exception _handleError(DioException error) {
+    if (error.type == DioExceptionType.connectionError) {
+      return NetworkException('No internet connection');
+    }
     final statusCode = error.response?.statusCode;
     final message =
         error.response?.data['body']?['message'] ?? 'An error occurred';
 
+    //catch socket exception
     switch (statusCode) {
       case 400:
         return BadRequestException(message);
@@ -104,6 +108,13 @@ class DioClient {
       default:
         return ApiException(message);
     }
+  }
+
+  Future<bool> hasInternetConnection() async {
+    final connectivityResult =
+        await _ref.read(connectivityProvider).checkConnectivity();
+    return connectivityResult.contains(ConnectivityResult.mobile) ||
+        connectivityResult.contains(ConnectivityResult.wifi);
   }
 }
 

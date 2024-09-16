@@ -1,3 +1,4 @@
+import 'package:eaqoonsi/public/login/login_notifier.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:eaqoonsi/widget/submit_widget.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
@@ -58,6 +59,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    ref.listen<AsyncValue<void>>(loginProvider, (_, state) {
+      state.whenOrNull(
+        data: (_) => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const ProfileScreen())),
+        error: (error, _) {
+          String errorMessage;
+          if (error is UnauthorizedException) {
+            errorMessage = error.message!;
+          } else if (error is NetworkException) {
+            errorMessage = error.message!;
+          } else if (error is NotFoundException) {
+            errorMessage = 'Service unavailable. Please try again later.';
+          } else if (error is ApiException) {
+            errorMessage = error.message!;
+          } else {
+            errorMessage = 'An unexpected error occurred. Please try again.';
+          }
+          showErrorSnackBar(errorMessage, context);
+        },
+      );
+    });
+
+    final isLoading = ref.watch(loginProvider).isLoading;
 
     void submitForm() async {
       if (_formKey.currentState!.validate()) {
@@ -215,7 +239,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0, 0, 0, 16),
                                 child: SubmitButtonWidget(
-                                    onPressed: submitForm,
+                                    onPressed: isLoading
+                                        ? null
+                                        : () => ref
+                                            .read(loginProvider.notifier)
+                                            .login(
+                                              nationalIDTextController.text,
+                                              passwordTextController.text,
+                                            ),
                                     buttonText: localizations.loginButton),
                               ),
                             ),

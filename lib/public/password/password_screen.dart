@@ -62,6 +62,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>
         await resetPassword(dioClient, nationalIDNumberController.text);
         showSuccessSnackBar(
             'Password Reset has been sent to your email', context);
+        //not found exception
       } catch (e) {
         showErrorSnackBar('An error occurred: $e', context);
       }
