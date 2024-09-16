@@ -61,8 +61,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
       }
       await _storage.delete(key: 'access_token');
       await _storage.delete(key: 'refresh_token');
-      if (mounted) {}
-      state = AuthState();
+      if (mounted) {
+        state = AuthState();
+      }
     } catch (e) {
       if (mounted) {
         state = state.copyWith(errorMessage: 'Error during logout');
