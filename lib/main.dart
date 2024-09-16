@@ -40,8 +40,8 @@ class MyApp extends ConsumerWidget {
       },
       debugShowCheckedModeBanner: false,
       title: "eAqoonsi",
-      // locale: currentLocale,
-      locale: Locale('en', 'GB'),
+      locale: currentLocale,
+      // locale:  Locale('en', 'GB'),
       supportedLocales: const [
         Locale('en', 'US'), // English
         Locale('en', 'GB'), // Somali (using British English locale)

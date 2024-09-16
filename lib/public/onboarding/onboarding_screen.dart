@@ -11,6 +11,7 @@ class OnboardingScreen extends ConsumerWidget {
     final currentPage = ref.watch(currentPageProvider);
     final PageController pageController = PageController(initialPage: 0);
     final localizations = AppLocalizations.of(context)!;
+    final currnetLocale = ref.watch(languageNotifier);
 
     Future<void> completeOnboarding(BuildContext context, WidgetRef ref) async {
       final prefs = await SharedPreferences.getInstance();

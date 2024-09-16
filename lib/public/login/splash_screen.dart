@@ -27,14 +27,6 @@ class AppInitializationNotifier extends StateNotifier<AppInitializationState> {
 
   Future<void> _initialize() async {
     try {
-      final connectivity = ref.read(connectivityProvider);
-      final connectivityResult = await connectivity.checkConnectivity();
-
-      if (connectivityResult == ConnectivityResult.none) {
-        state = AppInitializationState.noInternet;
-        return;
-      }
-
       final prefs = await ref.read(sharedPreferencesProvider.future);
       final isOnboardingComplete = prefs.getBool('onboardingComplete') ?? false;
 
@@ -58,7 +50,7 @@ class AppInitializationNotifier extends StateNotifier<AppInitializationState> {
   }
 
   bool _isTokenValid(String token) {
-    return true; // Placeholder
+    return true;
   }
 
   void retryInitialization() {

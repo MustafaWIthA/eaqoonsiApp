@@ -221,7 +221,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       );
                                     },
                                     child: AutoSizeText(
-                                      "Forget Password",
+                                      localizations.forgetPassword,
                                       style: TextStyle(
                                         color: EAqoonsiTheme.of(context)
                                             .primaryText,
@@ -233,6 +233,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ],
                               ),
                             ),
+                            LanguageSelectionButtons(),
                             Align(
                               alignment: const AlignmentDirectional(0, 0),
                               child: Padding(
