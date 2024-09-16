@@ -6,7 +6,7 @@ final loginProvider =
   return LoginNotifier(dioClient);
 });
 
-class LoginNotifier extends StateNotifier<AsyncValue<void>> {
+class LoginNotifier extends StateNotifier<AsyncValue> {
   final DioClient _dioClient;
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
@@ -27,6 +27,7 @@ class LoginNotifier extends StateNotifier<AsyncValue<void>> {
       if (response.statusCode == 200 &&
           response.data['statusCodeValue'] == 200) {
         final body = response.data['body'];
+
         if (body != null &&
             body['accessToken'] != null &&
             body['refreshToken'] != null) {
