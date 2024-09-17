@@ -23,6 +23,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         );
       });
     }
+    @override
+    void initState() {
+      super.initState();
+      ref.invalidate(profileProvider);
+    }
 
     ref.listen<AuthState>(authStateProvider, (previous, current) {
       if (!current.isAuthenticated) {
