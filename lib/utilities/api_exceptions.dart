@@ -34,3 +34,7 @@ class RequestCancelledException extends ApiException {
 class NetworkException extends ApiException {
   NetworkException([super.message]);
 }
+
+class ServiceUnavailableException extends ApiException {
+  ServiceUnavailableException([super.message]);
+}

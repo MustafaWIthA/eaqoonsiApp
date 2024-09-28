@@ -319,8 +319,11 @@
   "confirmPassword": "Confirm Password",
   "@confirmPassword": {
     "description": "Confirm Password"
-  }
+  },
 
-
+"selectLanguage": "Select Language",
+"@selectLanguage": {
+  "description": "select Language"
+}
 
 }

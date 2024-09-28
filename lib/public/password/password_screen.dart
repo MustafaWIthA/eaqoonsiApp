@@ -1,4 +1,3 @@
-import 'package:eaqoonsi/public/password/password_reset_provider.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 import 'package:eaqoonsi/widget/submit_widget.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
@@ -53,20 +52,56 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>
     );
   }
 
-  Future<void> _resetPassword() async {
+  Future<void> resetPassword(String nationalIDNumber) async {
     final localizations = AppLocalizations.of(context)!;
-    if (_formKey.currentState!.validate()) {
-      setState(() {});
-      try {
-        final dioClient = ref.read(dioProvider);
-        await resetPassword(dioClient, nationalIDNumberController.text);
-        showSuccessSnackBar(
-            'Password Reset has been sent to your email', context);
-        //not found exception
-      } catch (e) {
-        showErrorSnackBar('An error occurred: $e', context);
-      }
+    final idNumber = nationalIDNumberController.text;
+
+    try {
+      final dio = Dio(BaseOptions(
+        validateStatus: (status) => status! < 500,
+      ));
+
+      final response = await dio.post(
+        kForgotPasswordUrl,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': '898989',
+          },
+        ),
+        data: {
+          'nationalID': idNumber,
+        },
+      );
+      print(response.data);
+
+      _handleApiResponse(response.data, localizations);
+    } catch (e) {
+      showErrorSnackBar('An error occurred: $e', context);
     }
+  }
+
+  void _handleApiResponse(
+      Map<String, dynamic> data, AppLocalizations localizations) {
+    switch (data['statusCodeValue']) {
+      case 200:
+        showSuccessSnackBar(
+            "A password reset link has been sent to your email", context);
+        break;
+      case 400:
+      case 404:
+        print(data['message']);
+        showErrorSnackBar(localizations.invalidNationalIDNumber, context);
+        break;
+      default:
+        showErrorSnackBar(
+            'Unexpected response: ${data['statusCodeValue']}', context);
+    }
+  }
+
+  void _handleSuccessResponse() {
+    showSuccessSnackBar(
+        "A password reset link has been sent to your email", context);
   }
 
   @override
@@ -147,6 +182,14 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>
               NationalIDInput(
                 controller: nationalIDNumberController,
                 focusNode: nationalIDNumberFocusNode,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return localizations.errorMessage;
+                  } else if (value.length < 11) {
+                    return localizations.errorMessage;
+                  }
+                  return null;
+                },
               ),
               _buildSubmitButton(localizations),
               _buildLoginLink(localizations),
@@ -157,14 +200,13 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>
     );
   }
 
-  // void submitForm() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     await resetPassword(
-  //       ref.read(dioProvider),
-  //       nationalIDNumberController.text,
-  //     );
-  //   }
-  // }
+  void submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      await resetPassword(
+        nationalIDNumberController.text,
+      );
+    }
+  }
 
   Widget _buildSubmitButton(AppLocalizations localizations) {
     return Align(
@@ -172,7 +214,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>
       child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
           child: SubmitButtonWidget(
-              onPressed: _resetPassword, buttonText: "Reset Password")),
+              onPressed: submitForm, buttonText: "Reset Password")),
     );
   }
 

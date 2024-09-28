@@ -276,7 +276,7 @@
   "@forgetPassword": {
     "description": "Waa maxay furahaaga?"
   },
-  "resetPassword": "Xaqiiji furahaaga",
+  "resetPassword": "Xaqiiji Aqoonsigaaga",
   "@resetPassword": {
     "description": "Dib ugu soo cel"
   },
@@ -284,7 +284,7 @@
   "@enterNationalIDForPasswordReset": {
     "description": "Fadlan geli Aqoonsigaaga si aad ugu dib ugu soo ceshato furahaaga"
   },
-  "invalidOTP": "Xaqiiji OTp oo dhan",
+  "invalidOTP": "Xaqiiji OTP oo dhan",
   "@invalidOTP": {
     "description": "Xaqiiji OTP oo dhan"
   },
@@ -350,6 +350,11 @@
   "confirmPassword": "Hubi Fure-Sireedkaaga",
   "@confirmPassword": {
     "description": "Confirm Password"
+  },
+
+  "selectLanguage": "Dooro Afkaaga",
+  "@selectLanguage": {
+    "description": "Dooro Afka aad donayso"
   }
 
 

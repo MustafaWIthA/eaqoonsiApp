@@ -1,3 +1,5 @@
+// onboarding_screen.dart
+import 'package:eaqoonsi/language/language_widget_design.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 
 final currentPageProvider = StateProvider<int>((ref) => 0);
@@ -11,7 +13,6 @@ class OnboardingScreen extends ConsumerWidget {
     final currentPage = ref.watch(currentPageProvider);
     final PageController pageController = PageController(initialPage: 0);
     final localizations = AppLocalizations.of(context)!;
-    final currnetLocale = ref.watch(languageNotifier);
 
     Future<void> completeOnboarding(BuildContext context, WidgetRef ref) async {
       final prefs = await SharedPreferences.getInstance();
@@ -28,9 +29,11 @@ class OnboardingScreen extends ConsumerWidget {
         await prefs.setBool('onboardingComplete', true);
         Navigator.pop(context);
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const CheckNationalIDNumber()));
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CheckNationalIDNumber(),
+          ),
+        );
       } catch (e) {
         print('An error occurred: $e');
       }
@@ -43,6 +46,8 @@ class OnboardingScreen extends ConsumerWidget {
           ref.read(currentPageProvider.notifier).state = page;
         },
         children: <Widget>[
+          ChooseLanguage(pageController: pageController),
+
           makePage(
             context: context,
             image: eaqoonsi,
@@ -55,12 +60,14 @@ class OnboardingScreen extends ConsumerWidget {
             title: localizations.empoweringTitle,
             content: localizations.empoweringSubtitle,
           ),
-          makePage(
-            context: context,
-            image: third,
-            title: localizations.welcomeSpalshTitle,
-            content: localizations.welcomeSpalshSubtitle,
-          ),
+
+          // // Third page
+          // makePage(
+          //   context: context,
+          //   image: third,
+          //   title: localizations.welcomeSpalshTitle,
+          //   content: localizations.welcomeSpalshSubtitle,
+          // ),
         ],
       ),
       bottomSheet: currentPage != 2
@@ -80,7 +87,7 @@ class OnboardingScreen extends ConsumerWidget {
         children: <Widget>[
           TextButton(
             onPressed: () {
-              pageController.animateToPage(2,
+              pageController.animateToPage(3,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut);
             },
@@ -133,30 +140,20 @@ class OnboardingScreen extends ConsumerWidget {
   }
 
   Widget makePage({
-    required BuildContext context, // Add this line
-
+    required BuildContext context,
     required String title,
     required String content,
     required String image,
   }) {
     return Container(
+      key: ValueKey(AppLocalizations.of(context)),
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
             flex: 6,
-            child: Stack(
-              children: [
-                Image.asset(image, fit: BoxFit.cover),
-                if (title == 'eAqoonsi')
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * 0.5,
-                    left: MediaQuery.of(context).size.height * 0.18,
-                    child: const LanguageSelectionButtons(),
-                  ),
-              ],
-            ),
+            child: Image.asset(image, fit: BoxFit.cover),
           ),
           Expanded(
             flex: 4,

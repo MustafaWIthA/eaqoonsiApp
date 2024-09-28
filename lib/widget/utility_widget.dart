@@ -18,6 +18,24 @@ Widget buildLogo() {
   );
 }
 
+Widget buildIconLogo(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsetsDirectional.fromSTEB(0, 70, 0, 10),
+    child: Container(
+      width: MediaQuery.of(context).size.height * 0.9,
+      height: MediaQuery.of(context).size.height * 0.3,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      alignment: const AlignmentDirectional(0, 0),
+      child: Image.asset(
+        iconLogo,
+        fit: BoxFit.cover,
+      ),
+    ),
+  );
+}
+
 Widget buildBlueLogo() {
   return Padding(
     padding: const EdgeInsetsDirectional.fromSTEB(0, 70, 0, 10),

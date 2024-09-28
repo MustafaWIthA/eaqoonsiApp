@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 const String appName = 'I Aqoonsi';
 
 const String logoBlue = 'assets/images/nirablue.png';
+const String iconLogo = 'assets/images/iconLogo.png';
 const String frontlogoBlue = 'assets/images/frontlogoblue.png';
 const String frontlogoWhite = 'assets/images/frontlogowhite.png';
 const String logoWhite = 'assets/images/nirawhite.png';
@@ -34,7 +35,7 @@ const String appVersion = '1.0.3';
 // const String apiBaseUrls = 'http://localhost:8088/api';
 
 // android emulator
-const String baseUrl = 'https://e-aqoonsi.nira.gov.so/api';
+const String baseUrl = 'https://staging.eaqoonsi.nira.gov.so/api';
 // const String baseUrl = 'http://172.16.94.16:8080/api';
 
 const String virsionV1 = 'v1';
@@ -43,17 +44,23 @@ const String apiBaseUrl = '$baseUrl/$virsionV1';
 //create userUrl with apiBaseUrl
 const String userUrl = '$apiBaseUrl/users';
 
-const String keySigin = 'https://e-aqoonsi.nira.gov.so/api/v1/auth/login';
+const String keySigin =
+    'https://staging.eaqoonsi.nira.gov.so/api/v1/auth/login';
 
 const String loginUrl = '$apiBaseUrl/auth/login';
 const String registerUrl = '$apiBaseUrl/auth/register';
 const String verifyUrl = '$apiBaseUrl/auth/verify';
 const kProfileUrl = '$apiBaseUrl/profile';
 const kVerifictionHistoryUrl =
-    'https://e-aqoonsi.nira.gov.so/api/v1/verification/history';
-const kDigitalSearchUrl = 'https://e-aqoonsi.nira.gov.so/digital/card/search';
+    'https://staging.eaqoonsi.nira.gov.so/api/v1/verification/history';
+const kDigitalSearchUrl =
+    'https://staging.eaqoonsi.nira.gov.so/digital/card/search';
 
-const kNotificationUrl = 'https://e-aqoonsi.nira.gov.so/api/v1/otp/validate';
+const kNotificationUrl =
+    'https://staging.eaqoonsi.nira.gov.so/api/v1/otp/validate';
+
+const kForgotPasswordUrl =
+    'https://staging.eaqoonsi.nira.gov.so/api/v1/password/reset-password';
 
 const String first = "assets/images/first.png";
 const String second = "assets/images/second.png";
