@@ -10,13 +10,15 @@ class DioClient {
 
   DioClient(this._ref) {
     _dio = Dio(BaseOptions(
-      baseUrl: 'https://e-aqoonsi.nira.gov.so/api/v1',
-      // baseUrl: 'http://localhost:9191/api/v1',
+      baseUrl: apiBaseUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {
         'Content-Type': 'application/json',
         'X-API-Key': '898989',
+      },
+      validateStatus: (status) {
+        return status != null && status < 500;
       },
     ));
     _setupInterceptors();
@@ -27,45 +29,20 @@ class DioClient {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         options.headers['X-API-Key'] = '898989';
-        if (!options.path.contains('/auth/login')) {
-          final token = await _storage.read(key: 'access_token');
-          if (token != null) {
-            options.headers['Authorization'] = 'Bearer $token';
-          }
+        final token = await _storage.read(key: 'access_token');
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
         }
         return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        if (response.data is Map && response.data['statusCodeValue'] != null) {
-          response.statusCode = response.data['statusCodeValue'];
-        }
-        return handler.next(response);
       },
       onError: (DioException e, handler) async {
         if (e.response?.statusCode == 401) {
           await _storage.delete(key: 'access_token');
           _ref.read(authStateProvider.notifier).logout();
-          return handler.next(e);
         }
         return handler.next(e);
       },
     ));
-  }
-
-  Future<VerificationResponse> verifyUser(
-      String verifiedUser, int verificationType) async {
-    try {
-      final response = await _dio.post(
-        '/verification/verify',
-        data: {
-          'verifiedUser': verifiedUser,
-          'verificationType': verificationType,
-        },
-      );
-      return VerificationResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
   }
 
   Future<Response> get(String path,
@@ -73,7 +50,7 @@ class DioClient {
     try {
       return await _dio.get(path, queryParameters: queryParameters);
     } on DioException catch (e) {
-      throw _handleError(e);
+      throw handleError(e);
     }
   }
 
@@ -81,19 +58,17 @@ class DioClient {
     try {
       return await _dio.post(path, data: data);
     } on DioException catch (e) {
-      throw _handleError(e);
+      throw handleError(e);
     }
   }
 
-  Exception _handleError(DioException error) {
+  Exception handleError(DioException error) {
     if (error.type == DioExceptionType.connectionError) {
       return NetworkException('No internet connection');
     }
     final statusCode = error.response?.statusCode;
-    final message =
-        error.response?.data['body']?['message'] ?? 'An error occurred';
+    final message = error.response?.data['message'] ?? 'An error occurred';
 
-    //catch socket exception
     switch (statusCode) {
       case 400:
         return BadRequestException(message);
@@ -110,43 +85,26 @@ class DioClient {
     }
   }
 
+  Future<VerificationResponse> verifyUser(
+      String verifiedUser, int verificationType) async {
+    try {
+      final response = await _dio.post(
+        '/verification/verify',
+        data: {
+          'verifiedUser': verifiedUser,
+          'verificationType': verificationType,
+        },
+      );
+      return VerificationResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw handleError(e);
+    }
+  }
+
   Future<bool> hasInternetConnection() async {
     final connectivityResult =
         await _ref.read(connectivityProvider).checkConnectivity();
     return connectivityResult.contains(ConnectivityResult.mobile) ||
         connectivityResult.contains(ConnectivityResult.wifi);
-  }
-}
-
-class ApiResponse<T> {
-  final T? data;
-  final String statusCode;
-  final int statusCodeValue;
-  final String? message;
-
-  ApiResponse({
-    this.data,
-    required this.statusCode,
-    required this.statusCodeValue,
-    this.message,
-  });
-
-  factory ApiResponse.fromJson(Map<String, dynamic> json) {
-    return ApiResponse(
-      data: json['body'],
-      statusCode: json['statusCode'],
-      statusCodeValue: json['statusCodeValue'],
-      message: json['message'],
-    );
-  }
-
-  factory ApiResponse.error(DioException error) {
-    return ApiResponse(
-      statusCode: error.response?.statusCode.toString() ?? 'ERROR',
-      statusCodeValue: error.response?.statusCode ?? 0,
-      message: error.response?.data?['body']?['message'] ??
-          error.message ??
-          'An error occurred',
-    );
   }
 }

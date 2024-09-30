@@ -85,30 +85,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     void submitForm() async {
       if (_formKey.currentState!.validate()) {
-        await ref.read(authStateProvider.notifier).login(
+        await ref.read(loginProvider.notifier).login(
               nationalIDTextController.text,
               passwordTextController.text,
             );
       }
     }
-
-    ref.listen<AuthState>(authStateProvider, (previous, next) {
-      if (next.isAuthenticated) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const ProfileScreen()),
-        );
-      } else if (next.errorMessage != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Center(
-              child: Text(next.errorMessage!),
-            ),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-    });
 
     return Scaffold(
       backgroundColor: EAqoonsiTheme.of(context).primaryBackground,

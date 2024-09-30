@@ -99,7 +99,48 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: profileAsyncValue.when(
           data: (profile) => ProfileContent(profile: profile),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => Center(child: Text('Error: $error')),
+          error: (error, stack) {
+            if (error is ForbiddenException) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Access denied. Please refresh or logout.'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Refresh the profile
+                        ref
+                            .read(profileNotifierProvider.notifier)
+                            .refreshProfile();
+                      },
+                      child: const Text('Refresh'),
+                    ),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Logout the user
+                        ref.read(authStateProvider.notifier).logout();
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      },
+                      child: const Text('Logout'),
+                    ),
+                  ],
+                ),
+              );
+            } else if (error is UnauthorizedException) {
+              return const Center(
+                child: Text('Please log in again.'),
+              );
+            } else {
+              return Center(
+                child: Text('Error: ${error.toString()}'),
+              );
+            }
+          },
         ),
       ),
       bottomNavigationBar: const BottomNavBar(),

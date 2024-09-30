@@ -87,7 +87,7 @@ void showErrorSnackBar(String message, BuildContext context) {
               color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
-      backgroundColor: Colors.red,
+      backgroundColor: const Color.fromARGB(255, 86, 132, 130),
       duration: const Duration(seconds: 3),
     ),
   );

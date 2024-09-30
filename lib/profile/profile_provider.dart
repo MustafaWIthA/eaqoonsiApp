@@ -7,11 +7,10 @@ final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
     final response = await dioClient.get('/profile');
     return response.data;
   } on UnauthorizedException {
-    // Handle 401 Unauthorized error
     ref.read(authStateProvider.notifier).logout();
-
     throw Exception('Unauthorized access. Please log in again.');
   } on ApiException catch (e) {
+    print(e);
     throw Exception(e.message ?? 'Failed to load profile');
   }
 });

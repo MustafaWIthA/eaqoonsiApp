@@ -6,7 +6,7 @@ final loginProvider =
   return LoginNotifier(dioClient);
 });
 
-class LoginNotifier extends StateNotifier<AsyncValue> {
+class LoginNotifier extends StateNotifier<AsyncValue<void>> {
   final DioClient _dioClient;
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
@@ -22,37 +22,28 @@ class LoginNotifier extends StateNotifier<AsyncValue> {
           'password': password,
         },
       );
-      print(response.data['statusCodeValue']);
 
-      if (response.statusCode == 200 &&
-          response.data['statusCodeValue'] == 200) {
-        final body = response.data['body'];
+      // Extract tokens directly from the response data
+      final accessToken = response.data['accessToken'] as String?;
+      final refreshToken = response.data['refreshToken'] as String?;
 
-        if (body != null &&
-            body['accessToken'] != null &&
-            body['refreshToken'] != null) {
-          final accessToken = body['accessToken'] as String;
-          final refreshToken = body['refreshToken'] as String;
-          await _storage.write(key: 'access_token', value: accessToken);
-          await _storage.write(key: 'refresh_token', value: refreshToken);
-          state = const AsyncValue.data(null);
-        } else {
-          throw UnauthorizedException();
-        }
-      } else if (response.statusCode == 401) {
-        throw UnauthorizedException();
+      if (accessToken != null &&
+          accessToken.isNotEmpty &&
+          refreshToken != null &&
+          refreshToken.isNotEmpty) {
+        await _storage.write(key: 'access_token', value: accessToken);
+        await _storage.write(key: 'refresh_token', value: refreshToken);
+        state = const AsyncValue.data(null);
       } else {
-        throw ApiException('Login failed. Please try again.');
+        throw UnauthorizedException('Invalid credentials provided.');
       }
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionError) {
-        throw NetworkException(
-            'No internet connection. Please check your network settings.');
-      } else {
-        throw ApiException('An unexpected error occurred. Please try again.');
-      }
-    } catch (e) {
+    } on UnauthorizedException catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
+    } on DioException catch (e) {
+      state = AsyncValue.error(_dioClient.handleError(e), StackTrace.current);
+    } catch (e) {
+      state = AsyncValue.error(
+          ApiException('An unexpected error occurred.'), StackTrace.current);
     }
   }
 }
