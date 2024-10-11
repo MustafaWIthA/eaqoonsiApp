@@ -100,180 +100,189 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                               buildLogo(),
                               const StepIndicator(
                                   currentStep: 1, totalSteps: 3),
-                              Container(
-                                width: double.infinity,
-                                constraints: const BoxConstraints(
-                                  maxWidth: 570,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      blurRadius: 4,
-                                      color: Color(0x33000000),
-                                      offset: Offset(
-                                        0,
-                                        2,
-                                      ),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Align(
-                                  alignment: const AlignmentDirectional(0, 0),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(32),
-                                    child: Column(
-                                      children: [
-                                        const Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 12, 0, 24),
-                                          child: Text(
-                                            "Fill the form below to get started",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Color(0xFF57636C),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
+                              Center(
+                                child: Container(
+                                  width: double.infinity,
+                                  constraints: const BoxConstraints(
+                                    maxWidth: 570,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        blurRadius: 4,
+                                        color: Color(0x33000000),
+                                        offset: Offset(
+                                          0,
+                                          2,
+                                        ),
+                                      )
+                                    ],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Align(
+                                    alignment: const AlignmentDirectional(0, 0),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(32),
+                                      child: Column(
+                                        children: [
+                                          const Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 12, 0, 24),
+                                            child: Text(
+                                              "Fill the form below to get started",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Color(0xFF57636C),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 0, 0, 16),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: EaqoonsiTextFormField(
-                                              validator: (fullName) {
-                                                if (fullName!.isEmpty) {
-                                                  return localizations
-                                                      .fullNameValidation;
-                                                } else if (fullName.length <
-                                                    8) {
-                                                  return localizations
-                                                      .fullNameValidation;
-                                                } else if (!fullName
-                                                    .contains(' ')) {
-                                                  return localizations
-                                                      .fullNameValidation;
-                                                }
-                                                return null;
-                                              },
-                                              controller: fullName,
-                                              focusNode: fullNameFocusNode,
-                                              labelText:
-                                                  localizations.fullNameLabel,
-                                              hintText: localizations
-                                                  .fullNamehintText,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 0, 0, 16),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: EaqoonsiTextFormField(
-                                              validator: validateEmail,
-                                              controller: email,
-                                              focusNode: emailFocusNode,
-                                              labelText:
-                                                  localizations.emailLabel,
-                                              hintText: localizations.hintText,
-                                              keyboardType:
-                                                  TextInputType.emailAddress,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 0, 0, 16),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: EaqoonsiTextFormField(
-                                              validator: (password) =>
-                                                  password!.length < 5
-                                                      ? localizations
-                                                          .passwordLengthError
-                                                      : null,
-                                              controller: password,
-                                              focusNode: passwordFocusNode,
-                                              labelText:
-                                                  localizations.passwordLabel,
-                                              hintText: localizations
-                                                  .passwordhintText,
-                                              obscureText: true,
-                                            ),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0, 0),
-                                          child: Padding(
+                                          Padding(
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 0, 0, 16),
-                                            child: EaqoonsiButtonWidget(
-                                              onPressed: () async {
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  Navigator.of(context)
-                                                      .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CameraScreen(
-                                                              fullName:
-                                                                  fullName.text,
-                                                              email: email.text,
-                                                              password:
-                                                                  password.text,
-                                                            )),
-                                                  );
-                                                }
-                                              },
-                                              text:
-                                                  localizations.registerButton,
-                                              options: EaqoonsiButtonOptions(
-                                                width: 230,
-                                                height: 52,
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 0, 0, 0),
-                                                iconPadding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(0, 0, 0, 0),
-                                                color: EAqoonsiTheme.of(context)
-                                                    .primaryBackground,
-                                                textStyle:
-                                                    EAqoonsiTheme.of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              'Plus Jakarta Sans',
-                                                          color: Colors.white,
-                                                          fontSize: 16,
-                                                          letterSpacing: 0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                elevation: 3,
-                                                borderSide: const BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(40),
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: EaqoonsiTextFormField(
+                                                validator: (fullName) {
+                                                  if (fullName!.isEmpty) {
+                                                    return localizations
+                                                        .fullNameValidation;
+                                                  } else if (fullName.length <
+                                                      8) {
+                                                    return localizations
+                                                        .fullNameValidation;
+                                                  } else if (!fullName
+                                                      .contains(' ')) {
+                                                    return localizations
+                                                        .fullNameValidation;
+                                                  }
+                                                  return null;
+                                                },
+                                                controller: fullName,
+                                                focusNode: fullNameFocusNode,
+                                                labelText:
+                                                    localizations.fullNameLabel,
+                                                hintText: localizations
+                                                    .fullNamehintText,
                                               ),
-                                              showLoadingIndicator: true,
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0, 0, 0, 16),
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: EaqoonsiTextFormField(
+                                                validator: validateEmail,
+                                                controller: email,
+                                                focusNode: emailFocusNode,
+                                                labelText:
+                                                    localizations.emailLabel,
+                                                hintText:
+                                                    localizations.hintText,
+                                                keyboardType:
+                                                    TextInputType.emailAddress,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0, 0, 0, 16),
+                                            child: SizedBox(
+                                              width: double.infinity,
+                                              child: EaqoonsiTextFormField(
+                                                validator: (password) =>
+                                                    password!.length < 5
+                                                        ? localizations
+                                                            .passwordLengthError
+                                                        : null,
+                                                controller: password,
+                                                focusNode: passwordFocusNode,
+                                                labelText:
+                                                    localizations.passwordLabel,
+                                                hintText: localizations
+                                                    .passwordhintText,
+                                                obscureText: true,
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment:
+                                                const AlignmentDirectional(
+                                                    0, 0),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(0, 0, 0, 16),
+                                              child: EaqoonsiButtonWidget(
+                                                onPressed: () async {
+                                                  if (_formKey.currentState!
+                                                      .validate()) {
+                                                    Navigator.of(context)
+                                                        .pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CameraScreen(
+                                                                fullName:
+                                                                    fullName
+                                                                        .text,
+                                                                email:
+                                                                    email.text,
+                                                                password:
+                                                                    password
+                                                                        .text,
+                                                              )),
+                                                    );
+                                                  }
+                                                },
+                                                text: localizations
+                                                    .registerButton,
+                                                options: EaqoonsiButtonOptions(
+                                                  width: 230,
+                                                  height: 52,
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(0, 0, 0, 0),
+                                                  iconPadding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(0, 0, 0, 0),
+                                                  color:
+                                                      EAqoonsiTheme.of(context)
+                                                          .primaryBackground,
+                                                  textStyle:
+                                                      EAqoonsiTheme.of(context)
+                                                          .titleSmall
+                                                          .override(
+                                                            fontFamily:
+                                                                'Plus Jakarta Sans',
+                                                            color: Colors.white,
+                                                            fontSize: 16,
+                                                            letterSpacing: 0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                  elevation: 3,
+                                                  borderSide: const BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 1,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                ),
+                                                showLoadingIndicator: true,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ).animateOnPageLoad(animationsMap[
-                                  'containerOnPageLoadAnimation']!),
+                                ).animateOnPageLoad(animationsMap[
+                                    'containerOnPageLoadAnimation']!),
+                              ),
                             ],
                           ),
                         ),

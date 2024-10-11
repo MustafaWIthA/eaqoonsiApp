@@ -14,6 +14,7 @@ export 'package:flutter/services.dart';
 export 'package:flutter_image_compress/flutter_image_compress.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:auto_size_text/auto_size_text.dart';
+export 'package:eaqoonsi/public/login/token_manager.dart';
 
 // Project screens
 export 'package:eaqoonsi/public/login/login_screen.dart';
@@ -33,6 +34,7 @@ export 'package:eaqoonsi/verification/history/verification_history_screen.dart';
 export 'package:eaqoonsi/verification/scan_qr_code_screen.dart';
 export 'package:eaqoonsi/verification/show_qr_code.dart';
 export 'package:eaqoonsi/account/digital_id_card_dynamic.dart';
+export 'package:eaqoonsi/profile/profile_content.dart';
 
 // Project providers
 export 'package:eaqoonsi/utilities/api_exceptions.dart';
@@ -47,6 +49,7 @@ export 'package:eaqoonsi/somali_localization.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
 export 'package:flutter_gen/gen_l10n/app_localizations.dart';
 export 'package:eaqoonsi/profile/change/password_provider.dart';
+export 'package:eaqoonsi/verification/verify/verify_model.dart';
 
 export 'package:eaqoonsi/profile/profile_provider.dart';
 export 'package:eaqoonsi/utilities/encryption_service_provider.dart';
@@ -78,3 +81,5 @@ export 'package:eaqoonsi/constants.dart';
 
 export 'package:eaqoonsi/widget/utility_widget.dart';
 export 'package:eaqoonsi/widget/national_id_input.dart';
+export 'package:eaqoonsi/widget/submit_widget.dart';
+export 'package:eaqoonsi/profile/nira_slider.dart';

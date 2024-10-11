@@ -171,48 +171,50 @@ class _CheckNationalIDNumberState extends ConsumerState<CheckNationalIDNumber>
   }
 
   Widget _buildInputContainer(AppLocalizations localizations) {
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(
-        maxWidth: 570,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 4,
-            color: Color(0x33000000),
-            offset: Offset(0, 2),
-          )
-        ],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Align(
-        alignment: const AlignmentDirectional(0, 0),
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AutoSizeText(
-                localizations.verifyNationalIDNumber,
-                textAlign: TextAlign.center,
-                maxFontSize: 20,
-                minFontSize: 16,
-                maxLines: 2,
-                style: TextStyle(
-                  color: EAqoonsiTheme.of(context).primaryText,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+    return Center(
+      child: Container(
+        width: double.infinity,
+        constraints: const BoxConstraints(
+          maxWidth: 570,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 4,
+              color: Color(0x33000000),
+              offset: Offset(0, 2),
+            )
+          ],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Align(
+          alignment: const AlignmentDirectional(0, 0),
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AutoSizeText(
+                  localizations.verifyNationalIDNumber,
+                  textAlign: TextAlign.center,
+                  maxFontSize: 20,
+                  minFontSize: 16,
+                  maxLines: 2,
+                  style: TextStyle(
+                    color: EAqoonsiTheme.of(context).primaryText,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              NationalIDInput(
-                  controller: nationalIDNumberController,
-                  focusNode: nationalIDNumberFocusNode),
-              _buildSubmitButton(localizations),
-              _buildLoginLink(localizations),
-            ],
+                NationalIDInput(
+                    controller: nationalIDNumberController,
+                    focusNode: nationalIDNumberFocusNode),
+                _buildSubmitButton(localizations),
+                _buildLoginLink(localizations),
+              ],
+            ),
           ),
         ),
       ),

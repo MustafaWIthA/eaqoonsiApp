@@ -1,5 +1,4 @@
 import 'package:eaqoonsi/widget/app_export.dart';
-import 'package:eaqoonsi/widget/submit_widget.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
 
 class ForgotPassword extends ConsumerStatefulWidget {
@@ -143,57 +142,59 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword>
   }
 
   Widget _buildInputContainer(AppLocalizations localizations) {
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(
-        maxWidth: 570,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 4,
-            color: Color(0x33000000),
-            offset: Offset(0, 2),
-          )
-        ],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Align(
-        alignment: const AlignmentDirectional(0, 0),
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AutoSizeText(
-                "Enter your National ID to reset your password",
-                textAlign: TextAlign.center,
-                maxFontSize: 20,
-                minFontSize: 16,
-                maxLines: 2,
-                style: TextStyle(
-                  color: EAqoonsiTheme.of(context).primaryText,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+    return Center(
+      child: Container(
+        width: double.infinity,
+        constraints: const BoxConstraints(
+          maxWidth: 570,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 4,
+              color: Color(0x33000000),
+              offset: Offset(0, 2),
+            )
+          ],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Align(
+          alignment: const AlignmentDirectional(0, 0),
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AutoSizeText(
+                  "Enter your National ID to reset your password",
+                  textAlign: TextAlign.center,
+                  maxFontSize: 20,
+                  minFontSize: 16,
+                  maxLines: 2,
+                  style: TextStyle(
+                    color: EAqoonsiTheme.of(context).primaryText,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              NationalIDInput(
-                controller: nationalIDNumberController,
-                focusNode: nationalIDNumberFocusNode,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return localizations.errorMessage;
-                  } else if (value.length < 11) {
-                    return localizations.errorMessage;
-                  }
-                  return null;
-                },
-              ),
-              _buildSubmitButton(localizations),
-              _buildLoginLink(localizations),
-            ],
+                NationalIDInput(
+                  controller: nationalIDNumberController,
+                  focusNode: nationalIDNumberFocusNode,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return localizations.errorMessage;
+                    } else if (value.length < 11) {
+                      return localizations.errorMessage;
+                    }
+                    return null;
+                  },
+                ),
+                _buildSubmitButton(localizations),
+                _buildLoginLink(localizations),
+              ],
+            ),
           ),
         ),
       ),

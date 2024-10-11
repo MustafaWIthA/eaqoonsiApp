@@ -1,4 +1,3 @@
-import 'package:eaqoonsi/verification/verify/verify_model.dart';
 import 'package:eaqoonsi/widget/app_export.dart';
 
 final dioProvider = Provider<DioClient>((ref) => DioClient(ref));

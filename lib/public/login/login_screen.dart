@@ -105,171 +105,174 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 key: _formKey,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
-                  child: Container(
-                    width: double.infinity,
-                    constraints: const BoxConstraints(
-                      maxWidth: 570,
-                    ),
-                    decoration: BoxDecoration(
-                      color: EAqoonsiTheme.of(context).alternate,
-                      boxShadow: const [
-                        BoxShadow(
-                          blurRadius: 4,
-                          color: Color(0x33000000),
-                          offset: Offset(0, 2),
-                        )
-                      ],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Align(
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(32),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              localizations.welcomeMessage,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: EAqoonsiTheme.of(context).primaryText,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 12, 0, 24),
-                              child: Text(
-                                localizations.welcomelogininstruction,
+                  child: Center(
+                    child: Container(
+                      width: double.infinity,
+                      constraints: const BoxConstraints(
+                        maxWidth: 570,
+                      ),
+                      decoration: BoxDecoration(
+                        color: EAqoonsiTheme.of(context).alternate,
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 4,
+                            color: Color(0x33000000),
+                            offset: Offset(0, 2),
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Align(
+                        alignment: const AlignmentDirectional(0, 0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(32),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                localizations.welcomeMessage,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Color(0xFF57636C),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                style: TextStyle(
+                                  color: EAqoonsiTheme.of(context).primaryText,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                            NationalIDInput(
-                              controller: nationalIDTextController,
-                              focusNode: nationalIDFocusNode,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return localizations.errorMessage;
-                                } else if (value.length < 11) {
-                                  return localizations.errorMessage;
-                                }
-                                return null;
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0, 0, 0, 16),
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: EaqoonsiTextFormField(
-                                  controller: passwordTextController,
-                                  focusNode: passwordFocusNode,
-                                  labelText: localizations.passwordLabel,
-                                  hintText: localizations.passwordhintText,
-                                  obscureText: true,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return localizations.passwordEmptyError;
-                                    } else if (value.length < 6) {
-                                      return localizations.passwordLengthError;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                            //add forget password on the left side
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 5.0, top: 3.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ForgotPassword(),
-                                        ),
-                                      );
-                                    },
-                                    child: AutoSizeText(
-                                      localizations.forgetPassword,
-                                      style: TextStyle(
-                                        color: EAqoonsiTheme.of(context)
-                                            .primaryText,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 12, 0, 24),
+                                child: Text(
+                                  localizations.welcomelogininstruction,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Color(0xFF57636C),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                            Align(
-                              alignment: const AlignmentDirectional(0, 0),
-                              child: Padding(
+                              NationalIDInput(
+                                controller: nationalIDTextController,
+                                focusNode: nationalIDFocusNode,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return localizations.errorMessage;
+                                  } else if (value.length < 11) {
+                                    return localizations.errorMessage;
+                                  }
+                                  return null;
+                                },
+                              ),
+                              Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0, 0, 0, 16),
-                                child: SubmitButtonWidget(
-                                    onPressed: isLoading
-                                        ? null
-                                        : () => ref
-                                            .read(loginProvider.notifier)
-                                            .login(
-                                              nationalIDTextController.text,
-                                              passwordTextController.text,
-                                            ),
-                                    buttonText: localizations.loginButton),
-                              ),
-                            ),
-                            RichText(
-                              textScaler: MediaQuery.of(context).textScaler,
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: localizations.donthaveanaccount,
-                                    style: const TextStyle(),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: EaqoonsiTextFormField(
+                                    controller: passwordTextController,
+                                    focusNode: passwordFocusNode,
+                                    labelText: localizations.passwordLabel,
+                                    hintText: localizations.passwordhintText,
+                                    obscureText: true,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return localizations.passwordEmptyError;
+                                      } else if (value.length < 6) {
+                                        return localizations
+                                            .passwordLengthError;
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  WidgetSpan(
-                                    child: GestureDetector(
+                                ),
+                              ),
+                              //add forget password on the left side
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 5.0, top: 3.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
                                       onTap: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const CheckNationalIDNumber(),
+                                                const ForgotPassword(),
                                           ),
                                         );
                                       },
-                                      child: Text(
-                                        localizations.signUpTitle,
-                                        style: const TextStyle(
-                                          color: Color(0xFF4B39EF),
+                                      child: AutoSizeText(
+                                        localizations.forgetPassword,
+                                        style: TextStyle(
+                                          color: EAqoonsiTheme.of(context)
+                                              .primaryText,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                                style: const TextStyle(
-                                  color: Color(0xFF57636C),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                  ],
                                 ),
                               ),
-                            ),
-                          ],
+                              Align(
+                                alignment: const AlignmentDirectional(0, 0),
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 0, 16),
+                                  child: SubmitButtonWidget(
+                                      onPressed: isLoading
+                                          ? null
+                                          : () => ref
+                                              .read(loginProvider.notifier)
+                                              .login(
+                                                nationalIDTextController.text,
+                                                passwordTextController.text,
+                                              ),
+                                      buttonText: localizations.loginButton),
+                                ),
+                              ),
+                              RichText(
+                                textScaler: MediaQuery.of(context).textScaler,
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: localizations.donthaveanaccount,
+                                      style: const TextStyle(),
+                                    ),
+                                    WidgetSpan(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const CheckNationalIDNumber(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          localizations.signUpTitle,
+                                          style: const TextStyle(
+                                            color: Color(0xFF4B39EF),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  style: const TextStyle(
+                                    color: Color(0xFF57636C),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
