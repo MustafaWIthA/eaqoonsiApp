@@ -113,17 +113,29 @@ class OnboardingScreen extends ConsumerWidget {
 
   Widget lastPageBottomSheet(Future<void> Function() completeOnboarding) {
     return TextButton(
-      onPressed: () async {
-        await completeOnboarding();
-      },
-      style: TextButton.styleFrom(
-        foregroundColor: Colors.white,
-        shape: const RoundedRectangleBorder(),
-        backgroundColor: Colors.blue,
-        minimumSize: const Size.fromHeight(80),
-      ),
-      child: const Text('GET STARTED', style: TextStyle(color: Colors.white)),
-    );
+        onPressed: () async {
+          await completeOnboarding();
+        },
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          backgroundColor: Colors.blue,
+          minimumSize: const Size.fromHeight(80),
+        ),
+        child: const AutoSizeText(
+          'Get Started',
+          maxFontSize: 35,
+          minFontSize: 12,
+          maxLines: 1,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ));
   }
 
   Widget dots(int index, BuildContext context, WidgetRef ref) {
@@ -175,7 +187,9 @@ class OnboardingScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text(
+                  AutoSizeText(
+                    maxFontSize: 29,
+                    minFontSize: 12,
                     content,
                     textAlign: TextAlign.left,
                     style: const TextStyle(
