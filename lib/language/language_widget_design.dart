@@ -71,42 +71,6 @@ class ChooseLanguage extends ConsumerWidget {
             ],
           ),
           const Spacer(),
-          // "Next" and "Skip" buttons at the bottom
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Skip Button
-                TextButton(
-                  onPressed: () {
-                    pageController.animateToPage(
-                      2, // Assuming the last page index is 2
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: Text(
-                    localizations.skipButton,
-                    style: const TextStyle(color: Colors.blue),
-                  ),
-                ),
-                // Next Button
-                TextButton(
-                  onPressed: () {
-                    pageController.nextPage(
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: Text(
-                    localizations.nextButton,
-                    style: const TextStyle(color: Colors.blue),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
