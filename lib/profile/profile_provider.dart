@@ -5,7 +5,12 @@ final profileProvider = FutureProvider<Map<String, dynamic>>((ref) async {
 
   try {
     final response = await dioClient.get('/profile');
-    return response.data;
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      ref.read(authStateProvider.notifier).logout();
+      throw UnauthorizedException('Unauthorized access. Please log in again.');
+    }
   } on UnauthorizedException {
     ref.read(authStateProvider.notifier).logout();
     throw Exception('Unauthorized access. Please log in again.');
