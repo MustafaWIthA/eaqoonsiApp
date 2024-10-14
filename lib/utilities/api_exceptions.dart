@@ -38,3 +38,7 @@ class NetworkException extends ApiException {
 class ServiceUnavailableException extends ApiException {
   ServiceUnavailableException([super.message]);
 }
+
+class DomainException extends ApiException {
+  DomainException([super.message]);
+}

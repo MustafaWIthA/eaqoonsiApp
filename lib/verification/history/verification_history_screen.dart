@@ -70,15 +70,85 @@ class VerificationHistoryScreen extends ConsumerWidget {
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
-            title: Text('Verified by: ${item.verifiedBy}'),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Username: ${item.username}'),
-                Text(
-                    'Date: ${DateFormat('yyyy-MM-dd HH:mm').format(item.verifiedAt)}'),
-                Text('Type: ${item.verificationType}'),
-              ],
+            title: Row(children: [
+              //add icon
+              const Icon(Icons.person, color: kBlueColor),
+
+              Text(
+                'Verified by ${item.username.length > 4 ? '${'*' * (item.username.length - 4)}${item.username.substring(item.username.length - 4)}' : item.username}',
+              ),
+            ]),
+            trailing: const Icon(
+              Icons.check_circle,
+              color: kBlueColor,
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.calendar_today,
+                          size: 18, color: kBlueColor),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'Date: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              TextSpan(
+                                text: DateFormat('dd-MM-yyyy HH:mm')
+                                    .format(item.verifiedAt),
+                                style: const TextStyle(color: Colors.black54),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.verified,
+                        size: 18,
+                        color: kBlueColor,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'Type: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              TextSpan(
+                                text: item.verificationType,
+                                style: const TextStyle(color: Colors.black54),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -88,8 +158,11 @@ class VerificationHistoryScreen extends ConsumerWidget {
 
   Widget _buildErrorWidget(BuildContext context, Object error, WidgetRef ref) {
     String errorMessage = 'An error occurred';
+
     if (error is NetworkException) {
       errorMessage = 'No internet connection';
+    } else if (error is DomainException) {
+      errorMessage = error.toString();
     } else if (error is ApiException) {
       errorMessage = error.toString();
     }

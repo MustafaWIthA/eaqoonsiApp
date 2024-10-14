@@ -63,8 +63,27 @@ class DioClient {
 
   Exception handleError(DioException error) {
     if (error.type == DioExceptionType.connectionError) {
-      return NetworkException('No internet connection');
+      final underlyingError = error.error;
+      if (underlyingError is SocketException) {
+        final errorMessage = underlyingError.message.toLowerCase();
+        if (errorMessage.contains('failed host lookup') ||
+            errorMessage.contains('temporary failure in name resolution') ||
+            errorMessage.contains('unknown host')) {
+          return DomainException(
+              'Unable to resolve host. The domain may be down.');
+        } else if (errorMessage.contains('network is unreachable') ||
+            errorMessage.contains('no internet') ||
+            errorMessage.contains('connection timed out')) {
+          // No internet connection
+          return NetworkException('No internet connection.');
+        } else {
+          return NetworkException(underlyingError.message);
+        }
+      } else {
+        return NetworkException('Connection error: ${error.message}');
+      }
     }
+
     final statusCode = error.response?.statusCode;
     final message = error.response?.data['message'] ?? 'An error occurred';
 
