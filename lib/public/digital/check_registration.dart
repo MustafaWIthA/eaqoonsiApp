@@ -1,5 +1,4 @@
 import 'package:eaqoonsi/widget/app_export.dart';
-import 'package:eaqoonsi/widget/submit_widget.dart';
 import 'package:eaqoonsi/widget/text_theme.dart';
 
 final otpIdProvider = StateProvider<String?>((ref) => null);
